@@ -1,0 +1,122 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$id": "/",
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "string"
+    },
+    "routes": {
+      "type": "object",
+      "patternProperties": {
+        "^[a-z\/]+$": {
+          "$ref": "#/definitions/route"
+        }
+      }
+    }
+  },
+  "required": [
+    "version",
+    "routes"
+  ],
+  "definitions": {
+    "route": {
+      "patternProperties": {
+        "^[A-Z]+$": {
+          "$ref": "#/definitions/method"
+        }
+      },
+      "type": "object"
+    },
+    "method": {
+      "properties": {
+        "action": {
+          "pattern": "^(create|read|update|delete)+$",
+          "type": "string"
+        },
+        "controller": {
+          "pattern": "^[A-z\/]+$",
+          "type": "string"
+        },
+        "body": {
+          "$ref": "#/definitions/body"
+        },
+        "query": {
+          "$ref": "#/definitions/query"
+        }
+      },
+      "type": "object",
+      "required": [
+        "action",
+        "controller"
+      ]
+    },
+    "body": {
+      "patternProperties": {
+        "^[A-z]+$": {
+          "$ref": "#/definitions/parameter"
+        }
+      },
+      "type": "object"
+    },
+    "query": {
+      "patternProperties": {
+        "^[A-z][A-z0-9]+$": {
+          "$ref": "#/definitions/parameter"
+        }
+      },
+      "type": "object"
+    },
+    "parameter": {
+      "type": "object",
+      "properties": {
+        "required": {
+          "type": "boolean"
+        },
+        "type": {
+          "pattern": "^(array|boolean|float|integer|NULL|object|string)+$",
+          "type": "string"
+        },
+        "format": {
+          "$ref": "#/definitions/format"
+        },
+        "content": {
+          "type": "object",
+          "properties": {
+            "$ref": "#/definitions/parameter"
+          }
+        }
+      },
+      "anyOf": [
+        {
+          "required": [
+            "required",
+            "type",
+            "format"
+          ]
+        },
+        {
+          "required": [
+            "required",
+            "type",
+            "content"
+          ]
+        }
+      ]
+    },
+    "format": {
+      "properties": {
+        "regex": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "regex"
+      ]
+    }
+  }
+}

@@ -1,0 +1,96 @@
+{
+  "version": "1",
+  "routes": {
+    "/": {
+      "GET": {
+        "action": "read",
+        "controller": "App\\Api\\Controller\\IndexController",
+        "body": {},
+        "roles": [
+          "visitor",
+          "member"
+        ]
+      }
+    },
+    "/account": {
+      "POST": {
+        "action": "create",
+        "controller": "App\\Api\\Controller\\Account\\AccountController",
+        "body": {
+          "email": {
+            "required": true,
+            "format": {
+              "regex": "/^.{1,64}@.{1,189}$/",
+              "message": "__x__Invalid e-mail.__/x__"
+            },
+            "type": "string"
+          },
+          "password": {
+            "required": true,
+            "format": {
+              "regex": "/^(?=.*[0-9])(?=.*[A-z]).{8,255}$/",
+              "message": "__x__Password has to contain both letters and numbers and has to be between 8-255 characters long.__/x__"
+            },
+            "type": "string"
+          }
+        },
+        "roles": [
+          "visitor"
+        ]
+      }
+    },
+    "/account/{id:[0-9a-z-]+}": {
+      "PUT": {
+        "action": "update",
+        "controller": "App\\Api\\Controller\\Account\\AccountController",
+        "body": {
+          "authorizationCode": {
+            "required": true,
+            "type": "string"
+          },
+          "password": {
+            "required": false,
+            "format": {
+              "regex": "/^(?=.*[0-9])(?=.*[A-z]).{8,255}$/",
+              "message": "__x__Password has to contain both letters and numbers and has to be between 8-255 characters long.__/x__"
+            },
+            "type": "string"
+          }
+        },
+        "roles": [
+          "visitor",
+          "member"
+        ]
+      }
+    },
+    "/account/{accountId:[0-9a-z-]+}/authentication-token": {
+      "POST": {
+        "action": "create",
+        "controller": "App\\Api\\Controller\\Account\\AuthenticationToken\\AuthenticationTokenController",
+        "body": {
+          "password": {
+            "required": true,
+            "format": {
+              "regex": "/^(?=.*[0-9])(?=.*[A-z]).{8,255}$/",
+              "message": "__x__Password has to contain both letters and numbers and has to be between 8-255 characters long.__/x__"
+            },
+            "type": "string"
+          }
+        },
+        "roles": [
+          "visitor"
+        ]
+      }
+    },
+    "/account/{accountId:[0-9a-z-]+}/authorization-token": {
+      "POST": {
+        "action": "create",
+        "controller": "App\\Api\\Controller\\Account\\AuthorizationToken\\AuthorizationTokenController",
+        "roles": [
+          "visitor",
+          "member"
+        ]
+      }
+    }
+  }
+}

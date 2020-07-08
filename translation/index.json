@@ -1,0 +1,28 @@
+{
+    "Account with this e-mail already exists.": "C:\\amp\\apache\\htdocs\\irony\\src\\Api\\Controller\\Account\\AccountController.php",
+    "Account was not found.": [
+        "C:\\amp\\apache\\htdocs\\irony\\src\\Api\\Controller\\Account\\AuthenticationToken\\AuthenticationTokenController.php",
+        "C:\\amp\\apache\\htdocs\\irony\\src\\Api\\Controller\\Account\\AuthorizationToken\\AuthorizationTokenController.php"
+    ],
+    "Invalid password.": "C:\\amp\\apache\\htdocs\\irony\\src\\Api\\Controller\\Account\\AuthenticationToken\\AuthenticationTokenController.php",
+    "Authorization code has been sent to {{email}}.": "C:\\amp\\apache\\htdocs\\irony\\src\\Api\\Controller\\Account\\AuthorizationToken\\AuthorizationTokenController.php",
+    "Bad Request": "C:\\amp\\apache\\htdocs\\irony\\src\\Api\\Exception\\Http\\BadRequestException.php",
+    "Conflict": "C:\\amp\\apache\\htdocs\\irony\\src\\Api\\Exception\\Http\\ConflictException.php",
+    "Forbidden": "C:\\amp\\apache\\htdocs\\irony\\src\\Api\\Exception\\Http\\ForbiddenException.php",
+    "Method Not Allowed": "C:\\amp\\apache\\htdocs\\irony\\src\\Api\\Exception\\Http\\MethodNotAllowedException.php",
+    "Not Found": "C:\\amp\\apache\\htdocs\\irony\\src\\Api\\Exception\\Http\\NotFoundException.php",
+    "Unauthenticated": "C:\\amp\\apache\\htdocs\\irony\\src\\Api\\Exception\\Http\\UnauthorizedException.php",
+    "Unprocessable Entity": "C:\\amp\\apache\\htdocs\\irony\\src\\Api\\Exception\\Http\\UnprocessableEntityException.php",
+    "Unsupported Media Type": "C:\\amp\\apache\\htdocs\\irony\\src\\Api\\Exception\\Http\\UnsupportedMediaTypeException.php",
+    "Invalid value.": [
+        "C:\\amp\\apache\\htdocs\\irony\\src\\Api\\Service\\ApiService.php",
+        "C:\\amp\\apache\\htdocs\\irony\\src\\Api\\Service\\ApiService.php"
+    ],
+    "Authorization": "C:\\amp\\apache\\htdocs\\irony\\src\\Mailer\\Service\\MailerService.php",
+    "Invalid e-mail.": "C:\\amp\\apache\\htdocs\\irony\\src\\api.json",
+    "Password has to contain both letters and numbers and has to be between 8-255 characters long.": [
+        "C:\\amp\\apache\\htdocs\\irony\\src\\api.json",
+        "C:\\amp\\apache\\htdocs\\irony\\src\\api.json",
+        "C:\\amp\\apache\\htdocs\\irony\\src\\api.json"
+    ]
+}

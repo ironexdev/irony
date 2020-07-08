@@ -1,0 +1,96 @@
+{
+  "version": "1",
+  "routes":
+  {
+    "/": {
+      "GET": {
+        "action": "read",
+        "controller": "App\\Api\\Controller\\IndexController",
+        "body": {
+          "name": {
+            "format": {
+              "regex": "/^[A-z]+$/",
+              "message": "__x__Name can only contain letters.__/x__"
+            },
+            "required": true,
+            "type": "string"
+          },
+          "names": {
+            "required": true,
+            "type": "array",
+            "content": {
+              "format": {
+                "regex": "/^[A-z]+$/",
+                "message": "__x__Name can only contain letters.__/x__"
+              },
+              "required": true,
+              "type": "string"
+            }
+          },
+          "account": {
+            "required": true,
+            "type": "object",
+            "content": {
+              "email": {
+                "required": true,
+                "type": "string",
+                "format": {
+                  "regex": "/^.{1,64}@.{1,189}$/",
+                  "message": "__x__Has to be a valid e-mail.__/x__"
+                }
+              },
+              "id": {
+                "required": true,
+                "type": "integer"
+              }
+            }
+          },
+          "accounts": {
+            "required": true,
+            "type": "array",
+            "content": {
+              "required": true,
+              "type": "object",
+              "content": {
+                "email": {
+                  "required": true,
+                  "type": "string",
+                  "format": {
+                    "regex": "/^[A-z.@]+$/",
+                    "message": "__x__Has to be a valid e-mail.__/x__"
+                  }
+                },
+                "id": {
+                  "required": true,
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "ids": {
+            "required": true,
+            "type": "array",
+            "content": {
+              "required": true,
+              "type": "array",
+              "content": {
+                "required": true,
+                "type": "integer"
+              }
+            }
+          }
+        },
+        "query": {
+          "languageIso2": {
+            "required": false,
+            "format": {
+              "regex": "/^(cs)$/",
+              "message": "__x__Unsupported language.__/x__"
+            },
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
