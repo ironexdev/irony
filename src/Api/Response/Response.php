@@ -2,6 +2,9 @@
 
 namespace App\Api\Response;
 
+use App\Config\Config;
+use App\Enum\ResponseHeaderEnum;
+
 class Response
 {
     /**
@@ -27,6 +30,8 @@ class Response
      */
     public function __construct(int $code, array $headers, object $body)
     {
+        $headers[ResponseHeaderEnum::ACCESS_ALLOW_CONTROL_ORIGIN] = Config::getAccessControlAllowOrigin();
+
         $this->code = $code;
         $this->headers = $headers;
         $this->body = $body;

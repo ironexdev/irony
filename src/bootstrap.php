@@ -2,6 +2,7 @@
 
 use App\Api\Api;
 use App\Config\Config;
+use App\Enum\ResponseHeaderEnum;
 use DI\ContainerBuilder;
 
 const APPLICATION_DIRECTORY = __DIR__ . DIRECTORY_SEPARATOR . "..";

@@ -80,7 +80,7 @@ class Translator
     {
         if (!static::$translations)
         {
-            static::$translations = json_decode(Filesystem::readFile(Config::getTranslationDirectory() . DIRECTORY_SEPARATOR . Config::getLanguage() . ".json"), true);
+            static::$translations = json_decode(Filesystem::readFile(Config::getTranslationsDirectory() . DIRECTORY_SEPARATOR . Config::getLanguage() . ".json"), true);
         }
 
         return static::$translations;

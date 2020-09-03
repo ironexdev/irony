@@ -12,15 +12,20 @@ class IndexController extends AbstractController
      */
     public function read(): Response
     {
+        $authenticated = $this->user->isLoggedIn();
         $userData = [
-            "role" => $this->user->getRole(),
-            "u" => Translator::__("Bad Request")
+            "authenticated" => $authenticated,
+            "role" => $this->user->getRole()
         ];
 
-        if($this->user->isLoggedIn())
+        if ($authenticated)
         {
-            $userData["email"] = $this->user->getAccount()->getEmail();
-            $userData["authentication_token_expiration"] = $this->user->getAuthenticationToken()->getExpiration();
+            $userData["account"] = [
+                "email" => $this->user->getAccount()
+                                      ->getEmail(),
+                "authenticationTokenExpiration" => $this->user->getAuthenticationToken()
+                                                              ->getExpiration()
+            ];
         }
 
         return $this->response((object) $userData);

@@ -19,7 +19,7 @@ class AuthorizationToken
 
     /**
      * @ORM\Id
-     * @ORM\Column(name="id", type="guid")
+     * @ORM\Column(type="guid")
      * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;

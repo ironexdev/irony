@@ -16,6 +16,6 @@ class UnauthorizedException extends AbstractHttpClientException
      */
     protected function getDefaultMessage(): string
     {
-        return Translator::__("__x__Unauthenticated__/x__");
+        return Translator::__("__x__Unauthenticated__/x__"); // HTTP status message is incorrectly names - it should be unauthenticated
     }
 }

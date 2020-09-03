@@ -15,6 +15,7 @@ class EntityManagerService extends DoctrineEntityManager
     /**
      * EntityManagerService constructor.
      * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\DBAL\DBALException
      */
     public function __construct()
     {
@@ -53,5 +54,8 @@ class EntityManagerService extends DoctrineEntityManager
         $connection = static::createConnection($connection, $doctrineConfig, null);
 
         parent::__construct($connection, $doctrineConfig, $connection->getEventManager());
+
+        $platform = $this->getConnection()->getDatabasePlatform();
+        $platform->registerDoctrineTypeMapping("enum", "string");
     }
 }

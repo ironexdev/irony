@@ -66,11 +66,11 @@ function collectTranslationIndexes(string $searchDirectory): array
 /**
  * @param array $collectedTranslationIndexes
  * @param bool $removeUnused
- * @param string $translationDirectory
+ * @param string $translationsDirectory
  */
-function createOrUpdateIndexFile(array $collectedTranslationIndexes, bool $removeUnused, string $translationDirectory): void
+function createOrUpdateIndexFile(array $collectedTranslationIndexes, bool $removeUnused, string $translationsDirectory): void
 {
-    $translationIndexFile = $translationDirectory . DIRECTORY_SEPARATOR . "index.json";
+    $translationIndexFile = $translationsDirectory . DIRECTORY_SEPARATOR . "index.json";
     $translationIndexes = [];
 
     if (Filesystem::fileExists($translationIndexFile))
@@ -100,15 +100,15 @@ function createOrUpdateIndexFile(array $collectedTranslationIndexes, bool $remov
 /**
  * @param array $collectedTranslationIndexes
  * @param bool $removeUnused
- * @param string $translationDirectory
+ * @param string $translationsDirectory
  */
-function createOrUpdateTranslations(array $collectedTranslationIndexes, bool $removeUnused, string $translationDirectory): void
+function createOrUpdateTranslations(array $collectedTranslationIndexes, bool $removeUnused, string $translationsDirectory): void
 {
     $supportedLanguages = Config::getSupportedLanguages();
 
     foreach ($supportedLanguages as $language)
     {
-        $translationFile = $translationDirectory . "/" . $language . ".json";
+        $translationFile = $translationsDirectory . "/" . $language . ".json";
         $translationData = [];
 
         if (Filesystem::fileExists($translationFile))

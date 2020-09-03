@@ -20,13 +20,13 @@ class Account
 {
     /**
      * @ORM\Id
-     * @ORM\Column(name="id", type="guid")
+     * @ORM\Column(type="guid")
      * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string",length=254)
+     * @ORM\Column(type="string",length=255)
      */
     private $email;
 
@@ -58,9 +58,9 @@ class Account
      */
     public function __construct(string $email, string $password, string $role)
     {
-        $this->email = $email;
-        $this->password = $password;
-        $this->role = $role;
+        $this->setEmail($email);
+        $this->setPassword($password);
+        $this->setRole($role);
     }
 
     /**

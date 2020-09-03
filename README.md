@@ -1,7 +1,7 @@
 Doctrine commands
 
-    php vendor/doctrine/orm/bin/doctrine.php orm:schema-tool:create
-    php vendor/doctrine/orm/bin/doctrine.php orm:schema-tool:update
+    php bin/doctrine.php orm:schema-tool:create
+    php bin/doctrine.php orm:schema-tool:update
 
 Request
     
@@ -11,3 +11,11 @@ Request
     
     Body
     - arrays can only contain elements of one type
+    
+Mysql
+   
+    Select subtree
+        select @pv:=id as id, name, parent_id from products
+        join
+        (select @pv:=490000)tmp
+        where parent_id=@pv

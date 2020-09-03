@@ -1,6 +1,7 @@
 <?php
 
 return [
+    "accessControlAllowOrigin" => "*",
     "appDirectory" => __DIR__ . DIRECTORY_SEPARATOR . "..",
     "database" => [
         "charset" => "UTF8",
@@ -9,14 +10,14 @@ return [
         "name" => "irony",
         "port" => "3306",
         "user" => "root",
-        "password" => "",
+        "password" => "1234test",
         "serverVersion" => "mariadb-10.4.12"
     ],
     "emails" => [
         "admin" => "admin@ironexdev.com"
     ],
     "environment" => "production", // bootstrap.php does not use this configuration
-    "language" => "cs", // bootstrap.php does not use this configuration
+    "language" => "cs",
     "mailer" => [
         "host" => "smtp.onebit.cz",
         "port" => 587,
@@ -35,5 +36,5 @@ return [
     ],
     "siteName" => "Irony",
     "supportedLanguages" => ["cs","en"],
-    "translationDirectory" => __DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "translation"
+    "translationsDirectory" => __DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "translations"
 ];

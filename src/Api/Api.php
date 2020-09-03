@@ -174,7 +174,8 @@ class Api
             $allowedMethods = RequestMethodENum::OPTIONS . "," . implode(",", $route[1]);
 
             $response = $this->responseFactory->create(ResponseStatusCodeEnum::NO_CONTENT, [
-                "Access-Control-Allow-Methods" => $allowedMethods
+                ResponseHeaderEnum::ACCESS_CONTROL_ALLOW_HEADERS => "*",
+                ResponseHeaderEnum::ACCESS_CONTROL_ALLOW_METHODS => $allowedMethods
             ], (object) [
                 ResponseHeaderEnum::ALLOW => $allowedMethods
             ]);

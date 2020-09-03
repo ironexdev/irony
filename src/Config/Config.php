@@ -10,6 +10,11 @@ class Config
     /**
      * @var string
      */
+    private static $accessControlAllowOrigin;
+
+    /**
+     * @var string
+     */
     private static $appDirectory;
 
     /**
@@ -60,7 +65,7 @@ class Config
     /**
      * @var string
      */
-    private static $translationDirectory;
+    private static $translationsDirectory;
 
     /**
      * @param array $config
@@ -86,6 +91,14 @@ class Config
 
             self::${$key} = $value;
         }
+    }
+
+    /**
+     * @return string
+     */
+    public static function getAccessControlAllowOrigin(): string
+    {
+        return self::$accessControlAllowOrigin;
     }
 
     /**
@@ -171,8 +184,8 @@ class Config
     /**
      * @return string
      */
-    public static function getTranslationDirectory(): string
+    public static function getTranslationsDirectory(): string
     {
-        return self::$translationDirectory;
+        return self::$translationsDirectory;
     }
 }

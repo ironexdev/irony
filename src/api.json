@@ -12,7 +12,7 @@
         ]
       }
     },
-    "/account": {
+    "/accounts": {
       "POST": {
         "action": "create",
         "controller": "App\\Api\\Controller\\Account\\AccountController",
@@ -39,7 +39,7 @@
         ]
       }
     },
-    "/account/{id:[0-9a-z-]+}": {
+    "/accounts/{id:[0-9a-z-]+}": {
       "PUT": {
         "action": "update",
         "controller": "App\\Api\\Controller\\Account\\AccountController",
@@ -63,7 +63,7 @@
         ]
       }
     },
-    "/account/{accountId:[0-9a-z-]+}/authentication-token": {
+    "/accounts/{accountId:[0-9a-z-]+}/authentication-token": {
       "POST": {
         "action": "create",
         "controller": "App\\Api\\Controller\\Account\\AuthenticationToken\\AuthenticationTokenController",
@@ -82,13 +82,28 @@
         ]
       }
     },
-    "/account/{accountId:[0-9a-z-]+}/authorization-token": {
+    "/accounts/{accountId:[0-9a-z-]+}/authorization-token": {
       "POST": {
         "action": "create",
         "controller": "App\\Api\\Controller\\Account\\AuthorizationToken\\AuthorizationTokenController",
         "roles": [
           "visitor",
           "member"
+        ]
+      }
+    },
+    "/products/{productId}": {
+      "GET": {
+        "action": "read",
+        "controller": "App\\Api\\Controller\\Product\\ProductController",
+        "query": {
+          "category": {
+            "required": false,
+            "type": "string"
+          }
+        },
+        "roles": [
+          "visitor"
         ]
       }
     }
