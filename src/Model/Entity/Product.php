@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Product
 {
     /**
+     * @var string
      * @ORM\Id
      * @ORM\Column(type="guid")
      * @ORM\GeneratedValue(strategy="UUID")
@@ -20,15 +21,17 @@ class Product
     private $id;
 
     /**
+     * @var string
+     * @ORM\Column(type="decimal")
+     */
+    private $price;
+
+    /**
+     * @var Category
      * @ORM\ManyToOne(targetEntity="Category",fetch="LAZY")
      * @ORM\JoinColumn(name="category_id",referencedColumnName="id",nullable=false)
      */
      private $category;
-
-    /**
-     * @ORM\Column(type="float")
-     */
-    private $price;
 
     /**
      * @return string
@@ -39,17 +42,17 @@ class Product
     }
 
     /**
-     * @return float
+     * @return string
      */
-    public function getPrice(): float
+    public function getPrice(): string
     {
         return $this->price;
     }
 
     /**
-     * @param float $price
+     * @param string $price
      */
-    public function setPrice(float $price): void
+    public function setPrice(string $price): void
     {
         $this->price = $price;
     }

@@ -5,12 +5,12 @@ namespace App\Model\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="ProductAttributeContentRepository")
+ * @ORM\Entity(repositoryClass="ProductAttributeTextRepository")
  * @ORM\Table(
- *     name="product_attribute_content",
+ *     name="product_attribute_text",
  * )
  */
-class ProductAttributeContent
+class ProductAttributeText
 {
     /**
      * @var string
@@ -22,15 +22,9 @@ class ProductAttributeContent
 
     /**
      * @var string
-     * @ORM\Column(type="string",length=255)
+     * @ORM\Column(type="string",length=255,nullable=false)
      */
-    private $title;
-
-    /**
-     * @var string
-     * @ORM\Column(type="string",length=255)
-     */
-    private $units;
+    private $value;
 
     /**
      * @var Language
@@ -57,33 +51,17 @@ class ProductAttributeContent
     /**
      * @return string
      */
-    public function getTitle(): string
+    public function getValue(): string
     {
-        return $this->title;
+        return $this->value;
     }
 
     /**
-     * @param string $title
+     * @param string $value
      */
-    public function setTitle(string $title): void
+    public function setValue(string $value): void
     {
-        $this->title = $title;
-    }
-
-    /**
-     * @return string
-     */
-    public function getUnits(): string
-    {
-        return $this->units;
-    }
-
-    /**
-     * @param string $units
-     */
-    public function setUnits(string $units): void
-    {
-        $this->units = $units;
+        $this->value = $value;
     }
 
     /**

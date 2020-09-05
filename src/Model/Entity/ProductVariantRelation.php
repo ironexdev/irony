@@ -5,12 +5,12 @@ namespace App\Model\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="ProductAlternativeRelationRepository")
+ * @ORM\Entity(repositoryClass="ProductVariantRelationRepository")
  * @ORM\Table(
- *     name="product_alternative_relation",
+ *     name="product_variant_relation",
  * )
  */
-class ProductAlternativeRelation
+class ProductVariantRelation
 {
     /**
      * @ORM\Id
@@ -29,9 +29,9 @@ class ProductAlternativeRelation
     /**
      * @var Product
      * @ORM\ManyToOne(targetEntity="Product",fetch="LAZY")
-     * @ORM\JoinColumn(name="alternative_product_id",referencedColumnName="id",nullable=false)
+     * @ORM\JoinColumn(name="product_variant_id",referencedColumnName="id",nullable=false)
      */
-    private $alternativeProduct;
+    private $productVariant;
 
     /**
      * @return string
@@ -60,16 +60,16 @@ class ProductAlternativeRelation
     /**
      * @return Product
      */
-    public function getAlternativeProduct(): Product
+    public function getProductVariant(): Product
     {
-        return $this->alternativeProduct;
+        return $this->productVariant;
     }
 
     /**
-     * @param Product $alternativeProduct
+     * @param Product $productVariant
      */
-    public function setAlternativeProduct(Product $alternativeProduct): void
+    public function setProductVariant(Product $productVariant): void
     {
-        $this->alternativeProduct = $alternativeProduct;
+        $this->productVariant = $productVariant;
     }
 }

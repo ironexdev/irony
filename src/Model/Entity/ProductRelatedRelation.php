@@ -5,12 +5,12 @@ namespace App\Model\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="ProductRepository")
+ * @ORM\Entity(repositoryClass="ProductRelatedRelationRepository")
  * @ORM\Table(
- *     name="product",
+ *     name="product_related_relation",
  * )
  */
-class Product
+class ProductRelatedRelation
 {
     /**
      * @ORM\Id
@@ -20,15 +20,18 @@ class Product
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Category",fetch="LAZY")
-     * @ORM\JoinColumn(name="category_id",referencedColumnName="id",nullable=false)
+     * @var Product
+     * @ORM\ManyToOne(targetEntity="Product",fetch="LAZY")
+     * @ORM\JoinColumn(name="product_id",referencedColumnName="id",nullable=false)
      */
-     private $category;
+    private $product;
 
     /**
-     * @ORM\Column(type="float")
+     * @var Product
+     * @ORM\ManyToOne(targetEntity="Product",fetch="LAZY")
+     * @ORM\JoinColumn(name="related_product_id",referencedColumnName="id",nullable=false)
      */
-    private $price;
+    private $relatedProduct;
 
     /**
      * @return string
@@ -39,34 +42,34 @@ class Product
     }
 
     /**
-     * @return float
+     * @return Product
      */
-    public function getPrice(): float
+    public function getProduct(): Product
     {
-        return $this->price;
+        return $this->product;
     }
 
     /**
-     * @param float $price
+     * @param Product $product
      */
-    public function setPrice(float $price): void
+    public function setProduct(Product $product): void
     {
-        $this->price = $price;
+        $this->product = $product;
     }
 
     /**
-     * @return Category
+     * @return Product
      */
-    public function getCategory(): Category
+    public function getRelatedProduct(): Product
     {
-        return $this->category;
+        return $this->relatedProduct;
     }
 
     /**
-     * @param Category $category
+     * @param Product $relatedProduct
      */
-    public function setCategory(Category $category): void
+    public function setRelatedProduct(Product $relatedProduct): void
     {
-        $this->category = $category;
+        $this->relatedProduct = $relatedProduct;
     }
 }

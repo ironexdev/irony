@@ -8,11 +8,15 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="ProductContentRepository")
  * @ORM\Table(
  *     name="product_content",
+ *     uniqueConstraints={
+ *         @ORM\UniqueConstraint(name="title",columns={"title","language_id"})
+ *     }
  * )
  */
 class ProductContent
 {
     /**
+     * @var string
      * @ORM\Id
      * @ORM\Column(type="guid")
      * @ORM\GeneratedValue(strategy="UUID")
@@ -20,26 +24,32 @@ class ProductContent
     private $id;
 
     /**
+     * @var string
      * @ORM\Column(type="string",length=255)
      */
     private $title;
 
     /**
+     * @var string
      * @ORM\Column(type="string",length=255)
      */
     private $summary;
 
     /**
+     * @var string
      * @ORM\Column(type="string",length=255)
      */
     private $description;
 
     /**
-     * @ORM\Column(type="string",columnDefinition="ENUM('en','cs') NOT NULL")
+     * @var Language
+     * @ORM\ManyToOne(targetEntity="Product",fetch="LAZY")
+     * @ORM\JoinColumn(name="language_id",referencedColumnName="id",nullable=false,onDelete="RESTRICT")
      */
      private $language;
 
     /**
+     * @var Product
      * @ORM\ManyToOne(targetEntity="Product",fetch="LAZY")
      * @ORM\JoinColumn(name="product_id",referencedColumnName="id",nullable=false,onDelete="CASCADE")
      */
@@ -102,33 +112,33 @@ class ProductContent
     }
 
     /**
-     * @return string
+     * @return Language
      */
-    public function getLanguage(): string
+    public function getLanguage(): Language
     {
         return $this->language;
     }
 
     /**
-     * @param string $language
+     * @param Language $language
      */
-    public function setLanguage(string $language): void
+    public function setLanguage(Language $language): void
     {
         $this->language = $language;
     }
 
     /**
-     * @return mixed
+     * @return Product
      */
-    public function getProduct()
+    public function getProduct(): Product
     {
         return $this->product;
     }
 
     /**
-     * @param mixed $product
+     * @param Product $product
      */
-    public function setProduct($product): void
+    public function setProduct(Product $product): void
     {
         $this->product = $product;
     }

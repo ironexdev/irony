@@ -19,6 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Account
 {
     /**
+     * @var string
      * @ORM\Id
      * @ORM\Column(type="guid")
      * @ORM\GeneratedValue(strategy="UUID")
@@ -26,26 +27,31 @@ class Account
     private $id;
 
     /**
+     * @var string
      * @ORM\Column(type="string",length=255)
      */
     private $email;
 
     /**
+     * @var string
      * @ORM\Column(type="string",length=255)
      */
     private $password;
 
     /**
+     * @var string
      * @ORM\Column(type="string",columnDefinition="ENUM('member') NOT NULL")
      */
     private $role;
 
     /**
+     * @var DateTime
      * @ORM\Column(type="datetime")
      */
     protected $created;
 
     /**
+     * @var DateTime
      * @ORM\Column(type="datetime",nullable=true)
      */
     protected $updated;
@@ -87,14 +93,6 @@ class Account
     public function getId(): string
     {
         return $this->id;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getCreated(): DateTime
-    {
-        return $this->created;
     }
 
     /**
@@ -146,9 +144,17 @@ class Account
     }
 
     /**
-     * @return DateTime
+     * @return \DateTime
      */
-    public function getUpdated(): DateTime
+    public function getCreated(): \DateTime
+    {
+        return $this->created;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getUpdated(): \DateTime
     {
         return $this->updated;
     }

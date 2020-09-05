@@ -8,11 +8,15 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="CategoryContentRepository")
  * @ORM\Table(
  *     name="category_content",
+ *     uniqueConstraints={
+ *         @ORM\UniqueConstraint(name="title",columns={"title","language_id"})
+ *     }
  * )
  */
 class CategoryContent
 {
     /**
+     * @var string
      * @ORM\Id
      * @ORM\Column(type="guid")
      * @ORM\GeneratedValue(strategy="UUID")
@@ -20,20 +24,24 @@ class CategoryContent
     private $id;
 
     /**
+     * @var string
      * @ORM\Column(type="string",length=255)
      */
     private $title;
 
     /**
-     * @ORM\Column(type="string",columnDefinition="ENUM('en','cs') NOT NULL")
+     * @var Language
+     * @ORM\ManyToOne(targetEntity="Product",fetch="LAZY")
+     * @ORM\JoinColumn(name="language_id",referencedColumnName="id",nullable=false,onDelete="RESTRICT")
      */
-     private $language;
+    private $language;
 
     /**
+     * @var Category
      * @ORM\ManyToOne(targetEntity="Category",fetch="LAZY")
      * @ORM\JoinColumn(name="category_id",referencedColumnName="id",nullable=false,onDelete="CASCADE")
      */
-     private $category;
+    private $category;
 
     /**
      * @return string
@@ -60,17 +68,17 @@ class CategoryContent
     }
 
     /**
-     * @return string
+     * @return Language
      */
-    public function getLanguage(): string
+    public function getLanguage(): Language
     {
         return $this->language;
     }
 
     /**
-     * @param string $language
+     * @param Language $language
      */
-    public function setLanguage(string $language): void
+    public function setLanguage(Language $language): void
     {
         $this->language = $language;
     }

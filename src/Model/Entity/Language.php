@@ -5,12 +5,12 @@ namespace App\Model\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="ProductAttributeRepository")
+ * @ORM\Entity(repositoryClass="LanguageRepository")
  * @ORM\Table(
- *     name="product_attribute",
+ *     name="language",
  * )
  */
-class ProductAttribute
+class Language
 {
     /**
      * @var string
@@ -22,9 +22,9 @@ class ProductAttribute
 
     /**
      * @var string
-     * @ORM\Column(type="string",columnDefinition="ENUM('boolean','decimal','int','text') NOT NULL")
+     * @ORM\Column(type="string",length=255)
      */
-    private $type;
+    private $iso2;
 
     /**
      * @return string
@@ -37,16 +37,16 @@ class ProductAttribute
     /**
      * @return string
      */
-    public function getType(): string
+    public function getIso2(): string
     {
-        return $this->type;
+        return $this->iso2;
     }
 
     /**
-     * @param string $type
+     * @param string $iso2
      */
-    public function setType(string $type): void
+    public function setIso2(string $iso2): void
     {
-        $this->type = $type;
+        $this->iso2 = $iso2;
     }
 }
