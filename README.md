@@ -1,7 +1,7 @@
 Doctrine commands
 
-    php bin/doctrine.php orm:schema-tool:create
-    php bin/doctrine.php orm:schema-tool:update
+    php bin/doctrine.php orm:schema-tool:create/delete/update
+    php bin/doctrine_fixtures.php
 
 Request
     
