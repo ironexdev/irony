@@ -3,7 +3,7 @@
 namespace App\Model\Fixture;
 
 use App\Model\Entity\Category;
-use App\Model\Entity\CategoryContent;
+use App\Model\Entity\CategoryTranslatableContent;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -115,7 +115,7 @@ class CategoryFixture extends AbstractFixture
 
         foreach($translations as $language => $translation)
         {
-            $categoryContent = new CategoryContent();
+            $categoryContent = new CategoryTranslatableContent();
             $categoryContent->setTitle($translation);
             $categoryContent->setLanguage($language);
             $categoryContent->setCategory($category);

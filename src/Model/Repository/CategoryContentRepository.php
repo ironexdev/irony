@@ -2,9 +2,9 @@
 
 namespace App\Model\Repository;
 
-use App\Model\Entity\CategoryContent;
+use App\Model\Entity\CategoryTranslatableContent;
 
 class CategoryContentRepository extends AbstractRepository
 {
-    const ENTITY = CategoryContent::class;
+    const ENTITY = CategoryTranslatableContent::class;
 }

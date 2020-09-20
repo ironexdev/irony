@@ -5,15 +5,15 @@ namespace App\Model\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="ProductContentRepository")
+ * @ORM\Entity(repositoryClass="CategoryContentRepository")
  * @ORM\Table(
- *     name="product_content",
+ *     name="category_content",
  *     uniqueConstraints={
  *         @ORM\UniqueConstraint(name="title",columns={"title","language_id"})
  *     }
  * )
  */
-class ProductContent
+class CategoryTranslatableContent
 {
     /**
      * @var string
@@ -30,30 +30,18 @@ class ProductContent
     private $title;
 
     /**
-     * @var string
-     * @ORM\Column(type="string",length=255)
-     */
-    private $summary;
-
-    /**
-     * @var string
-     * @ORM\Column(type="string",length=255)
-     */
-    private $description;
-
-    /**
      * @var Language
      * @ORM\ManyToOne(targetEntity="Product",fetch="LAZY")
      * @ORM\JoinColumn(name="language_id",referencedColumnName="id",nullable=false,onDelete="RESTRICT")
      */
-     private $language;
+    private $language;
 
     /**
-     * @var Product
-     * @ORM\ManyToOne(targetEntity="Product",fetch="LAZY")
-     * @ORM\JoinColumn(name="product_id",referencedColumnName="id",nullable=false,onDelete="CASCADE")
+     * @var Category
+     * @ORM\ManyToOne(targetEntity="Category",fetch="LAZY")
+     * @ORM\JoinColumn(name="category_id",referencedColumnName="id",nullable=false,onDelete="CASCADE")
      */
-     private $product;
+    private $category;
 
     /**
      * @return string
@@ -80,38 +68,6 @@ class ProductContent
     }
 
     /**
-     * @return string
-     */
-    public function getSummary(): string
-    {
-        return $this->summary;
-    }
-
-    /**
-     * @param string $summary
-     */
-    public function setSummary(string $summary): void
-    {
-        $this->summary = $summary;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDescription(): string
-    {
-        return $this->description;
-    }
-
-    /**
-     * @param string $description
-     */
-    public function setDescription(string $description): void
-    {
-        $this->description = $description;
-    }
-
-    /**
      * @return Language
      */
     public function getLanguage(): Language
@@ -128,18 +84,18 @@ class ProductContent
     }
 
     /**
-     * @return Product
+     * @return Category
      */
-    public function getProduct(): Product
+    public function getCategory(): Category
     {
-        return $this->product;
+        return $this->category;
     }
 
     /**
-     * @param Product $product
+     * @param Category $category
      */
-    public function setProduct(Product $product): void
+    public function setCategory(Category $category): void
     {
-        $this->product = $product;
+        $this->category = $category;
     }
 }

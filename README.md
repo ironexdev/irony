@@ -1,3 +1,9 @@
+Language is defined by request header
+
+Country is defined by domain
+
+User Language is updated when account is created, user is logged in or after any action that leads to e-mail being sent
+
 Doctrine commands
 
     php bin/doctrine.php orm:schema-tool:create/delete/update

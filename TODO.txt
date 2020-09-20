@@ -2,6 +2,8 @@ Add cron to remove expired authentication tokens
 Add cron to remove expired authorization tokens
 
 Api
+    Update language based on request header (Content-Language?)
+    Update country based on app domain (Config?)
     DONE - Support Head and Options request
     DONE - Process Request and Response
 
