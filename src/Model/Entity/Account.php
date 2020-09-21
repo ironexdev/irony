@@ -40,6 +40,24 @@ class Account
 
     /**
      * @var string
+     * @ORM\Column(type="string",length=255)
+     */
+    private $firstName;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string",length=255)
+     */
+    private $lastName;
+
+    /**
+     * @var bool
+     * @ORM\Column(type="boolean")
+     */
+    private $cookieConsent;
+
+    /**
+     * @var string
      * @ORM\Column(type="string",columnDefinition="ENUM('member') NOT NULL")
      */
     private $role;
@@ -130,6 +148,54 @@ class Account
     /**
      * @return string
      */
+    public function getFirstName(): string
+    {
+        return $this->firstName;
+    }
+
+    /**
+     * @param string $firstName
+     */
+    public function setFirstName(string $firstName): void
+    {
+        $this->firstName = $firstName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLastName(): string
+    {
+        return $this->lastName;
+    }
+
+    /**
+     * @param string $lastName
+     */
+    public function setLastName(string $lastName): void
+    {
+        $this->lastName = $lastName;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCookieConsent(): bool
+    {
+        return $this->cookieConsent;
+    }
+
+    /**
+     * @param bool $cookieConsent
+     */
+    public function setCookieConsent(bool $cookieConsent): void
+    {
+        $this->cookieConsent = $cookieConsent;
+    }
+
+    /**
+     * @return string
+     */
     public function getRole(): string
     {
         return $this->role;
@@ -144,17 +210,17 @@ class Account
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getCreated(): \DateTime
+    public function getCreated(): DateTime
     {
         return $this->created;
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getUpdated(): \DateTime
+    public function getUpdated(): DateTime
     {
         return $this->updated;
     }

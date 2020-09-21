@@ -2,6 +2,7 @@
 
 namespace App\Model\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -27,6 +28,18 @@ class Language
     private $iso2;
 
     /**
+     * @var DateTime
+     * @ORM\Column(type="datetime")
+     */
+    protected $created;
+
+    /**
+     * @var DateTime
+     * @ORM\Column(type="datetime",nullable=true)
+     */
+    protected $updated;
+
+    /**
      * @return string
      */
     public function getId(): string
@@ -48,5 +61,21 @@ class Language
     public function setIso2(string $iso2): void
     {
         $this->iso2 = $iso2;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreated(): \DateTime
+    {
+        return $this->created;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getUpdated(): \DateTime
+    {
+        return $this->updated;
     }
 }

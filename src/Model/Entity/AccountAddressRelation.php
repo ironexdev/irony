@@ -1,16 +1,18 @@
 <?php
 
-namespace App\Model\Entity;
+namespace App\Model\AccountAddressRelation;
 
+use App\Model\Entity\Account;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="EntityRepository")
+ * @ORM\Entity(repositoryClass="AccountAddressRelationRepository")
  * @ORM\Table(
- *     name="entity",
+ *     name="account_address_relation",
  * )
  */
-class Entity
+class AccountAddressRelation
 {
     /**
      * @var string
@@ -21,27 +23,23 @@ class Entity
     private $id;
 
     /**
-     * @var Todo
-     * @ORM\ManyToOne(targetEntity="Todo",fetch="LAZY")
-     * @ORM\JoinColumn(name="todo_id",referencedColumnName="id",nullable=false)
-     */
-     private $todo;
-
-    /**
-     * @var string
-     * @ORM\Column(type="string",length=255)
-     */
-    private $todo2;
-
-    /**
+     * @var DateTime
      * @ORM\Column(type="datetime")
      */
     protected $created;
 
     /**
+     * @var DateTime
      * @ORM\Column(type="datetime",nullable=true)
      */
     protected $updated;
+
+    /**
+     * @var Account
+     * @ORM\ManyToOne(targetEntity="Account",fetch="LAZY")
+     * @ORM\JoinColumn(name="account_id",referencedColumnName="id",nullable=false)
+     */
+     private $account;
 
     /**
      * @return string
@@ -49,5 +47,37 @@ class Entity
     public function getId(): string
     {
         return $this->id;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreated(): \DateTime
+    {
+        return $this->created;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getUpdated(): \DateTime
+    {
+        return $this->updated;
+    }
+
+    /**
+     * @return Account
+     */
+    public function getAccount(): Account
+    {
+        return $this->account;
+    }
+
+    /**
+     * @param Account $account
+     */
+    public function setAccount(Account $account): void
+    {
+        $this->account = $account;
     }
 }

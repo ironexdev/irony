@@ -18,6 +18,7 @@ class AuthorizationToken
     const TOKEN_DURATION = "1 hour";
 
     /**
+     * @var string
      * @ORM\Id
      * @ORM\Column(type="guid")
      * @ORM\GeneratedValue(strategy="UUID")
@@ -25,26 +26,31 @@ class AuthorizationToken
     private $id;
 
     /**
+     * @var string
      * @ORM\Column(type="string",length=255,nullable=false)
      */
     private $code;
 
     /**
+     * @var DateTime
      * @ORM\Column(type="datetime",nullable=false)
      */
     private $expiration;
 
     /**
+     * @var DateTime
      * @ORM\Column(type="datetime")
      */
     protected $created;
 
     /**
+     * @var DateTime
      * @ORM\Column(type="datetime",nullable=true)
      */
     protected $updated;
 
     /**
+     * @var Account
      * @ORM\ManyToOne(targetEntity="Account",fetch="LAZY")
      * @ORM\JoinColumn(name="account_id",referencedColumnName="id",nullable=false,onDelete="CASCADE")
      */
@@ -119,6 +125,22 @@ class AuthorizationToken
     public function setExpiration(DateTime $expiration): void
     {
         $this->expiration = $expiration;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreated(): \DateTime
+    {
+        return $this->created;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getUpdated(): \DateTime
+    {
+        return $this->updated;
     }
 
     /**

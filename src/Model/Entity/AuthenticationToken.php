@@ -18,6 +18,7 @@ class AuthenticationToken
     const TOKEN_DURATION = "1 month";
 
     /**
+     * @var string
      * @ORM\Id
      * @ORM\Column(type="guid")
      * @ORM\GeneratedValue(strategy="UUID")
@@ -25,26 +26,31 @@ class AuthenticationToken
     private $id;
 
     /**
+     * @var string
      * @ORM\Column(type="string",length=255,nullable=false)
      */
     private $code;
 
     /**
+     * @var DateTime
      * @ORM\Column(type="datetime",nullable=false)
      */
     private $expiration;
 
     /**
+     * @var DateTime
      * @ORM\Column(type="datetime")
      */
     protected $created;
 
     /**
+     * @var DateTime
      * @ORM\Column(type="datetime",nullable=true)
      */
     protected $updated;
 
     /**
+     * @var Account
      * @ORM\ManyToOne(targetEntity="Account",fetch="LAZY")
      * @ORM\JoinColumn(name="account_id",referencedColumnName="id",nullable=false,onDelete="CASCADE")
      */
@@ -53,7 +59,7 @@ class AuthenticationToken
     /**
      * AuthenticationToken constructor.
      * @param string $code
-     * @param \DateTime $expiration
+     * @param DateTime $expiration
      * @param \App\Model\Entity\Account $account
      */
     public function __construct(string $code, DateTime $expiration, Account $account)
@@ -122,6 +128,22 @@ class AuthenticationToken
     }
 
     /**
+     * @return DateTime
+     */
+    public function getCreated(): DateTime
+    {
+        return $this->created;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getUpdated(): DateTime
+    {
+        return $this->updated;
+    }
+
+    /**
      * @return Account
      */
     public function getAccount(): Account
@@ -130,7 +152,7 @@ class AuthenticationToken
     }
 
     /**
-     * @param account $account
+     * @param Account $account
      */
     public function setAccount(Account $account): void
     {

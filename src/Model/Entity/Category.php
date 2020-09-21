@@ -2,6 +2,7 @@
 
 namespace App\Model\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -13,6 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Category
 {
     /**
+     * @var string
      * @ORM\Id
      * @ORM\Column(type="guid")
      * @ORM\GeneratedValue(strategy="UUID")
@@ -20,6 +22,19 @@ class Category
     private $id;
 
     /**
+     * @var DateTime
+     * @ORM\Column(type="datetime")
+     */
+    protected $created;
+
+    /**
+     * @var DateTime
+     * @ORM\Column(type="datetime",nullable=true)
+     */
+    protected $updated;
+
+    /**
+     * @var Category
      * @ORM\ManyToOne(targetEntity="Category",fetch="LAZY")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="SET NULL")
      */
@@ -31,6 +46,22 @@ class Category
     public function getId(): string
     {
         return $this->id;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreated(): \DateTime
+    {
+        return $this->created;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getUpdated(): \DateTime
+    {
+        return $this->updated;
     }
 
     /**

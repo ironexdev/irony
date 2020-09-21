@@ -2,12 +2,13 @@
 
 namespace App\Model\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="CategoryContentRepository")
+ * @ORM\Entity(repositoryClass="CategoryTranslatableContentRepository")
  * @ORM\Table(
- *     name="category_content",
+ *     name="category_translatable_content",
  *     uniqueConstraints={
  *         @ORM\UniqueConstraint(name="title",columns={"title","language_id"})
  *     }
@@ -28,6 +29,18 @@ class CategoryTranslatableContent
      * @ORM\Column(type="string",length=255)
      */
     private $title;
+
+    /**
+     * @var DateTime
+     * @ORM\Column(type="datetime")
+     */
+    protected $created;
+
+    /**
+     * @var DateTime
+     * @ORM\Column(type="datetime",nullable=true)
+     */
+    protected $updated;
 
     /**
      * @var Language
@@ -65,6 +78,22 @@ class CategoryTranslatableContent
     public function setTitle(string $title): void
     {
         $this->title = $title;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreated(): \DateTime
+    {
+        return $this->created;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getUpdated(): \DateTime
+    {
+        return $this->updated;
     }
 
     /**
