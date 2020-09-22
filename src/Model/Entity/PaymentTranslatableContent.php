@@ -6,12 +6,12 @@ use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="DeliveryTranslatableContentRepository")
+ * @ORM\Entity(repositoryClass="PaymentTranslatableContentRepository")
  * @ORM\Table(
- *     name="delivery_translatable_content"
+ *     name="payment_translatable_content"
  * )
  */
-class DeliveryTranslatableContent
+class PaymentTranslatableContent
 {
     /**
      * @var string
@@ -38,13 +38,6 @@ class DeliveryTranslatableContent
      * @ORM\Column(type="string",length=10000)
      */
     private $description;
-
-    /**
-     * @var Delivery
-     * @ORM\ManyToOne(targetEntity="Delivery",fetch="LAZY")
-     * @ORM\JoinColumn(name=delivery_id,referencedColumnName="id",nullable="false",onDelete="CASCADE")
-     */
-    private $delivery;
 
     /**
      * @var DateTime
@@ -112,22 +105,6 @@ class DeliveryTranslatableContent
     public function setDescription(string $description): void
     {
         $this->description = $description;
-    }
-
-    /**
-     * @return Delivery
-     */
-    public function getDelivery(): Delivery
-    {
-        return $this->delivery;
-    }
-
-    /**
-     * @param Delivery $delivery
-     */
-    public function setDelivery(Delivery $delivery): void
-    {
-        $this->delivery = $delivery;
     }
 
     /**
