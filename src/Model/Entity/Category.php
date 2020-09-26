@@ -3,6 +3,7 @@
 namespace App\Model\Entity;
 
 use DateTime;
+use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -10,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(
  *     name="category",
  * )
+ * @ORM\HasLifecycleCallbacks
  */
 class Category
 {
@@ -41,6 +43,24 @@ class Category
     private $parent;
 
     /**
+     * Gets triggered only on insert
+     * @ORM\PrePersist
+     */
+    public function onPrePersist(): void
+    {
+        $this->created = new DateTime("now", new DateTimeZone("UTC"));
+    }
+
+    /**
+     * Gets triggered every time on update
+     * @ORM\PreUpdate
+     */
+    public function onPreUpdate(): void
+    {
+        $this->updated = new DateTime("now", new DateTimeZone("UTC"));
+    }
+
+    /**
      * @return string
      */
     public function getId(): string
@@ -49,17 +69,17 @@ class Category
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getCreated(): \DateTime
+    public function getCreated(): DateTime
     {
         return $this->created;
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getUpdated(): \DateTime
+    public function getUpdated(): DateTime
     {
         return $this->updated;
     }

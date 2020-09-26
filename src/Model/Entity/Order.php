@@ -103,13 +103,13 @@ class Order
 
     /**
      * @var string
-     * @ORM\Column(type="decimal")
+     * @ORM\Column(type="decimal",nullable=false)
      */
     private $price;
 
     /**
      * @var string
-     * @ORM\Column(type="decimal")
+     * @ORM\Column(type="decimal",nullable=false)
      */
     private $tax;
 

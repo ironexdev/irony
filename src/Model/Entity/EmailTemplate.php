@@ -3,13 +3,15 @@
 namespace App\Model\Entity;
 
 use DateTime;
+use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="EmailTemplateRepository")
  * @ORM\Table(
- *     name="emailTemplate",
+ *     name="email_template",
  * )
+ * @ORM\HasLifecycleCallbacks
  */
 class EmailTemplate
 {
@@ -63,6 +65,24 @@ class EmailTemplate
      * @ORM\Column(type="datetime",nullable=true)
      */
     protected $updated;
+
+    /**
+     * Gets triggered only on insert
+     * @ORM\PrePersist
+     */
+    public function onPrePersist(): void
+    {
+        $this->created = new DateTime(new DateTimeZone("UTC"), "now");
+    }
+
+    /**
+     * Gets triggered every time on update
+     * @ORM\PreUpdate
+     */
+    public function onPreUpdate(): void
+    {
+        $this->updated = new DateTime("now", new DateTimeZone("UTC"));
+    }
 
     /**
      * @return string

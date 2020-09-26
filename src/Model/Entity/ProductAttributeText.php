@@ -2,13 +2,16 @@
 
 namespace App\Model\Entity;
 
+use DateTime;
+use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="ProductAttributeTextRepository")
  * @ORM\Table(
- *     name="product_attribute_text",
+ *     name="product_attribute_text"
  * )
+ * @ORM\HasLifecycleCallbacks
  */
 class ProductAttributeText
 {
@@ -24,7 +27,19 @@ class ProductAttributeText
      * @var string
      * @ORM\Column(type="string",length=255,nullable=false)
      */
+    private $title;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string",length=255,nullable=false)
+     */
     private $value;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string",length=255,nullable=false)
+     */
+    private $units;
 
     /**
      * @var Language
@@ -41,11 +56,57 @@ class ProductAttributeText
     private $productAttribute;
 
     /**
+     * @var DateTime
+     * @ORM\Column(type="datetime")
+     */
+    protected $created;
+
+    /**
+     * @var DateTime
+     * @ORM\Column(type="datetime",nullable=true)
+     */
+    protected $updated;
+
+    /**
+     * Gets triggered only on insert
+     * @ORM\PrePersist
+     */
+    public function onPrePersist(): void
+    {
+        $this->created = new DateTime("now", new DateTimeZone("UTC"));
+    }
+
+    /**
+     * Gets triggered every time on update
+     * @ORM\PreUpdate
+     */
+    public function onPreUpdate(): void
+    {
+        $this->updated = new DateTime("now", new DateTimeZone("UTC"));
+    }
+
+    /**
      * @return string
      */
     public function getId(): string
     {
         return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
+    /**
+     * @param string $title
+     */
+    public function setTitle(string $title): void
+    {
+        $this->title = $title;
     }
 
     /**
@@ -62,6 +123,22 @@ class ProductAttributeText
     public function setValue(string $value): void
     {
         $this->value = $value;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUnits(): string
+    {
+        return $this->units;
+    }
+
+    /**
+     * @param string $units
+     */
+    public function setUnits(string $units): void
+    {
+        $this->units = $units;
     }
 
     /**
@@ -94,5 +171,37 @@ class ProductAttributeText
     public function setProductAttribute(ProductAttribute $productAttribute): void
     {
         $this->productAttribute = $productAttribute;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getCreated(): DateTime
+    {
+        return $this->created;
+    }
+
+    /**
+     * @param DateTime $created
+     */
+    public function setCreated(DateTime $created): void
+    {
+        $this->created = $created;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getUpdated(): DateTime
+    {
+        return $this->updated;
+    }
+
+    /**
+     * @param DateTime $updated
+     */
+    public function setUpdated(DateTime $updated): void
+    {
+        $this->updated = $updated;
     }
 }

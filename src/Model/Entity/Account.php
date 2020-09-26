@@ -180,7 +180,7 @@ class Account
     /**
      * @return bool
      */
-    public function isCookieConsent(): bool
+    public function getCookieConsent(): bool
     {
         return $this->cookieConsent;
     }

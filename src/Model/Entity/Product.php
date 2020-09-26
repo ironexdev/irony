@@ -2,6 +2,8 @@
 
 namespace App\Model\Entity;
 
+use DateTime;
+use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -9,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(
  *     name="product",
  * )
+ * @ORM\HasLifecycleCallbacks
  */
 class Product
 {
@@ -22,7 +25,7 @@ class Product
 
     /**
      * @var string
-     * @ORM\Column(type="decimal")
+     * @ORM\Column(type="decimal",nullable=false)
      */
     private $price;
 
@@ -32,6 +35,36 @@ class Product
      * @ORM\JoinColumn(name="category_id",referencedColumnName="id",nullable=false)
      */
      private $category;
+
+    /**
+     * @var DateTime
+     * @ORM\Column(type="datetime")
+     */
+    protected $created;
+
+    /**
+     * @var DateTime
+     * @ORM\Column(type="datetime",nullable=true)
+     */
+    protected $updated;
+
+    /**
+     * Gets triggered only on insert
+     * @ORM\PrePersist
+     */
+    public function onPrePersist(): void
+    {
+        $this->created = new DateTime("now", new DateTimeZone("UTC"));
+    }
+
+    /**
+     * Gets triggered every time on update
+     * @ORM\PreUpdate
+     */
+    public function onPreUpdate(): void
+    {
+        $this->updated = new DateTime("now", new DateTimeZone("UTC"));
+    }
 
     /**
      * @return string

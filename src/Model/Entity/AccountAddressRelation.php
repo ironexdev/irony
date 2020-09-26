@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Model\AccountAddressRelation;
+namespace App\Model\Entity;
 
-use App\Model\Entity\Account;
 use DateTime;
+use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(
  *     name="account_address_relation",
  * )
+ * @ORM\HasLifecycleCallbacks
  */
 class AccountAddressRelation
 {
@@ -42,6 +43,24 @@ class AccountAddressRelation
      private $account;
 
     /**
+     * Gets triggered only on insert
+     * @ORM\PrePersist
+     */
+    public function onPrePersist(): void
+    {
+        $this->created = new DateTime("now", new DateTimeZone("UTC"));
+    }
+
+    /**
+     * Gets triggered every time on update
+     * @ORM\PreUpdate
+     */
+    public function onPreUpdate(): void
+    {
+        $this->updated = new DateTime("now", new DateTimeZone("UTC"));
+    }
+
+    /**
      * @return string
      */
     public function getId(): string
@@ -50,17 +69,17 @@ class AccountAddressRelation
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getCreated(): \DateTime
+    public function getCreated(): DateTime
     {
         return $this->created;
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getUpdated(): \DateTime
+    public function getUpdated(): DateTime
     {
         return $this->updated;
     }

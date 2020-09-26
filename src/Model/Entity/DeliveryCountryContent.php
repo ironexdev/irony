@@ -3,13 +3,15 @@
 namespace App\Model\Entity;
 
 use DateTime;
+use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="DeliveryRepository")
+ * @ORM\Entity(repositoryClass="DeliveryCountryRepository")
  * @ORM\Table(
  *     name="delivery_country_content",
  * )
+ * @ORM\HasLifecycleCallbacks
  */
 class DeliveryCountryContent
 {
@@ -23,13 +25,13 @@ class DeliveryCountryContent
 
     /**
      * @var string
-     * @ORM\Column(type="decimal")
+     * @ORM\Column(type="decimal",nullable=false)
      */
     private $price;
 
     /**
      * @var string
-     * @ORM\Column(type="decimal")
+     * @ORM\Column(type="decimal",nullable=false)
      */
     private $tax;
 
@@ -58,6 +60,24 @@ class DeliveryCountryContent
      * @ORM\Column(type="datetime",nullable=true)
      */
     protected $updated;
+
+    /**
+     * Gets triggered only on insert
+     * @ORM\PrePersist
+     */
+    public function onPrePersist(): void
+    {
+        $this->created = new DateTime("now", new DateTimeZone("UTC"));
+    }
+
+    /**
+     * Gets triggered every time on update
+     * @ORM\PreUpdate
+     */
+    public function onPreUpdate(): void
+    {
+        $this->updated = new DateTime("now", new DateTimeZone("UTC"));
+    }
 
     /**
      * @return string

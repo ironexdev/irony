@@ -7,13 +7,13 @@ use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="ProductAttributeDecimalRepository")
+ * @ORM\Entity(repositoryClass="ProductAttributeDecimalRelationRepository")
  * @ORM\Table(
- *     name="product_attribute_decimal"
+ *     name="product_attribute_decimal_relation",
  * )
  * @ORM\HasLifecycleCallbacks
  */
-class ProductAttributeDecimal
+class ProductWarrantyRelation
 {
     /**
      * @var string
@@ -24,29 +24,17 @@ class ProductAttributeDecimal
     private $id;
 
     /**
-     * @var string
-     * @ORM\Column(type="string",length=255,nullable=false)
+     * @var bool
+     * @ORM\Column(type="boolean")
      */
-    private $title;
+    private $highlighted;
 
     /**
-     * @var string
-     * @ORM\Column(type="decimal",nullable=false)
+     * @var Product
+     * @ORM\ManyToOne(targetEntity="Product",fetch="LAZY")
+     * @ORM\JoinColumn(name="product_id",referencedColumnName="id",nullable=false)
      */
-    private $value;
-
-    /**
-     * @var string
-     * @ORM\Column(type="string",length=255,nullable=false)
-     */
-    private $units;
-
-    /**
-     * @var Language
-     * @ORM\ManyToOne(targetEntity="Language",fetch="LAZY")
-     * @ORM\JoinColumn(name="language_id",referencedColumnName="id",nullable=false)
-     */
-    private $language;
+    private $product;
 
     /**
      * @var ProductAttribute
@@ -54,6 +42,13 @@ class ProductAttributeDecimal
      * @ORM\JoinColumn(name="product_attribute_id",referencedColumnName="id",nullable=false)
      */
     private $productAttribute;
+
+    /**
+     * @var ProductAttributeDecimal
+     * @ORM\ManyToOne(targetEntity="ProductAttributeDecimal",fetch="LAZY")
+     * @ORM\JoinColumn(name="product_attribute_decimal_id",referencedColumnName="id",nullable=false)
+     */
+    private $productAttributeDecimal;
 
     /**
      * @var DateTime
@@ -94,67 +89,35 @@ class ProductAttributeDecimal
     }
 
     /**
-     * @return string
+     * @return bool
      */
-    public function getTitle(): string
+    public function getHighlighted(): bool
     {
-        return $this->title;
+        return $this->highlighted;
     }
 
     /**
-     * @param string $title
+     * @param bool $highlighted
      */
-    public function setTitle(string $title): void
+    public function setHighlighted(bool $highlighted): void
     {
-        $this->title = $title;
+        $this->highlighted = $highlighted;
     }
 
     /**
-     * @return string
+     * @return Product
      */
-    public function getValue(): string
+    public function getProduct(): Product
     {
-        return $this->value;
+        return $this->product;
     }
 
     /**
-     * @param string $value
+     * @param Product $product
      */
-    public function setValue(string $value): void
+    public function setProduct(Product $product): void
     {
-        $this->value = $value;
-    }
-
-    /**
-     * @return string
-     */
-    public function getUnits(): string
-    {
-        return $this->units;
-    }
-
-    /**
-     * @param string $units
-     */
-    public function setUnits(string $units): void
-    {
-        $this->units = $units;
-    }
-
-    /**
-     * @return Language
-     */
-    public function getLanguage(): Language
-    {
-        return $this->language;
-    }
-
-    /**
-     * @param Language $language
-     */
-    public function setLanguage(Language $language): void
-    {
-        $this->language = $language;
+        $this->product = $product;
     }
 
     /**
@@ -171,6 +134,22 @@ class ProductAttributeDecimal
     public function setProductAttribute(ProductAttribute $productAttribute): void
     {
         $this->productAttribute = $productAttribute;
+    }
+
+    /**
+     * @return ProductAttributeDecimal
+     */
+    public function getProductAttributeDecimal(): ProductAttributeDecimal
+    {
+        return $this->productAttributeDecimal;
+    }
+
+    /**
+     * @param ProductAttributeDecimal $productAttributeDecimal
+     */
+    public function setProductAttributeDecimal(ProductAttributeDecimal $productAttributeDecimal): void
+    {
+        $this->productAttributeDecimal = $productAttributeDecimal;
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Model\Entity;
 
 use DateTime;
+use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -10,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(
  *     name="payment_translatable_content"
  * )
+ * @ORM\HasLifecycleCallbacks
  */
 class PaymentTranslatableContent
 {
@@ -40,6 +42,20 @@ class PaymentTranslatableContent
     private $description;
 
     /**
+     * @var Payment
+     * @ORM\ManyToOne(targetEntity="Payment",fetch="LAZY")
+     * @ORM\JoinColumn(name=payment_id,referencedColumnName="id",nullable="false",onDelete="CASCADE")
+     */
+    private $payment;
+
+    /**
+     * @var Language
+     * @ORM\ManyToOne(targetEntity="Language",fetch="LAZY")
+     * @ORM\JoinColumn(name=language_id,referencedColumnName="id",nullable="false",onDelete="CASCADE")
+     */
+    private $language;
+
+    /**
      * @var DateTime
      * @ORM\Column(type="datetime")
      */
@@ -50,6 +66,24 @@ class PaymentTranslatableContent
      * @ORM\Column(type="datetime",nullable=true)
      */
     protected $updated;
+
+    /**
+     * Gets triggered only on insert
+     * @ORM\PrePersist
+     */
+    public function onPrePersist(): void
+    {
+        $this->created = new DateTime("now", new DateTimeZone("UTC"));
+    }
+
+    /**
+     * Gets triggered every time on update
+     * @ORM\PreUpdate
+     */
+    public function onPreUpdate(): void
+    {
+        $this->updated = new DateTime("now", new DateTimeZone("UTC"));
+    }
 
     /**
      * @return string
@@ -105,6 +139,38 @@ class PaymentTranslatableContent
     public function setDescription(string $description): void
     {
         $this->description = $description;
+    }
+
+    /**
+     * @return Payment
+     */
+    public function getPayment(): Payment
+    {
+        return $this->payment;
+    }
+
+    /**
+     * @param Payment $payment
+     */
+    public function setPayment(Payment $payment): void
+    {
+        $this->payment = $payment;
+    }
+
+    /**
+     * @return Language
+     */
+    public function getLanguage(): Language
+    {
+        return $this->language;
+    }
+
+    /**
+     * @param Language $language
+     */
+    public function setLanguage(Language $language): void
+    {
+        $this->language = $language;
     }
 
     /**

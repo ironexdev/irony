@@ -3,13 +3,15 @@
 namespace App\Model\Entity;
 
 use DateTime;
+use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="LanguageTranslatableContentRepository")
  * @ORM\Table(
- *     name="languageTranslatableContent",
+ *     name="language_translatable_content",
  * )
+ * @ORM\HasLifecycleCallbacks
  */
 class LanguageTranslatableContent
 {
@@ -45,6 +47,24 @@ class LanguageTranslatableContent
      * @ORM\JoinColumn(name="language_id",referencedColumnName="id",nullable=false)
      */
      private $language;
+
+    /**
+     * Gets triggered only on insert
+     * @ORM\PrePersist
+     */
+    public function onPrePersist(): void
+    {
+        $this->created = new DateTime(new DateTimeZone("UTC"), "now");
+    }
+
+    /**
+     * Gets triggered every time on update
+     * @ORM\PreUpdate
+     */
+    public function onPreUpdate(): void
+    {
+        $this->updated = new DateTime("now", new DateTimeZone("UTC"));
+    }
 
     /**
      * @return string
