@@ -7,15 +7,16 @@ use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="ProductVariantRelationRepository")
+ * @ORM\Entity(repositoryClass="RatingRepository")
  * @ORM\Table(
- *     name="product_variant_relation",
+ *     name="rating",
  * )
  * @ORM\HasLifecycleCallbacks
  */
-class ProductVariantRelation
+class Rating
 {
     /**
+     * @var string
      * @ORM\Id
      * @ORM\Column(type="guid")
      * @ORM\GeneratedValue(strategy="UUID")
@@ -30,11 +31,18 @@ class ProductVariantRelation
     private $product;
 
     /**
-     * @var Product
-     * @ORM\ManyToOne(targetEntity="Product",fetch="LAZY")
-     * @ORM\JoinColumn(name="product_variant_id",referencedColumnName="id",nullable=false)
+     * @var Review
+     * @ORM\ManyToOne(targetEntity="Review",fetch="LAZY")
+     * @ORM\JoinColumn(name="review_id",referencedColumnName="id")
      */
-    private $productVariant;
+    private $review;
+
+    /**
+     * @var Account
+     * @ORM\ManyToOne(targetEntity="Account",fetch="LAZY")
+     * @ORM\JoinColumn(name="account_id",referencedColumnName="id")
+     */
+    private $account;
 
     /**
      * @var DateTime
@@ -91,19 +99,35 @@ class ProductVariantRelation
     }
 
     /**
-     * @return Product
+     * @return Review
      */
-    public function getProductVariant(): Product
+    public function getReview(): Review
     {
-        return $this->productVariant;
+        return $this->review;
     }
 
     /**
-     * @param Product $productVariant
+     * @param Review $review
      */
-    public function setProductVariant(Product $productVariant): void
+    public function setReview(Review $review): void
     {
-        $this->productVariant = $productVariant;
+        $this->review = $review;
+    }
+
+    /**
+     * @return Account
+     */
+    public function getAccount(): Account
+    {
+        return $this->account;
+    }
+
+    /**
+     * @param Account $account
+     */
+    public function setAccount(Account $account): void
+    {
+        $this->account = $account;
     }
 
     /**

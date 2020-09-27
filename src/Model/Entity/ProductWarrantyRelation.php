@@ -7,27 +7,20 @@ use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="ProductAttributeDecimalRelationRepository")
+ * @ORM\Entity(repositoryClass="WarrantyRelationRepository")
  * @ORM\Table(
- *     name="product_attribute_decimal_relation",
+ *     name="product_warranty_relation",
  * )
  * @ORM\HasLifecycleCallbacks
  */
-class ProductWarrantyRelation
+class WarrantyRelation
 {
     /**
-     * @var string
      * @ORM\Id
      * @ORM\Column(type="guid")
      * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
-
-    /**
-     * @var bool
-     * @ORM\Column(type="boolean")
-     */
-    private $highlighted;
 
     /**
      * @var Product
@@ -37,18 +30,11 @@ class ProductWarrantyRelation
     private $product;
 
     /**
-     * @var ProductAttribute
-     * @ORM\ManyToOne(targetEntity="ProductAttribute",fetch="LAZY")
-     * @ORM\JoinColumn(name="product_attribute_id",referencedColumnName="id",nullable=false)
+     * @var Product
+     * @ORM\ManyToOne(targetEntity="Warranty",fetch="LAZY")
+     * @ORM\JoinColumn(name="warranty_id",referencedColumnName="id",nullable=false)
      */
-    private $productAttribute;
-
-    /**
-     * @var ProductAttributeDecimal
-     * @ORM\ManyToOne(targetEntity="ProductAttributeDecimal",fetch="LAZY")
-     * @ORM\JoinColumn(name="product_attribute_decimal_id",referencedColumnName="id",nullable=false)
-     */
-    private $productAttributeDecimal;
+    private $warranty;
 
     /**
      * @var DateTime
@@ -89,22 +75,6 @@ class ProductWarrantyRelation
     }
 
     /**
-     * @return bool
-     */
-    public function getHighlighted(): bool
-    {
-        return $this->highlighted;
-    }
-
-    /**
-     * @param bool $highlighted
-     */
-    public function setHighlighted(bool $highlighted): void
-    {
-        $this->highlighted = $highlighted;
-    }
-
-    /**
      * @return Product
      */
     public function getProduct(): Product
@@ -121,35 +91,19 @@ class ProductWarrantyRelation
     }
 
     /**
-     * @return ProductAttribute
+     * @return Product
      */
-    public function getProductAttribute(): ProductAttribute
+    public function getWarranty(): Product
     {
-        return $this->productAttribute;
+        return $this->warranty;
     }
 
     /**
-     * @param ProductAttribute $productAttribute
+     * @param Product $warranty
      */
-    public function setProductAttribute(ProductAttribute $productAttribute): void
+    public function setWarranty(Product $warranty): void
     {
-        $this->productAttribute = $productAttribute;
-    }
-
-    /**
-     * @return ProductAttributeDecimal
-     */
-    public function getProductAttributeDecimal(): ProductAttributeDecimal
-    {
-        return $this->productAttributeDecimal;
-    }
-
-    /**
-     * @param ProductAttributeDecimal $productAttributeDecimal
-     */
-    public function setProductAttributeDecimal(ProductAttributeDecimal $productAttributeDecimal): void
-    {
-        $this->productAttributeDecimal = $productAttributeDecimal;
+        $this->warranty = $warranty;
     }
 
     /**

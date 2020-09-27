@@ -7,13 +7,13 @@ use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="PropertyRepository")
+ * @ORM\Entity(repositoryClass="ReturnxProductRepository")
  * @ORM\Table(
- *     name="property",
+ *     name="returnx_product_relation",
  * )
  * @ORM\HasLifecycleCallbacks
  */
-class Property
+class ReturnxProductRelation
 {
     /**
      * @var string
@@ -24,40 +24,42 @@ class Property
     private $id;
 
     /**
-     * @var string
-     * @ORM\Column(type="string",length=255)
+     * @var int
+     * @ORM\Column(type="integer",nullable=false)
      */
-    private $name;
+    private $count;
 
     /**
      * @var string
-     * @ORM\Column(type="string",length=255)
+     * @ORM\Column(type="string",columnDefinition="ENUM('CZK,EUR') NOT NULL")
      */
-    private $addressStreet;
+    private $currency;
 
     /**
      * @var string
-     * @ORM\Column(type="string",length=255)
+     * @ORM\Column(type="decimal",nullable=false)
      */
-    private $addressStreetNumber;
+    private $price;
 
     /**
      * @var string
-     * @ORM\Column(type="string",length=255)
+     * @ORM\Column(type="decimal",nullable=false)
      */
-    private $addressCity;
+    private $tax;
 
     /**
-     * @var string
-     * @ORM\Column(type="string",length=255)
+     * @var Returnx
+     * @ORM\ManyToOne(targetEntity="Account",fetch="LAZY")
+     * @ORM\JoinColumn(name="returnx_id",referencedColumnName="id",nullable=false)
      */
-    private $addressZipCode;
+    private $returnx;
 
     /**
-     * @var string
-     * @ORM\Column(type="string",length=255)
+     * @var Product
+     * @ORM\ManyToOne(targetEntity="Account",fetch="LAZY")
+     * @ORM\JoinColumn(name="product_id",referencedColumnName="id",nullable=false)
      */
-    private $addressCountry;
+    private $product;
 
     /**
      * @var DateTime
@@ -98,99 +100,99 @@ class Property
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getName(): string
+    public function getCount(): int
     {
-        return $this->name;
+        return $this->count;
     }
 
     /**
-     * @param string $name
+     * @param int $count
      */
-    public function setName(string $name): void
+    public function setCount(int $count): void
     {
-        $this->name = $name;
-    }
-
-    /**
-     * @return string
-     */
-    public function getAddressStreet(): string
-    {
-        return $this->addressStreet;
-    }
-
-    /**
-     * @param string $addressStreet
-     */
-    public function setAddressStreet(string $addressStreet): void
-    {
-        $this->addressStreet = $addressStreet;
+        $this->count = $count;
     }
 
     /**
      * @return string
      */
-    public function getAddressStreetNumber(): string
+    public function getCurrency(): string
     {
-        return $this->addressStreetNumber;
+        return $this->currency;
     }
 
     /**
-     * @param string $addressStreetNumber
+     * @param string $currency
      */
-    public function setAddressStreetNumber(string $addressStreetNumber): void
+    public function setCurrency(string $currency): void
     {
-        $this->addressStreetNumber = $addressStreetNumber;
-    }
-
-    /**
-     * @return string
-     */
-    public function getAddressCity(): string
-    {
-        return $this->addressCity;
-    }
-
-    /**
-     * @param string $addressCity
-     */
-    public function setAddressCity(string $addressCity): void
-    {
-        $this->addressCity = $addressCity;
+        $this->currency = $currency;
     }
 
     /**
      * @return string
      */
-    public function getAddressZipCode(): string
+    public function getPrice(): string
     {
-        return $this->addressZipCode;
+        return $this->price;
     }
 
     /**
-     * @param string $addressZipCode
+     * @param string $price
      */
-    public function setAddressZipCode(string $addressZipCode): void
+    public function setPrice(string $price): void
     {
-        $this->addressZipCode = $addressZipCode;
+        $this->price = $price;
     }
 
     /**
      * @return string
      */
-    public function getAddressCountry(): string
+    public function getTax(): string
     {
-        return $this->addressCountry;
+        return $this->tax;
     }
 
     /**
-     * @param string $addressCountry
+     * @param string $tax
      */
-    public function setAddressCountry(string $addressCountry): void
+    public function setTax(string $tax): void
     {
-        $this->addressCountry = $addressCountry;
+        $this->tax = $tax;
+    }
+
+    /**
+     * @return Returnx
+     */
+    public function getReturnx(): Returnx
+    {
+        return $this->returnx;
+    }
+
+    /**
+     * @param Returnx $returnx
+     */
+    public function setReturnx(Returnx $returnx): void
+    {
+        $this->returnx = $returnx;
+    }
+
+    /**
+     * @return Product
+     */
+    public function getProduct(): Product
+    {
+        return $this->product;
+    }
+
+    /**
+     * @param Product $product
+     */
+    public function setProduct(Product $product): void
+    {
+        $this->product = $product;
     }
 
     /**

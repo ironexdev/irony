@@ -2,15 +2,17 @@
 
 namespace App\Model\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="EntityRepository")
+ * @ORM\Entity(repositoryClass="WarrantyRepository")
  * @ORM\Table(
- *     name="entity",
+ *     name="warranty",
  * )
+ * @ORM\HasLifecycleCallbacks
  */
-class Entity
+class Warranty
 {
     /**
      * @var string
@@ -21,24 +23,49 @@ class Entity
     private $id;
 
     /**
-     * @var Todo
-     * @ORM\ManyToOne(targetEntity="Todo",fetch="LAZY")
-     * @ORM\JoinColumn(name="todo_id",referencedColumnName="id",nullable=false)
+     * @var int
+     * @ORM\Column(type="integer",nullable=false)
      */
-     private $todo;
+    private $length;
 
     /**
      * @var string
      * @ORM\Column(type="string",length=255)
      */
-    private $todo2;
+    private $company;
 
     /**
+     * @var string
+     * @ORM\Column(type="string",length=255)
+     */
+    private $email;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string",length=255)
+     */
+    private $phone;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string",length=255)
+     */
+    private $summary;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string",length=10000)
+     */
+    private $description;
+
+    /**
+     * @var DateTime
      * @ORM\Column(type="datetime")
      */
     protected $created;
 
     /**
+     * @var DateTime
      * @ORM\Column(type="datetime",nullable=true)
      */
     protected $updated;
@@ -49,5 +76,133 @@ class Entity
     public function getId(): string
     {
         return $this->id;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLength(): int
+    {
+        return $this->length;
+    }
+
+    /**
+     * @param int $length
+     */
+    public function setLength(int $length): void
+    {
+        $this->length = $length;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCompany(): string
+    {
+        return $this->company;
+    }
+
+    /**
+     * @param string $company
+     */
+    public function setCompany(string $company): void
+    {
+        $this->company = $company;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param string $email
+     */
+    public function setEmail(string $email): void
+    {
+        $this->email = $email;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPhone(): string
+    {
+        return $this->phone;
+    }
+
+    /**
+     * @param string $phone
+     */
+    public function setPhone(string $phone): void
+    {
+        $this->phone = $phone;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSummary(): string
+    {
+        return $this->summary;
+    }
+
+    /**
+     * @param string $summary
+     */
+    public function setSummary(string $summary): void
+    {
+        $this->summary = $summary;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     */
+    public function setDescription(string $description): void
+    {
+        $this->description = $description;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getCreated(): DateTime
+    {
+        return $this->created;
+    }
+
+    /**
+     * @param DateTime $created
+     */
+    public function setCreated(DateTime $created): void
+    {
+        $this->created = $created;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getUpdated(): DateTime
+    {
+        return $this->updated;
+    }
+
+    /**
+     * @param DateTime $updated
+     */
+    public function setUpdated(DateTime $updated): void
+    {
+        $this->updated = $updated;
     }
 }
