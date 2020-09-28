@@ -1,22 +1,20 @@
 <?php
 
-namespace App\Model\Entity;
+namespace Backup\App\Model\Entity;
 
 use DateTime;
 use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="AuthenticationTokenRepository")
+ * @ORM\Entity(repositoryClass="PaymentRepository")
  * @ORM\Table(
- *     name="authentication_token"
+ *     name="payment",
  * )
  * @ORM\HasLifecycleCallbacks
  */
-class AuthenticationToken
+class Payment
 {
-    const TOKEN_DURATION = "1 month";
-
     /**
      * @var string
      * @ORM\Id
@@ -27,23 +25,15 @@ class AuthenticationToken
 
     /**
      * @var string
-     * @ORM\Column(type="guid")
-     * @ORM\GeneratedValue(strategy="UUID")
+     * @ORM\Column(type="string",length=255)
      */
     private $code;
 
     /**
-     * @var DateTime
-     * @ORM\Column(type="datetime")
+     * @var string
+     * @ORM\Column(type="string",length=255)
      */
-    private $expiration;
-
-    /**
-     * @var Account
-     * @ORM\ManyToOne(targetEntity="Account",inversedBy="authenticationToken",fetch="EXTRA_LAZY")
-     * @ORM\JoinColumn(name="account_id",onDelete="CASCADE")
-     */
-    private $account;
+    private $type;
 
     /**
      * @var DateTime
@@ -56,17 +46,6 @@ class AuthenticationToken
      * @ORM\Column(type="datetime",nullable=true)
      */
     protected $updated;
-
-    /**
-     * AuthenticationToken constructor.
-     * @param DateTime $expiration
-     * @param Account $account
-     */
-    public function __construct(DateTime $expiration, Account $account)
-    {
-        $this->expiration = $expiration;
-        $this->account = $account;
-    }
 
     /**
      * Gets triggered only on insert
@@ -111,35 +90,19 @@ class AuthenticationToken
     }
 
     /**
-     * @return DateTime
+     * @return string
      */
-    public function getExpiration(): DateTime
+    public function getType(): string
     {
-        return $this->expiration;
+        return $this->type;
     }
 
     /**
-     * @param DateTime $expiration
+     * @param string $type
      */
-    public function setExpiration(DateTime $expiration): void
+    public function setType(string $type): void
     {
-        $this->expiration = $expiration;
-    }
-
-    /**
-     * @return Account
-     */
-    public function getAccount(): Account
-    {
-        return $this->account;
-    }
-
-    /**
-     * @param Account $account
-     */
-    public function setAccount(Account $account): void
-    {
-        $this->account = $account;
+        $this->type = $type;
     }
 
     /**
@@ -151,9 +114,9 @@ class AuthenticationToken
     }
 
     /**
-     * @return DateTime|null
+     * @return DateTime
      */
-    public function getUpdated(): ?DateTime
+    public function getUpdated(): DateTime
     {
         return $this->updated;
     }

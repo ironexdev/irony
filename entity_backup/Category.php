@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Model\Entity;
+namespace Backup\App\Model\Entity;
 
 use DateTime;
 use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="LanguageRepository")
+ * @ORM\Entity(repositoryClass="CategoryRepository")
  * @ORM\Table(
- *     name="language",
+ *     name="category"
  * )
  * @ORM\HasLifecycleCallbacks
  */
-class Language
+class Category
 {
     /**
      * @var string
@@ -24,10 +24,18 @@ class Language
     private $id;
 
     /**
-     * @var string
-     * @ORM\Column(type="string",length=255)
+     * @var Category
+     * @ORM\ManyToOne(targetEntity="Category",fetch="LAZY")
+     * @ORM\JoinColumn(name="parent_id",onDelete="SET NULL")
      */
-    private $iso2;
+    private $parent;
+
+    /**
+     * @var CategoryTranslatableContent[]
+     * @ORM\OneToMany(targetEntity="CategoryTranslatableContent",fetch="EXTRA_LAZY")
+     * @ORM\JoinColumn(name="translatable_content",mappedBy="category")
+     */
+    private $translatableContent = [];
 
     /**
      * @var DateTime
@@ -47,7 +55,7 @@ class Language
      */
     public function onPrePersist(): void
     {
-        $this->created = new DateTime(new DateTimeZone("UTC"), "now");
+        $this->created = new DateTime("now", new DateTimeZone("UTC"));
     }
 
     /**
@@ -68,19 +76,19 @@ class Language
     }
 
     /**
-     * @return string
+     * @return Category
      */
-    public function getIso2(): string
+    public function getParent(): Category
     {
-        return $this->iso2;
+        return $this->parent;
     }
 
     /**
-     * @param string $iso2
+     * @param Category $parent
      */
-    public function setIso2(string $iso2): void
+    public function setParent(Category $parent): void
     {
-        $this->iso2 = $iso2;
+        $this->parent = $parent;
     }
 
     /**

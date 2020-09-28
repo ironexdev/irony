@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Model\Entity;
+namespace Backup\App\Model\Entity;
 
 use DateTime;
 use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="ProductAttributeTextRepository")
+ * @ORM\Entity(repositoryClass="ProductAttributeDecimalRepository")
  * @ORM\Table(
- *     name="product_attribute_text"
+ *     name="product_attribute_decimal"
  * )
  * @ORM\HasLifecycleCallbacks
  */
-class ProductAttributeText
+class ProductAttributeDecimal
 {
     /**
      * @var string
@@ -31,7 +31,7 @@ class ProductAttributeText
 
     /**
      * @var string
-     * @ORM\Column(type="string",length=255)
+     * @ORM\Column(type="decimal")
      */
     private $value;
 
@@ -43,14 +43,14 @@ class ProductAttributeText
 
     /**
      * @var Language
-     * @ORM\ManyToOne(targetEntity="Language",fetch="EXTRA_LAZY")
+     * @ORM\ManyToOne(targetEntity="Language",fetch="LAZY")
      * @ORM\JoinColumn(name="language_id")
      */
     private $language;
 
     /**
      * @var ProductAttribute
-     * @ORM\ManyToOne(targetEntity="ProductAttribute",fetch="EXTRA_LAZY")
+     * @ORM\ManyToOne(targetEntity="ProductAttribute",fetch="LAZY")
      * @ORM\JoinColumn(name="product_attribute_id")
      */
     private $productAttribute;
@@ -182,10 +182,26 @@ class ProductAttributeText
     }
 
     /**
-     * @return DateTime|null
+     * @param DateTime $created
      */
-    public function getUpdated(): ?DateTime
+    public function setCreated(DateTime $created): void
+    {
+        $this->created = $created;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getUpdated(): DateTime
     {
         return $this->updated;
+    }
+
+    /**
+     * @param DateTime $updated
+     */
+    public function setUpdated(DateTime $updated): void
+    {
+        $this->updated = $updated;
     }
 }

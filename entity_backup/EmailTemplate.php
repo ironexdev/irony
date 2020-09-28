@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Model\Entity;
+namespace Backup\App\Model\Entity;
 
 use DateTime;
 use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="ProductAttributeTextRepository")
+ * @ORM\Entity(repositoryClass="EmailTemplateRepository")
  * @ORM\Table(
- *     name="product_attribute_text"
+ *     name="email_template",
  * )
  * @ORM\HasLifecycleCallbacks
  */
-class ProductAttributeText
+class EmailTemplate
 {
     /**
      * @var string
@@ -27,33 +27,32 @@ class ProductAttributeText
      * @var string
      * @ORM\Column(type="string",length=255)
      */
+    private $code;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string",length=255)
+     */
     private $title;
 
     /**
      * @var string
-     * @ORM\Column(type="string",length=255)
+     * @ORM\Column(type="string",length=10000)
      */
-    private $value;
+    private $content;
 
     /**
      * @var string
-     * @ORM\Column(type="string",length=255)
+     * @ORM\Column(type="string",length=1000)
      */
-    private $units;
+    private $variables;
 
     /**
      * @var Language
-     * @ORM\ManyToOne(targetEntity="Language",fetch="EXTRA_LAZY")
+     * @ORM\ManyToOne(targetEntity="Language",fetch="LAZY")
      * @ORM\JoinColumn(name="language_id")
      */
-    private $language;
-
-    /**
-     * @var ProductAttribute
-     * @ORM\ManyToOne(targetEntity="ProductAttribute",fetch="EXTRA_LAZY")
-     * @ORM\JoinColumn(name="product_attribute_id")
-     */
-    private $productAttribute;
+     private $language;
 
     /**
      * @var DateTime
@@ -73,7 +72,7 @@ class ProductAttributeText
      */
     public function onPrePersist(): void
     {
-        $this->created = new DateTime("now", new DateTimeZone("UTC"));
+        $this->created = new DateTime(new DateTimeZone("UTC"), "now");
     }
 
     /**
@@ -96,6 +95,22 @@ class ProductAttributeText
     /**
      * @return string
      */
+    public function getCode(): string
+    {
+        return $this->code;
+    }
+
+    /**
+     * @param string $code
+     */
+    public function setCode(string $code): void
+    {
+        $this->code = $code;
+    }
+
+    /**
+     * @return string
+     */
     public function getTitle(): string
     {
         return $this->title;
@@ -112,33 +127,33 @@ class ProductAttributeText
     /**
      * @return string
      */
-    public function getValue(): string
+    public function getContent(): string
     {
-        return $this->value;
+        return $this->content;
     }
 
     /**
-     * @param string $value
+     * @param string $content
      */
-    public function setValue(string $value): void
+    public function setContent(string $content): void
     {
-        $this->value = $value;
+        $this->content = $content;
     }
 
     /**
      * @return string
      */
-    public function getUnits(): string
+    public function getVariables(): string
     {
-        return $this->units;
+        return $this->variables;
     }
 
     /**
-     * @param string $units
+     * @param string $variables
      */
-    public function setUnits(string $units): void
+    public function setVariables(string $variables): void
     {
-        $this->units = $units;
+        $this->variables = $variables;
     }
 
     /**
@@ -158,22 +173,6 @@ class ProductAttributeText
     }
 
     /**
-     * @return ProductAttribute
-     */
-    public function getProductAttribute(): ProductAttribute
-    {
-        return $this->productAttribute;
-    }
-
-    /**
-     * @param ProductAttribute $productAttribute
-     */
-    public function setProductAttribute(ProductAttribute $productAttribute): void
-    {
-        $this->productAttribute = $productAttribute;
-    }
-
-    /**
      * @return DateTime
      */
     public function getCreated(): DateTime
@@ -182,9 +181,9 @@ class ProductAttributeText
     }
 
     /**
-     * @return DateTime|null
+     * @return DateTime
      */
-    public function getUpdated(): ?DateTime
+    public function getUpdated(): DateTime
     {
         return $this->updated;
     }

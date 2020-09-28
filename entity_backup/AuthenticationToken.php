@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model\Entity;
+namespace Backup\App\Model\Entity;
 
 use DateTime;
 use DateTimeZone;
@@ -40,7 +40,7 @@ class AuthenticationToken
 
     /**
      * @var Account
-     * @ORM\ManyToOne(targetEntity="Account",inversedBy="authenticationToken",fetch="EXTRA_LAZY")
+     * @ORM\ManyToOne(targetEntity="Account")
      * @ORM\JoinColumn(name="account_id",onDelete="CASCADE")
      */
     private $account;

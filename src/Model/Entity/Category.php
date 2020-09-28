@@ -4,12 +4,16 @@ namespace App\Model\Entity;
 
 use DateTime;
 use DateTimeZone;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 
 /**
  * @ORM\Entity(repositoryClass="CategoryRepository")
  * @ORM\Table(
- *     name="category",
+ *     name="category"
  * )
  * @ORM\HasLifecycleCallbacks
  */
@@ -24,6 +28,26 @@ class Category
     private $id;
 
     /**
+     * @var Category
+     * @ORM\ManyToOne(targetEntity="Category",fetch="EXTRA_LAZY")
+     * @ORM\JoinColumn(name="parent_id",onDelete="SET NULL")
+     */
+    private $parent;
+
+    /**
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="CategoryTranslatableContent",mappedBy="category",fetch="EXTRA_LAZY")
+     */
+    private $translatableContent;
+
+    /**
+     * @var Collection
+     * @ORM\ManyToMany(targetEntity="Product",inversedBy="product",fetch="EXTRA_LAZY")
+     * @ORM\JoinColumn(name="product_id")
+     */
+    private $products;
+
+    /**
      * @var DateTime
      * @ORM\Column(type="datetime")
      */
@@ -36,11 +60,12 @@ class Category
     protected $updated;
 
     /**
-     * @var Category
-     * @ORM\ManyToOne(targetEntity="Category",fetch="LAZY")
-     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="SET NULL")
+     * Category constructor.
      */
-    private $parent;
+    public function __construct()
+    {
+        $this->translatableContent = new ArrayCollection();
+    }
 
     /**
      * Gets triggered only on insert
@@ -69,22 +94,6 @@ class Category
     }
 
     /**
-     * @return DateTime
-     */
-    public function getCreated(): DateTime
-    {
-        return $this->created;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getUpdated(): DateTime
-    {
-        return $this->updated;
-    }
-
-    /**
      * @return Category
      */
     public function getParent(): Category
@@ -98,5 +107,63 @@ class Category
     public function setParent(Category $parent): void
     {
         $this->parent = $parent;
+    }
+
+    /**
+     * @param Language $language
+     * @return PersistentCollection
+     */
+    public function getTranslatableContent(Language $language): Collection
+    {
+        return $this->translatableContent->matching(Criteria::create()->where(Criteria::expr()->eq("language_id", $language->getId())))[0];
+    }
+
+    /**
+     * @param Collection $translatableContent
+     */
+    public function setTranslatableContent(Collection $translatableContent): void
+    {
+        $this->translatableContent = $translatableContent;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getProducts(): Collection
+    {
+        return $this->products;
+    }
+
+    /**
+     * @param Product $product
+     */
+    public function addProduct(Product $product): void
+    {
+        $this->products->add($product);
+    }
+
+    /**
+     * @param Product $product
+     * @return bool
+     */
+    public function removeProduct(Product $product): bool
+    {
+        return $this->products->removeElement($product);
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getCreated(): DateTime
+    {
+        return $this->created;
+    }
+
+    /**
+     * @return DateTime|null
+     */
+    public function getUpdated(): ?DateTime
+    {
+        return $this->updated;
     }
 }

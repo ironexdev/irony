@@ -92,26 +92,10 @@ class ProductAttribute
     }
 
     /**
-     * @param DateTime $created
+     * @return DateTime|null
      */
-    public function setCreated(DateTime $created): void
-    {
-        $this->created = $created;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getUpdated(): DateTime
+    public function getUpdated(): ?DateTime
     {
         return $this->updated;
-    }
-
-    /**
-     * @param DateTime $updated
-     */
-    public function setUpdated(DateTime $updated): void
-    {
-        $this->updated = $updated;
     }
 }

@@ -40,7 +40,7 @@ class AuthorizationTokenController extends AbstractController
 
         $authorizationTokenRepository->deleteByAccountId($accountId); // delete all authorization tokens for current account
 
-        $authorizationToken = new AuthorizationToken(uniqid(time(), true), new DateTime(AuthorizationToken::TOKEN_DURATION, new DateTimeZone("UTC")), $account);
+        $authorizationToken = new AuthorizationToken(new DateTime(AuthorizationToken::TOKEN_DURATION, new DateTimeZone("UTC")), $account);
 
         $this->entityManagerService->persist($authorizationToken);
         $this->entityManagerService->flush();

@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Model\Entity;
+namespace Backup\App\Model\Entity;
 
 use DateTime;
 use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="ProductAttributeTextRepository")
+ * @ORM\Entity(repositoryClass="ProductAttributeIntRepository")
  * @ORM\Table(
- *     name="product_attribute_text"
+ *     name="product_attribute_int"
  * )
  * @ORM\HasLifecycleCallbacks
  */
-class ProductAttributeText
+class ProductAttributeInt
 {
     /**
      * @var string
@@ -30,8 +30,8 @@ class ProductAttributeText
     private $title;
 
     /**
-     * @var string
-     * @ORM\Column(type="string",length=255)
+     * @var int
+     * @ORM\Column(type="integer")
      */
     private $value;
 
@@ -43,14 +43,14 @@ class ProductAttributeText
 
     /**
      * @var Language
-     * @ORM\ManyToOne(targetEntity="Language",fetch="EXTRA_LAZY")
+     * @ORM\ManyToOne(targetEntity="Language",fetch="LAZY")
      * @ORM\JoinColumn(name="language_id")
      */
     private $language;
 
     /**
      * @var ProductAttribute
-     * @ORM\ManyToOne(targetEntity="ProductAttribute",fetch="EXTRA_LAZY")
+     * @ORM\ManyToOne(targetEntity="ProductAttribute",fetch="LAZY")
      * @ORM\JoinColumn(name="product_attribute_id")
      */
     private $productAttribute;
@@ -94,6 +94,22 @@ class ProductAttributeText
     }
 
     /**
+     * @return int
+     */
+    public function getValue(): int
+    {
+        return $this->value;
+    }
+
+    /**
+     * @param int $value
+     */
+    public function setValue(int $value): void
+    {
+        $this->value = $value;
+    }
+
+    /**
      * @return string
      */
     public function getTitle(): string
@@ -107,22 +123,6 @@ class ProductAttributeText
     public function setTitle(string $title): void
     {
         $this->title = $title;
-    }
-
-    /**
-     * @return string
-     */
-    public function getValue(): string
-    {
-        return $this->value;
-    }
-
-    /**
-     * @param string $value
-     */
-    public function setValue(string $value): void
-    {
-        $this->value = $value;
     }
 
     /**
@@ -182,10 +182,26 @@ class ProductAttributeText
     }
 
     /**
-     * @return DateTime|null
+     * @param DateTime $created
      */
-    public function getUpdated(): ?DateTime
+    public function setCreated(DateTime $created): void
+    {
+        $this->created = $created;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getUpdated(): DateTime
     {
         return $this->updated;
+    }
+
+    /**
+     * @param DateTime $updated
+     */
+    public function setUpdated(DateTime $updated): void
+    {
+        $this->updated = $updated;
     }
 }

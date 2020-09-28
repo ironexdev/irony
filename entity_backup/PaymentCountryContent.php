@@ -1,21 +1,19 @@
 <?php
 
-namespace App\Model\Entity;
+namespace Backup\App\Model\Entity;
 
 use DateTime;
 use DateTimeZone;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="ProductRepository")
+ * @ORM\Entity(repositoryClass="PaymentRepository")
  * @ORM\Table(
- *     name="product",
+ *     name="payment_country_content",
  * )
  * @ORM\HasLifecycleCallbacks
  */
-class Product
+class PaymentCountryContent
 {
     /**
      * @var string
@@ -32,18 +30,24 @@ class Product
     private $price;
 
     /**
-     * @var Category
-     * @ORM\ManyToOne(targetEntity="Category",fetch="EXTRA_LAZY")
-     * @ORM\JoinColumn(name="parent_category_id")
+     * @var string
+     * @ORM\Column(type="decimal")
      */
-     private $parentCategory;
+    private $tax;
 
     /**
-     * @var Collection
-     * @ORM\ManyToMany(targetEntity="Category",inversedBy="category",fetch="EXTRA_LAZY")
-     * @ORM\JoinColumn(name="category_id")
+     * @var Payment
+     * @ORM\ManyToOne(targetEntity="Payment",fetch="LAZY")
+     * @ORM\JoinColumn(name=payment_id,nullable="false",onDelete="CASCADE")
      */
-     private $categories;
+    private $payment;
+
+    /**
+     * @var Country
+     * @ORM\ManyToOne(targetEntity="Country",fetch="LAZY")
+     * @ORM\JoinColumn(name=country_id,nullable="false",onDelete="CASCADE")
+     */
+    private $country;
 
     /**
      * @var DateTime
@@ -56,14 +60,6 @@ class Product
      * @ORM\Column(type="datetime",nullable=true)
      */
     protected $updated;
-
-    /**
-     * Product constructor.
-     */
-    public function __construct()
-    {
-        $this->categories = new ArrayCollection();
-    }
 
     /**
      * Gets triggered only on insert
@@ -108,59 +104,65 @@ class Product
     }
 
     /**
-     * @return Category
+     * @return string
      */
-    public function getParentCategory(): Category
+    public function getTax(): string
     {
-        return $this->parentCategory;
+        return $this->tax;
     }
 
     /**
-     * @param Category $parentCategory
+     * @param string $tax
      */
-    public function setParentCategory(Category $parentCategory): void
+    public function setTax(string $tax): void
     {
-        $this->parentCategory = $parentCategory;
+        $this->tax = $tax;
     }
 
     /**
-     * @return Collection
+     * @return Payment
      */
-    public function getCategories(): Collection
+    public function getPayment(): Payment
     {
-        return $this->categories;
+        return $this->payment;
     }
 
     /**
-     * @param Category $category
-     * @return void
+     * @param Payment $payment
      */
-    public function addCategory(Category $category): void
+    public function setPayment(Payment $payment): void
     {
-        $this->categories->add($category);
+        $this->payment = $payment;
     }
 
     /**
-     * @param Category $category
-     * @return bool
+     * @return Country
      */
-    public function removeCategory(Category $category): bool
+    public function getCountry(): Country
     {
-        return $this->categories->removeElement($category);
+        return $this->country;
     }
 
     /**
-     * @return DateTime
+     * @param Country $country
      */
-    public function getCreated(): DateTime
+    public function setCountry(Country $country): void
+    {
+        $this->country = $country;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreated(): \DateTime
     {
         return $this->created;
     }
 
     /**
-     * @return DateTime|null
+     * @return \DateTime
      */
-    public function getUpdated(): ?DateTime
+    public function getUpdated(): \DateTime
     {
         return $this->updated;
     }

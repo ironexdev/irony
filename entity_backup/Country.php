@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Model\Entity;
+namespace Backup\App\Model\Entity;
 
 use DateTime;
 use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="LanguageRepository")
+ * @ORM\Entity(repositoryClass="CountryRepository")
  * @ORM\Table(
- *     name="language",
+ *     name="country",
  * )
  * @ORM\HasLifecycleCallbacks
  */
-class Language
+class Country
 {
     /**
      * @var string
@@ -25,9 +25,15 @@ class Language
 
     /**
      * @var string
-     * @ORM\Column(type="string",length=255)
+     * @ORM\Column(type="string",length=2)
      */
     private $iso2;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string",length=3)
+     */
+    private $currencyIso3;
 
     /**
      * @var DateTime
@@ -47,7 +53,7 @@ class Language
      */
     public function onPrePersist(): void
     {
-        $this->created = new DateTime(new DateTimeZone("UTC"), "now");
+        $this->created = new DateTime("now", new DateTimeZone("UTC"));
     }
 
     /**
@@ -84,6 +90,22 @@ class Language
     }
 
     /**
+     * @return string
+     */
+    public function getCurrencyIso3(): string
+    {
+        return $this->currencyIso3;
+    }
+
+    /**
+     * @param string $currencyIso3
+     */
+    public function setCurrencyIso3(string $currencyIso3): void
+    {
+        $this->currencyIso3 = $currencyIso3;
+    }
+
+    /**
      * @return DateTime
      */
     public function getCreated(): DateTime
@@ -92,9 +114,9 @@ class Language
     }
 
     /**
-     * @return DateTime|null
+     * @return DateTime
      */
-    public function getUpdated(): ?DateTime
+    public function getUpdated(): DateTime
     {
         return $this->updated;
     }

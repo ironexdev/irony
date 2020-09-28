@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Model\Entity;
+namespace Backup\App\Model\Entity;
 
 use DateTime;
 use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="LanguageRepository")
+ * @ORM\Entity(repositoryClass="AccountAddressRelationRepository")
  * @ORM\Table(
- *     name="language",
+ *     name="account_address_relation"
  * )
  * @ORM\HasLifecycleCallbacks
  */
-class Language
+class AccountAddressRelation
 {
     /**
      * @var string
@@ -24,10 +24,18 @@ class Language
     private $id;
 
     /**
-     * @var string
-     * @ORM\Column(type="string",length=255)
+     * @var Account
+     * @ORM\ManyToOne(targetEntity="Account")
+     * @ORM\JoinColumn(name="account_id",onDelete="CASCADE")
      */
-    private $iso2;
+     private $account;
+
+    /**
+     * @var Address
+     * @ORM\ManyToOne(targetEntity="Address")
+     * @ORM\JoinColumn(name="address_id")
+     */
+     private $address;
 
     /**
      * @var DateTime
@@ -47,7 +55,7 @@ class Language
      */
     public function onPrePersist(): void
     {
-        $this->created = new DateTime(new DateTimeZone("UTC"), "now");
+        $this->created = new DateTime("now", new DateTimeZone("UTC"));
     }
 
     /**
@@ -68,19 +76,35 @@ class Language
     }
 
     /**
-     * @return string
+     * @return Account
      */
-    public function getIso2(): string
+    public function getAccount(): Account
     {
-        return $this->iso2;
+        return $this->account;
     }
 
     /**
-     * @param string $iso2
+     * @param Account $account
      */
-    public function setIso2(string $iso2): void
+    public function setAccount(Account $account): void
     {
-        $this->iso2 = $iso2;
+        $this->account = $account;
+    }
+
+    /**
+     * @return Address
+     */
+    public function getAddress(): Address
+    {
+        return $this->address;
+    }
+
+    /**
+     * @param Address $address
+     */
+    public function setAddress(Address $address): void
+    {
+        $this->address = $address;
     }
 
     /**

@@ -1,22 +1,20 @@
 <?php
 
-namespace App\Model\Entity;
+namespace Backup\App\Model\Entity;
 
 use DateTime;
 use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="AuthenticationTokenRepository")
+ * @ORM\Entity(repositoryClass="RatingRepository")
  * @ORM\Table(
- *     name="authentication_token"
+ *     name="rating",
  * )
  * @ORM\HasLifecycleCallbacks
  */
-class AuthenticationToken
+class Rating
 {
-    const TOKEN_DURATION = "1 month";
-
     /**
      * @var string
      * @ORM\Id
@@ -26,22 +24,23 @@ class AuthenticationToken
     private $id;
 
     /**
-     * @var string
-     * @ORM\Column(type="guid")
-     * @ORM\GeneratedValue(strategy="UUID")
+     * @var Product
+     * @ORM\ManyToOne(targetEntity="Product",fetch="LAZY")
+     * @ORM\JoinColumn(name="product_id")
      */
-    private $code;
+    private $product;
 
     /**
-     * @var DateTime
-     * @ORM\Column(type="datetime")
+     * @var Review
+     * @ORM\ManyToOne(targetEntity="Review",fetch="LAZY")
+     * @ORM\JoinColumn(name="review_id")
      */
-    private $expiration;
+    private $review;
 
     /**
      * @var Account
-     * @ORM\ManyToOne(targetEntity="Account",inversedBy="authenticationToken",fetch="EXTRA_LAZY")
-     * @ORM\JoinColumn(name="account_id",onDelete="CASCADE")
+     * @ORM\ManyToOne(targetEntity="Account",fetch="LAZY")
+     * @ORM\JoinColumn(name="account_id")
      */
     private $account;
 
@@ -56,17 +55,6 @@ class AuthenticationToken
      * @ORM\Column(type="datetime",nullable=true)
      */
     protected $updated;
-
-    /**
-     * AuthenticationToken constructor.
-     * @param DateTime $expiration
-     * @param Account $account
-     */
-    public function __construct(DateTime $expiration, Account $account)
-    {
-        $this->expiration = $expiration;
-        $this->account = $account;
-    }
 
     /**
      * Gets triggered only on insert
@@ -95,35 +83,35 @@ class AuthenticationToken
     }
 
     /**
-     * @return string
+     * @return Product
      */
-    public function getCode(): string
+    public function getProduct(): Product
     {
-        return $this->code;
+        return $this->product;
     }
 
     /**
-     * @param string $code
+     * @param Product $product
      */
-    public function setCode(string $code): void
+    public function setProduct(Product $product): void
     {
-        $this->code = $code;
+        $this->product = $product;
     }
 
     /**
-     * @return DateTime
+     * @return Review
      */
-    public function getExpiration(): DateTime
+    public function getReview(): Review
     {
-        return $this->expiration;
+        return $this->review;
     }
 
     /**
-     * @param DateTime $expiration
+     * @param Review $review
      */
-    public function setExpiration(DateTime $expiration): void
+    public function setReview(Review $review): void
     {
-        $this->expiration = $expiration;
+        $this->review = $review;
     }
 
     /**
@@ -151,10 +139,26 @@ class AuthenticationToken
     }
 
     /**
-     * @return DateTime|null
+     * @param DateTime $created
      */
-    public function getUpdated(): ?DateTime
+    public function setCreated(DateTime $created): void
+    {
+        $this->created = $created;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getUpdated(): DateTime
     {
         return $this->updated;
+    }
+
+    /**
+     * @param DateTime $updated
+     */
+    public function setUpdated(DateTime $updated): void
+    {
+        $this->updated = $updated;
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model\Entity;
+namespace Backup\App\Model\Entity;
 
 use DateTime;
 use DateTimeZone;
@@ -48,14 +48,14 @@ class CategoryTranslatableContent
     /**
      * @var Language
      * @ORM\ManyToOne(targetEntity="Language")
-     * @ORM\JoinColumn(name="language_id",nullable=false)
+     * @ORM\JoinColumn(name="language_id")
      */
     private $language;
 
     /**
      * @var Category
-     * @ORM\ManyToOne(targetEntity="Category",inversedBy="translatableContent")
-     * @ORM\JoinColumn(name="category_id",nullable=false,onDelete="CASCADE")
+     * @ORM\ManyToOne(targetEntity="Category",inversedBy="translatable_content")
+     * @ORM\JoinColumn(name="category_id",onDelete="CASCADE")
      */
     private $category;
 
@@ -102,6 +102,22 @@ class CategoryTranslatableContent
     }
 
     /**
+     * @return \DateTime
+     */
+    public function getCreated(): \DateTime
+    {
+        return $this->created;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getUpdated(): \DateTime
+    {
+        return $this->updated;
+    }
+
+    /**
      * @return Language
      */
     public function getLanguage(): Language
@@ -131,21 +147,5 @@ class CategoryTranslatableContent
     public function setCategory(Category $category): void
     {
         $this->category = $category;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getCreated(): DateTime
-    {
-        return $this->created;
-    }
-
-    /**
-     * @return DateTime|null
-     */
-    public function getUpdated(): ?DateTime
-    {
-        return $this->updated;
     }
 }

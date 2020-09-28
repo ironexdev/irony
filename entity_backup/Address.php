@@ -1,19 +1,22 @@
 <?php
 
-namespace App\Model\Entity;
+namespace Backup\App\Model\Entity;
 
 use DateTime;
 use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="ProductAttributeTextRepository")
+ * @ORM\Entity(repositoryClass="AddressRepository")
  * @ORM\Table(
- *     name="product_attribute_text"
+ *     name="address",
+ *     uniqueConstraints={
+ *         @ORM\UniqueConstraint(name="email",columns={"street","street_number","city","country"})
+ *     }
  * )
  * @ORM\HasLifecycleCallbacks
  */
-class ProductAttributeText
+class Address
 {
     /**
      * @var string
@@ -27,33 +30,37 @@ class ProductAttributeText
      * @var string
      * @ORM\Column(type="string",length=255)
      */
-    private $title;
+    private $street;
 
     /**
      * @var string
      * @ORM\Column(type="string",length=255)
      */
-    private $value;
+    private $streetNumber;
 
     /**
      * @var string
      * @ORM\Column(type="string",length=255)
      */
-    private $units;
+    private $city;
 
     /**
-     * @var Language
-     * @ORM\ManyToOne(targetEntity="Language",fetch="EXTRA_LAZY")
-     * @ORM\JoinColumn(name="language_id")
+     * @var string
+     * @ORM\Column(type="string",length=255)
      */
-    private $language;
+    private $zipCode;
 
     /**
-     * @var ProductAttribute
-     * @ORM\ManyToOne(targetEntity="ProductAttribute",fetch="EXTRA_LAZY")
-     * @ORM\JoinColumn(name="product_attribute_id")
+     * @var string
+     * @ORM\Column(type="string",length=255)
      */
-    private $productAttribute;
+    private $country;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string",length=10000)
+     */
+    private $note;
 
     /**
      * @var DateTime
@@ -96,81 +103,97 @@ class ProductAttributeText
     /**
      * @return string
      */
-    public function getTitle(): string
+    public function getStreet(): string
     {
-        return $this->title;
+        return $this->street;
     }
 
     /**
-     * @param string $title
+     * @param string $street
      */
-    public function setTitle(string $title): void
+    public function setStreet(string $street): void
     {
-        $this->title = $title;
-    }
-
-    /**
-     * @return string
-     */
-    public function getValue(): string
-    {
-        return $this->value;
-    }
-
-    /**
-     * @param string $value
-     */
-    public function setValue(string $value): void
-    {
-        $this->value = $value;
+        $this->street = $street;
     }
 
     /**
      * @return string
      */
-    public function getUnits(): string
+    public function getStreetNumber(): string
     {
-        return $this->units;
+        return $this->streetNumber;
     }
 
     /**
-     * @param string $units
+     * @param string $streetNumber
      */
-    public function setUnits(string $units): void
+    public function setStreetNumber(string $streetNumber): void
     {
-        $this->units = $units;
+        $this->streetNumber = $streetNumber;
     }
 
     /**
-     * @return Language
+     * @return string
      */
-    public function getLanguage(): Language
+    public function getCity(): string
     {
-        return $this->language;
+        return $this->city;
     }
 
     /**
-     * @param Language $language
+     * @param string $city
      */
-    public function setLanguage(Language $language): void
+    public function setCity(string $city): void
     {
-        $this->language = $language;
+        $this->city = $city;
     }
 
     /**
-     * @return ProductAttribute
+     * @return string
      */
-    public function getProductAttribute(): ProductAttribute
+    public function getZipCode(): string
     {
-        return $this->productAttribute;
+        return $this->zipCode;
     }
 
     /**
-     * @param ProductAttribute $productAttribute
+     * @param string $zipCode
      */
-    public function setProductAttribute(ProductAttribute $productAttribute): void
+    public function setZipCode(string $zipCode): void
     {
-        $this->productAttribute = $productAttribute;
+        $this->zipCode = $zipCode;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCountry(): string
+    {
+        return $this->country;
+    }
+
+    /**
+     * @param string $country
+     */
+    public function setCountry(string $country): void
+    {
+        $this->country = $country;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getNote(): ?string
+    {
+        return $this->note;
+    }
+
+    /**
+     * @param string $note
+     */
+    public function setNote(string $note): void
+    {
+        $this->note = $note;
     }
 
     /**

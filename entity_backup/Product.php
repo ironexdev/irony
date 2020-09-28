@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Model\Entity;
+namespace Backup\App\Model\Entity;
 
 use DateTime;
 use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="LanguageRepository")
+ * @ORM\Entity(repositoryClass="ProductRepository")
  * @ORM\Table(
- *     name="language",
+ *     name="product",
  * )
  * @ORM\HasLifecycleCallbacks
  */
-class Language
+class Product
 {
     /**
      * @var string
@@ -25,9 +25,16 @@ class Language
 
     /**
      * @var string
-     * @ORM\Column(type="string",length=255)
+     * @ORM\Column(type="decimal")
      */
-    private $iso2;
+    private $price;
+
+    /**
+     * @var Category
+     * @ORM\ManyToOne(targetEntity="Category",fetch="LAZY")
+     * @ORM\JoinColumn(name="category_id")
+     */
+     private $category;
 
     /**
      * @var DateTime
@@ -47,7 +54,7 @@ class Language
      */
     public function onPrePersist(): void
     {
-        $this->created = new DateTime(new DateTimeZone("UTC"), "now");
+        $this->created = new DateTime("now", new DateTimeZone("UTC"));
     }
 
     /**
@@ -70,32 +77,32 @@ class Language
     /**
      * @return string
      */
-    public function getIso2(): string
+    public function getPrice(): string
     {
-        return $this->iso2;
+        return $this->price;
     }
 
     /**
-     * @param string $iso2
+     * @param string $price
      */
-    public function setIso2(string $iso2): void
+    public function setPrice(string $price): void
     {
-        $this->iso2 = $iso2;
+        $this->price = $price;
     }
 
     /**
-     * @return DateTime
+     * @return Category
      */
-    public function getCreated(): DateTime
+    public function getCategory(): Category
     {
-        return $this->created;
+        return $this->category;
     }
 
     /**
-     * @return DateTime|null
+     * @param Category $category
      */
-    public function getUpdated(): ?DateTime
+    public function setCategory(Category $category): void
     {
-        return $this->updated;
+        $this->category = $category;
     }
 }

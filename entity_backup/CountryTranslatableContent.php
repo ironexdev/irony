@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Model\Entity;
+namespace Backup\App\Model\Entity;
 
 use DateTime;
 use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="LanguageRepository")
+ * @ORM\Entity(repositoryClass="CountryTranslatableContentRepository")
  * @ORM\Table(
- *     name="language",
+ *     name="country_translatable_content",
  * )
  * @ORM\HasLifecycleCallbacks
  */
-class Language
+class CountryTranslatableContent
 {
     /**
      * @var string
@@ -27,7 +27,7 @@ class Language
      * @var string
      * @ORM\Column(type="string",length=255)
      */
-    private $iso2;
+    private $name;
 
     /**
      * @var DateTime
@@ -42,12 +42,19 @@ class Language
     protected $updated;
 
     /**
+     * @var Country
+     * @ORM\ManyToOne(targetEntity="Country",fetch="LAZY")
+     * @ORM\JoinColumn(name="country_id")
+     */
+     private $country;
+
+    /**
      * Gets triggered only on insert
      * @ORM\PrePersist
      */
     public function onPrePersist(): void
     {
-        $this->created = new DateTime(new DateTimeZone("UTC"), "now");
+        $this->created = new DateTime("now", new DateTimeZone("UTC"));
     }
 
     /**
@@ -70,17 +77,17 @@ class Language
     /**
      * @return string
      */
-    public function getIso2(): string
+    public function getName(): string
     {
-        return $this->iso2;
+        return $this->name;
     }
 
     /**
-     * @param string $iso2
+     * @param string $name
      */
-    public function setIso2(string $iso2): void
+    public function setName(string $name): void
     {
-        $this->iso2 = $iso2;
+        $this->name = $name;
     }
 
     /**
@@ -92,10 +99,26 @@ class Language
     }
 
     /**
-     * @return DateTime|null
+     * @return DateTime
      */
-    public function getUpdated(): ?DateTime
+    public function getUpdated(): DateTime
     {
         return $this->updated;
+    }
+
+    /**
+     * @return Country
+     */
+    public function getCountry(): Country
+    {
+        return $this->country;
+    }
+
+    /**
+     * @param Country $country
+     */
+    public function setCountry(Country $country): void
+    {
+        $this->country = $country;
     }
 }

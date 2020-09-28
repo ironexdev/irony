@@ -1,21 +1,21 @@
 <?php
 
-namespace App\Model\Entity;
+namespace Backup\App\Model\Entity;
 
 use DateTime;
 use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="AuthenticationTokenRepository")
+ * @ORM\Entity(repositoryClass="AuthorizationTokenRepository")
  * @ORM\Table(
- *     name="authentication_token"
+ *     name="authorization_token"
  * )
  * @ORM\HasLifecycleCallbacks
  */
-class AuthenticationToken
+class AuthorizationToken
 {
-    const TOKEN_DURATION = "1 month";
+    const TOKEN_DURATION = "1 hour";
 
     /**
      * @var string
@@ -40,7 +40,7 @@ class AuthenticationToken
 
     /**
      * @var Account
-     * @ORM\ManyToOne(targetEntity="Account",inversedBy="authenticationToken",fetch="EXTRA_LAZY")
+     * @ORM\ManyToOne(targetEntity="Account",fetch="LAZY")
      * @ORM\JoinColumn(name="account_id",onDelete="CASCADE")
      */
     private $account;
@@ -58,7 +58,7 @@ class AuthenticationToken
     protected $updated;
 
     /**
-     * AuthenticationToken constructor.
+     * AuthorizationToken constructor.
      * @param DateTime $expiration
      * @param Account $account
      */
@@ -135,7 +135,7 @@ class AuthenticationToken
     }
 
     /**
-     * @param Account $account
+     * @param account $account
      */
     public function setAccount(Account $account): void
     {

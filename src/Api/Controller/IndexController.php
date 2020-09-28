@@ -3,14 +3,17 @@
 namespace App\Api\Controller;
 
 use App\Api\Response\Response;
+use App\Model\Entity\CategoryTranslatableContent;
+use App\Model\Repository\CategoryRepository;
 use App\Translator\Translator;
 
 class IndexController extends AbstractController
 {
     /**
+     * @param \App\Model\Repository\CategoryRepository $categoryRepository
      * @return \App\Api\Response\Response
      */
-    public function read(): Response
+    public function read(CategoryRepository $categoryRepository): Response
     {
         $authenticated = $this->user->isLoggedIn();
         $userData = [
@@ -28,6 +31,8 @@ class IndexController extends AbstractController
             ];
         }
 
-        return $this->response((object) $userData);
+        var_dump(get_class($categoryRepository->findByTitle("Mobile Phones")->getTranslatableContent())); exit;
+
+        return $this->response((object) $category);
     }
 }

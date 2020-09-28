@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Model\Entity;
+namespace Backup\App\Model\Entity;
 
 use DateTime;
 use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="LanguageRepository")
+ * @ORM\Entity(repositoryClass="ProductAttributeRepository")
  * @ORM\Table(
- *     name="language",
+ *     name="product_attribute",
  * )
  * @ORM\HasLifecycleCallbacks
  */
-class Language
+class ProductAttribute
 {
     /**
      * @var string
@@ -25,9 +25,9 @@ class Language
 
     /**
      * @var string
-     * @ORM\Column(type="string",length=255)
+     * @ORM\Column(type="string",columnDefinition="ENUM('boolean','decimal','int','text') NOT NULL")
      */
-    private $iso2;
+    private $type;
 
     /**
      * @var DateTime
@@ -47,7 +47,7 @@ class Language
      */
     public function onPrePersist(): void
     {
-        $this->created = new DateTime(new DateTimeZone("UTC"), "now");
+        $this->created = new DateTime("now", new DateTimeZone("UTC"));
     }
 
     /**
@@ -70,17 +70,17 @@ class Language
     /**
      * @return string
      */
-    public function getIso2(): string
+    public function getType(): string
     {
-        return $this->iso2;
+        return $this->type;
     }
 
     /**
-     * @param string $iso2
+     * @param string $type
      */
-    public function setIso2(string $iso2): void
+    public function setType(string $type): void
     {
-        $this->iso2 = $iso2;
+        $this->type = $type;
     }
 
     /**
@@ -92,10 +92,26 @@ class Language
     }
 
     /**
-     * @return DateTime|null
+     * @param DateTime $created
      */
-    public function getUpdated(): ?DateTime
+    public function setCreated(DateTime $created): void
+    {
+        $this->created = $created;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getUpdated(): DateTime
     {
         return $this->updated;
+    }
+
+    /**
+     * @param DateTime $updated
+     */
+    public function setUpdated(DateTime $updated): void
+    {
+        $this->updated = $updated;
     }
 }

@@ -44,7 +44,7 @@ class AuthenticationTokenController extends AbstractController
             throw new UnprocessableEntityException("", ["password" => Translator::__("__x__Invalid password.__/x__")]);
         }
 
-        $authenticationToken = new AuthenticationToken(uniqid(time(), true), new DateTime(AuthenticationToken::TOKEN_DURATION, new DateTimeZone("UTC")), $account);
+        $authenticationToken = new AuthenticationToken(new DateTime(AuthenticationToken::TOKEN_DURATION, new DateTimeZone("UTC")), $account);
 
         $this->entityManagerService->persist($authenticationToken);
         $this->entityManagerService->flush();

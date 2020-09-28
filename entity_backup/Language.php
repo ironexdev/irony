@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model\Entity;
+namespace Backup\App\Model\Entity;
 
 use DateTime;
 use DateTimeZone;
@@ -84,17 +84,17 @@ class Language
     }
 
     /**
-     * @return DateTime
+     * @return \DateTime
      */
-    public function getCreated(): DateTime
+    public function getCreated(): \DateTime
     {
         return $this->created;
     }
 
     /**
-     * @return DateTime|null
+     * @return \DateTime
      */
-    public function getUpdated(): ?DateTime
+    public function getUpdated(): \DateTime
     {
         return $this->updated;
     }

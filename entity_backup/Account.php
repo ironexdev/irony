@@ -1,12 +1,10 @@
 <?php
 
-namespace App\Model\Entity;
+namespace Backup\App\Model\Entity;
 
 use App\Enum\AccountRoleEnum;
 use DateTime;
 use DateTimeZone;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -66,28 +64,6 @@ class Account
     private $role;
 
     /**
-     * @var Collection
-     * @ORM\ManyToMany(targetEntity="Address",fetch="EXTRA_LAZY")
-     * @ORM\JoinTable(name="account_addresses_relation",
-     *      joinColumns={@ORM\JoinColumn(name="account_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="addresses_id", referencedColumnName="id", unique=true)}
-     * )
-     */
-    private $addresses;
-
-    /**
-     * @var Collection
-     * @ORM\OneToMany(targetEntity="AuthenticationToken",mappedBy="account",fetch="EXTRA_LAZY")
-     */
-    private $authenticationTokens;
-
-    /**
-     * @var Collection
-     * @ORM\OneToMany(targetEntity="AuthorizationToken",mappedBy="account",fetch="EXTRA_LAZY")
-     */
-    private $authorizationTokens;
-
-    /**
      * @var DateTime
      * @ORM\Column(type="datetime")
      */
@@ -110,8 +86,6 @@ class Account
      */
     public function __construct(string $email, string $password, string $firstName, string $lastName, bool $cookieConsent = true, string $role = AccountRoleEnum::MEMBER)
     {
-        $this->addresses = new ArrayCollection();
-
         $this->setEmail($email);
         $this->setPassword($password);
         $this->setFirstName($firstName);
@@ -244,31 +218,6 @@ class Account
     }
 
     /**
-     * @return Collection
-     */
-    public function getAddresses(): Collection
-    {
-        return $this->addresses;
-    }
-
-    /**
-     * @param Address $address
-     */
-    public function addAddress(Address $address): void
-    {
-        $this->addresses->add($address);
-    }
-
-    /**
-     * @param Address $address
-     * @return bool
-     */
-    public function removeAddress(Address $address): bool
-    {
-        return $this->addresses->removeElement($address);
-    }
-
-    /**
      * @return DateTime
      */
     public function getCreated(): DateTime
@@ -282,37 +231,5 @@ class Account
     public function getUpdated(): ?DateTime
     {
         return $this->updated;
-    }
-
-    /**
-     * @return Collection
-     */
-    public function getAuthenticationTokens(): Collection
-    {
-        return $this->authenticationTokens;
-    }
-
-    /**
-     * @return void
-     */
-    public function removeAuthenticationTokens(): void
-    {
-        $this->authenticationTokens->clear();
-    }
-
-    /**
-     * @return Collection
-     */
-    public function getAuthorizationTokens(): Collection
-    {
-        return $this->authorizationTokens;
-    }
-
-    /**
-     * @return void
-     */
-    public function removeAuthorizationTokens(): void
-    {
-        $this->authorizationTokens->clear();
     }
 }

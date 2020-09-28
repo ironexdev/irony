@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Model\Entity;
+namespace Backup\App\Model\Entity;
 
 use DateTime;
 use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="ProductAttributeTextRepository")
+ * @ORM\Entity(repositoryClass="PaymentTranslatableContentRepository")
  * @ORM\Table(
- *     name="product_attribute_text"
+ *     name="payment_translatable_content"
  * )
  * @ORM\HasLifecycleCallbacks
  */
-class ProductAttributeText
+class PaymentTranslatableContent
 {
     /**
      * @var string
@@ -33,27 +33,27 @@ class ProductAttributeText
      * @var string
      * @ORM\Column(type="string",length=255)
      */
-    private $value;
+    private $summary;
 
     /**
      * @var string
-     * @ORM\Column(type="string",length=255)
+     * @ORM\Column(type="string",length=10000)
      */
-    private $units;
+    private $description;
+
+    /**
+     * @var Payment
+     * @ORM\ManyToOne(targetEntity="Payment",fetch="LAZY")
+     * @ORM\JoinColumn(name=payment_id,nullable="false",onDelete="CASCADE")
+     */
+    private $payment;
 
     /**
      * @var Language
-     * @ORM\ManyToOne(targetEntity="Language",fetch="EXTRA_LAZY")
-     * @ORM\JoinColumn(name="language_id")
+     * @ORM\ManyToOne(targetEntity="Language",fetch="LAZY")
+     * @ORM\JoinColumn(name=language_id,nullable="false",onDelete="CASCADE")
      */
     private $language;
-
-    /**
-     * @var ProductAttribute
-     * @ORM\ManyToOne(targetEntity="ProductAttribute",fetch="EXTRA_LAZY")
-     * @ORM\JoinColumn(name="product_attribute_id")
-     */
-    private $productAttribute;
 
     /**
      * @var DateTime
@@ -112,33 +112,49 @@ class ProductAttributeText
     /**
      * @return string
      */
-    public function getValue(): string
+    public function getSummary(): string
     {
-        return $this->value;
+        return $this->summary;
     }
 
     /**
-     * @param string $value
+     * @param string $summary
      */
-    public function setValue(string $value): void
+    public function setSummary(string $summary): void
     {
-        $this->value = $value;
+        $this->summary = $summary;
     }
 
     /**
      * @return string
      */
-    public function getUnits(): string
+    public function getDescription(): string
     {
-        return $this->units;
+        return $this->description;
     }
 
     /**
-     * @param string $units
+     * @param string $description
      */
-    public function setUnits(string $units): void
+    public function setDescription(string $description): void
     {
-        $this->units = $units;
+        $this->description = $description;
+    }
+
+    /**
+     * @return Payment
+     */
+    public function getPayment(): Payment
+    {
+        return $this->payment;
+    }
+
+    /**
+     * @param Payment $payment
+     */
+    public function setPayment(Payment $payment): void
+    {
+        $this->payment = $payment;
     }
 
     /**
@@ -158,22 +174,6 @@ class ProductAttributeText
     }
 
     /**
-     * @return ProductAttribute
-     */
-    public function getProductAttribute(): ProductAttribute
-    {
-        return $this->productAttribute;
-    }
-
-    /**
-     * @param ProductAttribute $productAttribute
-     */
-    public function setProductAttribute(ProductAttribute $productAttribute): void
-    {
-        $this->productAttribute = $productAttribute;
-    }
-
-    /**
      * @return DateTime
      */
     public function getCreated(): DateTime
@@ -182,10 +182,26 @@ class ProductAttributeText
     }
 
     /**
-     * @return DateTime|null
+     * @param DateTime $created
      */
-    public function getUpdated(): ?DateTime
+    public function setCreated(DateTime $created): void
+    {
+        $this->created = $created;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getUpdated(): DateTime
     {
         return $this->updated;
+    }
+
+    /**
+     * @param DateTime $updated
+     */
+    public function setUpdated(DateTime $updated): void
+    {
+        $this->updated = $updated;
     }
 }

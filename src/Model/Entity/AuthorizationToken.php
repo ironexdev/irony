@@ -27,15 +27,23 @@ class AuthorizationToken
 
     /**
      * @var string
-     * @ORM\Column(type="string",length=255,nullable=false)
+     * @ORM\Column(type="guid")
+     * @ORM\GeneratedValue(strategy="UUID")
      */
     private $code;
 
     /**
      * @var DateTime
-     * @ORM\Column(type="datetime",nullable=false)
+     * @ORM\Column(type="datetime")
      */
     private $expiration;
+
+    /**
+     * @var Account
+     * @ORM\ManyToOne(targetEntity="Account",inversedBy="authorizationToken",fetch="EXTRA_LAZY")
+     * @ORM\JoinColumn(name="account_id",onDelete="CASCADE")
+     */
+    private $account;
 
     /**
      * @var DateTime
@@ -50,21 +58,12 @@ class AuthorizationToken
     protected $updated;
 
     /**
-     * @var Account
-     * @ORM\ManyToOne(targetEntity="Account",fetch="LAZY")
-     * @ORM\JoinColumn(name="account_id",referencedColumnName="id",nullable=false,onDelete="CASCADE")
-     */
-    private $account;
-
-    /**
      * AuthorizationToken constructor.
-     * @param string $code
-     * @param \DateTime $expiration
-     * @param \App\Model\Entity\Account $account
+     * @param DateTime $expiration
+     * @param Account $account
      */
-    public function __construct(string $code, DateTime $expiration, Account $account)
+    public function __construct(DateTime $expiration, Account $account)
     {
-        $this->code = $code;
         $this->expiration = $expiration;
         $this->account = $account;
     }
@@ -128,22 +127,6 @@ class AuthorizationToken
     }
 
     /**
-     * @return \DateTime
-     */
-    public function getCreated(): \DateTime
-    {
-        return $this->created;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getUpdated(): \DateTime
-    {
-        return $this->updated;
-    }
-
-    /**
      * @return Account
      */
     public function getAccount(): Account
@@ -157,5 +140,21 @@ class AuthorizationToken
     public function setAccount(Account $account): void
     {
         $this->account = $account;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getCreated(): DateTime
+    {
+        return $this->created;
+    }
+
+    /**
+     * @return DateTime|null
+     */
+    public function getUpdated(): ?DateTime
+    {
+        return $this->updated;
     }
 }
