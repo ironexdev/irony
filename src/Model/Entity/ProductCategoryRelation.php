@@ -4,18 +4,16 @@ namespace App\Model\Entity;
 
 use DateTime;
 use DateTimeZone;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Model\Repository\ProductRepository")
  * @ORM\Table(
- *     name="product",
+ *     name="product_category_relation",
  * )
  * @ORM\HasLifecycleCallbacks
  */
-class Product
+class ProductCategoryRelation
 {
     /**
      * @var string
@@ -26,17 +24,18 @@ class Product
     private $id;
 
     /**
-     * @var string
-     * @ORM\Column(type="decimal")
+     * @var Product
+     * @ORM\ManyToOne(targetEntity="Product",inversedBy="category",fetch="EXTRA_LAZY")
+     * @ORM\JoinColumn(name="product_id",nullable=false,onDelete="CASCADE")
      */
-    private $price;
+    private $product;
 
     /**
-     * @var Collection
-     * @ORM\ManyToMany(targetEntity="Category",inversedBy="category",fetch="EXTRA_LAZY")
-     * @ORM\JoinColumn(name="category_id")
+     * @var Category
+     * @ORM\ManyToOne(targetEntity="Category",inversedBy="product",fetch="EXTRA_LAZY")
+     * @ORM\JoinColumn(name="category_id",nullable=false,onDelete="CASCADE")
      */
-     private $categories;
+    private $category;
 
     /**
      * @var DateTime
@@ -49,14 +48,6 @@ class Product
      * @ORM\Column(type="datetime",nullable=true)
      */
     protected $updated;
-
-    /**
-     * Product constructor.
-     */
-    public function __construct()
-    {
-        $this->categories = new ArrayCollection();
-    }
 
     /**
      * Gets triggered only on insert
@@ -85,45 +76,35 @@ class Product
     }
 
     /**
-     * @return string
+     * @return Product
      */
-    public function getPrice(): string
+    public function getProduct(): Product
     {
-        return $this->price;
+        return $this->product;
     }
 
     /**
-     * @param string $price
+     * @param Product $product
      */
-    public function setPrice(string $price): void
+    public function setProduct(Product $product): void
     {
-        $this->price = $price;
+        $this->product = $product;
     }
 
     /**
-     * @return Collection
+     * @return Category
      */
-    public function getCategories(): Collection
+    public function getCategory(): Category
     {
-        return $this->categories;
-    }
-
-    /**
-     * @param Category $category
-     * @return void
-     */
-    public function addCategory(Category $category): void
-    {
-        $this->categories->add($category);
+        return $this->category;
     }
 
     /**
      * @param Category $category
-     * @return bool
      */
-    public function removeCategory(Category $category): bool
+    public function setCategory(Category $category): void
     {
-        return $this->categories->removeElement($category);
+        $this->category = $category;
     }
 
     /**
