@@ -7,7 +7,7 @@ use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="AuthorizationTokenRepository")
+ * @ORM\Entity(repositoryClass="App\Model\Repository\AuthorizationTokenRepository")
  * @ORM\Table(
  *     name="authorization_token"
  * )

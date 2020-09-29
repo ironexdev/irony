@@ -7,7 +7,7 @@ use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="LanguageRepository")
+ * @ORM\Entity(repositoryClass="App\Model\Repository\LanguageRepository")
  * @ORM\Table(
  *     name="language",
  * )

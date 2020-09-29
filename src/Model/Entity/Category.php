@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
 
 /**
- * @ORM\Entity(repositoryClass="CategoryRepository")
+ * @ORM\Entity(repositoryClass="App\Model\Repository\CategoryRepository")
  * @ORM\Table(
  *     name="category"
  * )

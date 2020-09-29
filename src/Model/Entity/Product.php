@@ -9,7 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="ProductRepository")
+ * @ORM\Entity(repositoryClass="App\Model\Repository\ProductRepository")
  * @ORM\Table(
  *     name="product",
  * )

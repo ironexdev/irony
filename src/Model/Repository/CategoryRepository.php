@@ -10,7 +10,11 @@ class CategoryRepository extends AbstractRepository
 {
     const ENTITY = Category::class;
 
-    public function findByTitle(string $title): Category
+    /**
+     * @param string $title
+     * @return Category|null
+     */
+    public function findByTitle(string $title): ?Category
     {
         $query = $this->entityManagerService->createQuery("SELECT c FROM " . static::ENTITY . " c INNER JOIN c.translatableContent tc WHERE tc.title = :title");
         $query->setParameter("title", $title);

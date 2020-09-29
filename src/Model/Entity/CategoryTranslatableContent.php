@@ -7,7 +7,7 @@ use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="CategoryTranslatableContentRepository")
+ * @ORM\Entity(repositoryClass="App\Model\Repository\CategoryTranslatableContentRepository")
  * @ORM\Table(
  *     name="category_translatable_content",
  *     uniqueConstraints={

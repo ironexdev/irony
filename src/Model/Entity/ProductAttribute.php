@@ -7,7 +7,7 @@ use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="ProductAttributeRepository")
+ * @ORM\Entity(repositoryClass="App\Model\Repository\ProductAttributeRepository")
  * @ORM\Table(
  *     name="product_attribute",
  * )
