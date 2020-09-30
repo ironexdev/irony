@@ -104,7 +104,7 @@ function createOrUpdateIndexFile(array $collectedTranslationIndexes, bool $remov
  */
 function createOrUpdateTranslations(array $collectedTranslationIndexes, bool $removeUnused, string $translationsDirectory): void
 {
-    $supportedLanguages = Config::getSupportedLanguages();
+    $supportedLanguages = ["en","cs"];
 
     foreach ($supportedLanguages as $language)
     {

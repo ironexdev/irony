@@ -7,6 +7,7 @@ use DateTimeZone;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 
 /**
  * @ORM\Entity(repositoryClass="App\Model\Repository\ProductRepository")
@@ -26,17 +27,10 @@ class Product
     private $id;
 
     /**
-     * @var string
-     * @ORM\Column(type="decimal")
-     */
-    private $price;
-
-    /**
      * @var Collection
-     * @ORM\ManyToMany(targetEntity="Category",inversedBy="category",fetch="EXTRA_LAZY")
-     * @ORM\JoinColumn(name="category_id")
+     * @ORM\OneToMany(targetEntity="ProductCategoryRelation",mappedBy="product",fetch="EXTRA_LAZY",cascade={"persist"},orphanRemoval=true)
      */
-     private $categories;
+    private $productCategoryRelations;
 
     /**
      * @var DateTime
@@ -55,7 +49,7 @@ class Product
      */
     public function __construct()
     {
-        $this->categories = new ArrayCollection();
+        $this->productCategoryRelations = new ArrayCollection();
     }
 
     /**
@@ -85,19 +79,11 @@ class Product
     }
 
     /**
-     * @return string
+     * @return Collection
      */
-    public function getPrice(): string
+    public function getProductCategoryRelations(): Collection
     {
-        return $this->price;
-    }
-
-    /**
-     * @param string $price
-     */
-    public function setPrice(string $price): void
-    {
-        $this->price = $price;
+        return $this->productCategoryRelations;
     }
 
     /**
@@ -105,25 +91,32 @@ class Product
      */
     public function getCategories(): Collection
     {
-        return $this->categories;
+        $categories = new ArrayCollection();
+
+        /** @var ProductCategoryRelation $productCategoryRelation */
+        foreach($this->productCategoryRelations as $productCategoryRelation)
+        {
+            $categories->add($productCategoryRelation->getCategory());
+        }
+
+        return $categories;
     }
 
     /**
      * @param Category $category
-     * @return void
      */
-    public function addCategory(Category $category): void
+    public function addCategory(Category $category)
     {
-        $this->categories->add($category);
+        $this->productCategoryRelations->add(new ProductCategoryRelation($this, $category));
     }
 
     /**
-     * @param Category $category
+     * @param ProductCategoryRelation $productCategoryRelation
      * @return bool
      */
-    public function removeCategory(Category $category): bool
+    public function removeCategory(ProductCategoryRelation $productCategoryRelation): bool
     {
-        return $this->categories->removeElement($category);
+        return $this->productCategoryRelations->removeElement($productCategoryRelation);
     }
 
     /**

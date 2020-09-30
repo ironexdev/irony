@@ -40,12 +40,6 @@ class CategoryTranslatableContent
     protected $created;
 
     /**
-     * @var DateTime
-     * @ORM\Column(type="datetime",nullable=true)
-     */
-    protected $updated;
-
-    /**
      * @var Language
      * @ORM\ManyToOne(targetEntity="Language")
      * @ORM\JoinColumn(name="language_id",nullable=false)
@@ -53,11 +47,30 @@ class CategoryTranslatableContent
     private $language;
 
     /**
+     * @var DateTime
+     * @ORM\Column(type="datetime",nullable=true)
+     */
+    protected $updated;
+
+    /**
      * @var Category
-     * @ORM\ManyToOne(targetEntity="Category",inversedBy="translatableContent")
+     * @ORM\ManyToOne(targetEntity="Category",inversedBy="translatableContents")
      * @ORM\JoinColumn(name="category_id",nullable=false,onDelete="CASCADE")
      */
     private $category;
+
+    /**
+     * CategoryTranslatableContent constructor.
+     * @param string $title
+     * @param \App\Model\Entity\Language $language
+     * @param \App\Model\Entity\Category $category
+     */
+    public function __construct(string $title, Language $language, Category $category)
+    {
+        $this->setTitle($title);
+        $this->setLanguage($language);
+        $this->setCategory($category);
+    }
 
     /**
      * Gets triggered only on insert

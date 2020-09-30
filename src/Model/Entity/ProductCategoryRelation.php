@@ -25,14 +25,14 @@ class ProductCategoryRelation
 
     /**
      * @var Product
-     * @ORM\ManyToOne(targetEntity="Product",inversedBy="category",fetch="EXTRA_LAZY")
+     * @ORM\ManyToOne(targetEntity="Product",inversedBy="productCategoryRelation",fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(name="product_id",nullable=false,onDelete="CASCADE")
      */
     private $product;
 
     /**
      * @var Category
-     * @ORM\ManyToOne(targetEntity="Category",inversedBy="product",fetch="EXTRA_LAZY")
+     * @ORM\ManyToOne(targetEntity="Category",inversedBy="productCategoryRelation",fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(name="category_id",nullable=false,onDelete="CASCADE")
      */
     private $category;
@@ -48,6 +48,17 @@ class ProductCategoryRelation
      * @ORM\Column(type="datetime",nullable=true)
      */
     protected $updated;
+
+    /**
+     * ProductCategoryRelation constructor.
+     * @param \App\Model\Entity\Product $product
+     * @param \App\Model\Entity\Category $category
+     */
+    public function __construct(Product $product, Category $category)
+    {
+        $this->setProduct($product);
+        $this->setCategory($category);
+    }
 
     /**
      * Gets triggered only on insert

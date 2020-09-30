@@ -6,7 +6,7 @@ User Language is updated when account is created, user is logged in or after any
 
 Doctrine commands
 
-    php bin/doctrine.php orm:schema-tool:create/delete/update
+    php bin/doctrine.php orm:schema-tool:create/drop/update
     php bin/doctrine_fixtures.php
 
 Request

@@ -17,7 +17,6 @@ return [
         "admin" => "admin@ironexdev.com"
     ],
     "environment" => "production", // bootstrap.php does not use this configuration
-    "language" => "cs",
     "mailer" => [
         "host" => "smtp.onebit.cz",
         "port" => 587,
@@ -35,6 +34,5 @@ return [
         "encryption_key" => "def000004aef1b95639bf3873f9c7a773285c8d166939cfaa48c1a3e896d2e27e8e973540302132ddb0aaf397378c0be2c4a24e9ac23f216855161b7cd99a4fee6d8b4c9"
     ],
     "siteName" => "Irony",
-    "supportedLanguages" => ["cs","en"],
     "translationsDirectory" => __DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "translations"
 ];

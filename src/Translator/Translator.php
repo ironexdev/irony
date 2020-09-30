@@ -4,11 +4,17 @@ namespace App\Translator;
 
 use App\Config\Config;
 use App\Enum\LanguageEnum;
+use App\Enum\RequestHeaderEnum;
 use App\FileSystem\Filesystem;
 use Error;
 
 class Translator
 {
+    /**
+     * @var string
+     */
+    private static $languageIso2;
+
     /**
      * @var array
      */
@@ -30,7 +36,7 @@ class Translator
         }
         else
         {
-            $translation = static::getTranslations()[$index][static::getPluralFormIndex($countable, Config::getLanguage())] ?? $index;
+            $translation = static::getTranslations()[$index][static::getPluralFormIndex($countable, static::getLanguageIso2())] ?? $index;
         }
 
         if ($variables)
@@ -45,6 +51,19 @@ class Translator
         }
 
         return $translation;
+    }
+
+    /**
+     * @return string
+     */
+    private static function getLanguageIso2(): string
+    {
+        if(!static::$languageIso2)
+        {
+            static::$languageIso2 = getallheaders()[RequestHeaderEnum::ACCEPT_LANGUAGE] ?? "en";
+        }
+
+        return static::$languageIso2;
     }
 
     /**
@@ -80,7 +99,7 @@ class Translator
     {
         if (!static::$translations)
         {
-            static::$translations = json_decode(Filesystem::readFile(Config::getTranslationsDirectory() . DIRECTORY_SEPARATOR . Config::getLanguage() . ".json"), true);
+            static::$translations = json_decode(Filesystem::readFile(Config::getTranslationsDirectory() . DIRECTORY_SEPARATOR . static::getLanguageIso2() . ".json"), true);
         }
 
         return static::$translations;

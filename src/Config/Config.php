@@ -33,11 +33,6 @@ class Config
     private static $environment;
 
     /**
-     * @var string
-     */
-    private static $language;
-
-    /**
      * @var array
      */
     private static $mailer;
@@ -56,11 +51,6 @@ class Config
      * @var string
      */
     private static $siteName;
-
-    /**
-     * @var array
-     */
-    private static $supportedLanguages;
 
     /**
      * @var string
@@ -134,14 +124,6 @@ class Config
     }
 
     /**
-     * @return string
-     */
-    public static function getLanguage(): string
-    {
-        return static::$language;
-    }
-
-    /**
      * @return array
      */
     public static function getMailer(): array
@@ -171,14 +153,6 @@ class Config
     public static function getSiteName(): string
     {
         return static::$siteName;
-    }
-
-    /**
-     * @return array
-     */
-    public static function getSupportedLanguages(): array
-    {
-        return static::$supportedLanguages;
     }
 
     /**

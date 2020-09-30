@@ -36,16 +36,15 @@ class Category
 
     /**
      * @var Collection
-     * @ORM\OneToMany(targetEntity="CategoryTranslatableContent",mappedBy="category",fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(targetEntity="CategoryTranslatableContent",mappedBy="category",fetch="EXTRA_LAZY",cascade={"persist"},orphanRemoval=true)
      */
-    private $translatableContent;
+    private $translatableContents;
 
     /**
      * @var Collection
-     * @ORM\ManyToMany(targetEntity="Product",inversedBy="product",fetch="EXTRA_LAZY")
-     * @ORM\JoinColumn(name="product_id")
+     * @ORM\OneToMany(targetEntity="ProductCategoryRelation",mappedBy="category",fetch="EXTRA_LAZY",cascade={"persist"},orphanRemoval=true)
      */
-    private $products;
+    private $productCategoryRelations;
 
     /**
      * @var DateTime
@@ -61,10 +60,17 @@ class Category
 
     /**
      * Category constructor.
+     * @param \App\Model\Entity\Category|null $parent
      */
-    public function __construct()
+    public function __construct(?Category $parent = null)
     {
-        $this->translatableContent = new ArrayCollection();
+        $this->productCategoryRelations = new ArrayCollection();
+        $this->translatableContents = new ArrayCollection();
+
+        if($parent)
+        {
+            $this->setParent($parent);
+        }
     }
 
     /**
@@ -94,9 +100,9 @@ class Category
     }
 
     /**
-     * @return Category
+     * @return Category|null
      */
-    public function getParent(): Category
+    public function getParent(): ?Category
     {
         return $this->parent;
     }
@@ -115,15 +121,40 @@ class Category
      */
     public function getTranslatableContent(Language $language): Collection
     {
-        return $this->translatableContent->matching(Criteria::create()->where(Criteria::expr()->eq("language_id", $language->getId())))[0];
+        return $this->translatableContents->matching(Criteria::create()->where(Criteria::expr()->eq("language_id", $language->getId())))[0];
     }
 
     /**
-     * @param Collection $translatableContent
+     * @return PersistentCollection
      */
-    public function setTranslatableContent(Collection $translatableContent): void
+    public function getTranslatableContents(): Collection
     {
-        $this->translatableContent = $translatableContent;
+        return $this->translatableContents;
+    }
+
+    /**
+     * @param \App\Model\Entity\CategoryTranslatableContent $translatableContent
+     */
+    public function addTranslatableContent(CategoryTranslatableContent $translatableContent): void
+    {
+        $this->translatableContents->add($translatableContent);
+    }
+
+    /**
+     * @param \App\Model\Entity\CategoryTranslatableContent $translatableContent
+     * @return bool
+     */
+    public function removeTranslatableContent(CategoryTranslatableContent $translatableContent): bool
+    {
+        return $this->translatableContents->removeElement($translatableContent);
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getProductCategoryRelations(): Collection
+    {
+        return $this->productCategoryRelations;
     }
 
     /**
@@ -131,24 +162,32 @@ class Category
      */
     public function getProducts(): Collection
     {
-        return $this->products;
+        $products = new ArrayCollection();
+
+        /** @var ProductCategoryRelation $productCategoryRelation */
+        foreach($this->productCategoryRelations as $productCategoryRelation)
+        {
+            $products->add($productCategoryRelation->getProduct());
+        }
+
+        return $products;
     }
 
     /**
      * @param Product $product
      */
-    public function addProduct(Product $product): void
+    public function addProduct(Product $product)
     {
-        $this->products->add($product);
+        $this->productCategoryRelations->add(new ProductCategoryRelation($product, $this));
     }
 
     /**
-     * @param Product $product
+     * @param ProductCategoryRelation $productCategoryRelation
      * @return bool
      */
-    public function removeProduct(Product $product): bool
+    public function removeProduct(ProductcategoryRelation $productCategoryRelation): bool
     {
-        return $this->products->removeElement($product);
+        return $this->productCategoryRelations->removeElement($productCategoryRelation);
     }
 
     /**
