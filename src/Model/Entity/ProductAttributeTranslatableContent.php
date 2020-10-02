@@ -7,16 +7,17 @@ use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Model\Repository\ProductAttributeTextRepository")
+ * @ORM\Entity(repositoryClass="App\Model\Repository\ProductAttributeTranslatableContentRepository")
  * @ORM\Table(
- *     name="product_attribute_text",
+ *     name="product_attribute_translatable_content",
  *     uniqueConstraints={
- *         @ORM\UniqueConstraint(name="product_attribute",columns={"product_id","product_attribute_id"})
+ *         @ORM\UniqueConstraint(name="title_language",columns={"title","language_id"}),
+ *         @ORM\UniqueConstraint(name="product_attribute_language",columns={"product_attribute_id","language_id"})
  *     }
  * )
  * @ORM\HasLifecycleCallbacks
  */
-class ProductAttributeText
+class ProductAttributeTranslatableContent
 {
     /**
      * @var string
@@ -30,19 +31,25 @@ class ProductAttributeText
      * @var string
      * @ORM\Column(type="string",length=255)
      */
-    private $value;
+    private $title;
 
     /**
-     * @var Product
-     * @ORM\ManyToOne(targetEntity="Product",fetch="EXTRA_LAZY")
-     * @ORM\JoinColumn(name="product_id",nullable=false,onDelete="CASCADE")
+     * @var string
+     * @ORM\Column(type="string",length=255)
      */
-    private $product;
+    private $units;
+
+    /**
+     * @var Language
+     * @ORM\ManyToOne(targetEntity="Language")
+     * @ORM\JoinColumn(name="language_id",nullable=false)
+     */
+    private $language;
 
     /**
      * @var ProductAttribute
-     * @ORM\ManyToOne(targetEntity="ProductAttribute",fetch="EXTRA_LAZY")
-     * @ORM\JoinColumn(name="product_attribute_id",nullable=false,onDelete="RESTRICT")
+     * @ORM\ManyToOne(targetEntity="ProductAttribute",fetch="EXTRA_LAZY",inversedBy="translatableContents")
+     * @ORM\JoinColumn(name="product_attribute_id",nullable=false,onDelete="CASCADE")
      */
     private $productAttribute;
 
@@ -87,33 +94,49 @@ class ProductAttributeText
     /**
      * @return string
      */
-    public function getValue(): string
+    public function getTitle(): string
     {
-        return $this->value;
+        return $this->title;
     }
 
     /**
-     * @param string $value
+     * @param string $title
      */
-    public function setValue(string $value): void
+    public function setTitle(string $title): void
     {
-        $this->value = $value;
+        $this->title = $title;
     }
 
     /**
-     * @return Product
+     * @return string
      */
-    public function getProduct(): Product
+    public function getUnits(): string
     {
-        return $this->product;
+        return $this->units;
     }
 
     /**
-     * @param Product $product
+     * @param string $units
      */
-    public function setProduct(Product $product): void
+    public function setUnits(string $units): void
     {
-        $this->product = $product;
+        $this->units = $units;
+    }
+
+    /**
+     * @return Language
+     */
+    public function getLanguage(): Language
+    {
+        return $this->language;
+    }
+
+    /**
+     * @param Language $language
+     */
+    public function setLanguage(Language $language): void
+    {
+        $this->language = $language;
     }
 
     /**

@@ -4,6 +4,8 @@ namespace App\Model\Entity;
 
 use DateTime;
 use DateTimeZone;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -28,6 +30,12 @@ class ProductAttribute
      * @ORM\Column(type="string",columnDefinition="ENUM('boolean','decimal','int','text') NOT NULL")
      */
     private $type;
+
+    /**
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="ProductAttributeRelation",mappedBy="productAttribute",fetch="EXTRA_LAZY",cascade={"persist"},orphanRemoval=true)
+     */
+    private $productAttributeRelations;
 
     /**
      * @var DateTime
@@ -81,6 +89,47 @@ class ProductAttribute
     public function setType(string $type): void
     {
         $this->type = $type;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getProductAttributeRelations(): Collection
+    {
+        return $this->productAttributeRelations;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getProducts(): Collection
+    {
+        $products = new ArrayCollection();
+
+        /** @var ProductAttributeRelation $productAttributeRelation */
+        foreach($this->productAttributeRelations as $productAttributeRelation)
+        {
+            $products->add($productAttributeRelation->getProduct());
+        }
+
+        return $products;
+    }
+
+    /**
+     * @param \App\Model\Entity\Product $product
+     */
+    public function addProduct(Product $product)
+    {
+        $this->productAttributeRelations->add(new ProductAttributeRelation($product, $this));
+    }
+
+    /**
+     * @param \App\Model\Entity\ProductAttributeRelation $productAttributeRelation
+     * @return bool
+     */
+    public function removeProduct(ProductAttributeRelation $productAttributeRelation): bool
+    {
+        return $this->productAttributeRelations->removeElement($productAttributeRelation);
     }
 
     /**

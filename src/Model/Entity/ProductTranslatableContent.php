@@ -7,17 +7,17 @@ use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Model\Repository\CategoryTranslatableContentRepository")
+ * @ORM\Entity(repositoryClass="ProductTranslatableContentRepository")
  * @ORM\Table(
- *     name="category_translatable_content",
+ *     name="product_translatable_content",
  *     uniqueConstraints={
  *         @ORM\UniqueConstraint(name="title_language",columns={"title","language_id"}),
- *         @ORM\UniqueConstraint(name="category_language",columns={"category_id","language_id"})
+ *         @ORM\UniqueConstraint(name="product_language",columns={"product_id","language_id"})
  *     }
  * )
  * @ORM\HasLifecycleCallbacks
  */
-class CategoryTranslatableContent
+class ProductTranslatableContent
 {
     /**
      * @var string
@@ -34,18 +34,30 @@ class CategoryTranslatableContent
     private $title;
 
     /**
+     * @var string
+     * @ORM\Column(type="string",length=255)
+     */
+    private $summary;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string",length=10000)
+     */
+    private $description;
+
+    /**
      * @var Language
-     * @ORM\ManyToOne(targetEntity="Language")
-     * @ORM\JoinColumn(name="language_id",nullable=false)
+     * @ORM\ManyToOne(targetEntity="Language",fetch="EXTRA_LAZY")
+     * @ORM\JoinColumn(name="language_id",nullable=false,onDelete="CASCADE")
      */
     private $language;
 
     /**
-     * @var Category
-     * @ORM\ManyToOne(targetEntity="Category",inversedBy="translatableContents",fetch="EXTRA_LAZY")
-     * @ORM\JoinColumn(name="category_id",nullable=false,onDelete="CASCADE")
+     * @var Product
+     * @ORM\ManyToOne(targetEntity="Product",inversedBy="translatableContents",fetch="EXTRA_LAZY")
+     * @ORM\JoinColumn(name="product_id",nullable=false,onDelete="CASCADE")
      */
-    private $category;
+    private $product;
 
     /**
      * @var DateTime
@@ -58,19 +70,6 @@ class CategoryTranslatableContent
      * @ORM\Column(type="datetime",nullable=true)
      */
     protected $updated;
-
-    /**
-     * CategoryTranslatableContent constructor.
-     * @param string $title
-     * @param \App\Model\Entity\Language $language
-     * @param \App\Model\Entity\Category $category
-     */
-    public function __construct(string $title, Language $language, Category $category)
-    {
-        $this->setTitle($title);
-        $this->setLanguage($language);
-        $this->setCategory($category);
-    }
 
     /**
      * Gets triggered only on insert
@@ -115,6 +114,38 @@ class CategoryTranslatableContent
     }
 
     /**
+     * @return string
+     */
+    public function getSummary(): string
+    {
+        return $this->summary;
+    }
+
+    /**
+     * @param string $summary
+     */
+    public function setSummary(string $summary): void
+    {
+        $this->summary = $summary;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     */
+    public function setDescription(string $description): void
+    {
+        $this->description = $description;
+    }
+
+    /**
      * @return Language
      */
     public function getLanguage(): Language
@@ -131,19 +162,19 @@ class CategoryTranslatableContent
     }
 
     /**
-     * @return Category
+     * @return Product
      */
-    public function getCategory(): Category
+    public function getProduct(): Product
     {
-        return $this->category;
+        return $this->product;
     }
 
     /**
-     * @param Category $category
+     * @param Product $product
      */
-    public function setCategory(Category $category): void
+    public function setProduct(Product $product): void
     {
-        $this->category = $category;
+        $this->product = $product;
     }
 
     /**
@@ -155,10 +186,26 @@ class CategoryTranslatableContent
     }
 
     /**
-     * @return DateTime|null
+     * @param DateTime $created
      */
-    public function getUpdated(): ?DateTime
+    public function setCreated(DateTime $created): void
+    {
+        $this->created = $created;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getUpdated(): DateTime
     {
         return $this->updated;
+    }
+
+    /**
+     * @param DateTime $updated
+     */
+    public function setUpdated(DateTime $updated): void
+    {
+        $this->updated = $updated;
     }
 }

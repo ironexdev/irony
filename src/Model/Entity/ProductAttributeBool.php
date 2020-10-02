@@ -7,16 +7,16 @@ use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Model\Repository\ProductAttributeTextRepository")
+ * @ORM\Entity(repositoryClass="App\Model\Repository\ProductAttributeBoolRepository")
  * @ORM\Table(
- *     name="product_attribute_text",
+ *     name="product_attribute_bool",
  *     uniqueConstraints={
  *         @ORM\UniqueConstraint(name="product_attribute",columns={"product_id","product_attribute_id"})
  *     }
  * )
  * @ORM\HasLifecycleCallbacks
  */
-class ProductAttributeText
+class ProductAttributeBool
 {
     /**
      * @var string
@@ -27,8 +27,8 @@ class ProductAttributeText
     private $id;
 
     /**
-     * @var string
-     * @ORM\Column(type="string",length=255)
+     * @var bool
+     * @ORM\Column(type="boolean")
      */
     private $value;
 
@@ -85,17 +85,17 @@ class ProductAttributeText
     }
 
     /**
-     * @return string
+     * @return bool
      */
-    public function getValue(): string
+    public function getValue(): bool
     {
         return $this->value;
     }
 
     /**
-     * @param string $value
+     * @param bool $value
      */
-    public function setValue(string $value): void
+    public function setValue(bool $value): void
     {
         $this->value = $value;
     }

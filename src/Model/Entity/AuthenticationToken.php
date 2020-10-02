@@ -41,7 +41,7 @@ class AuthenticationToken
     /**
      * @var Account
      * @ORM\ManyToOne(targetEntity="Account",inversedBy="authenticationToken",fetch="EXTRA_LAZY")
-     * @ORM\JoinColumn(name="account_id",onDelete="CASCADE")
+     * @ORM\JoinColumn(name="account_id",nullable=false,onDelete="CASCADE")
      */
     private $account;
 

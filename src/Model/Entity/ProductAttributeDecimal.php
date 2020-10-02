@@ -7,16 +7,17 @@ use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Model\Repository\AuthorizationTokenRepository")
+ * @ORM\Entity(repositoryClass="App\Model\Repository\ProductAttributeDecimalRepository")
  * @ORM\Table(
- *     name="authorization_token"
+ *     name="product_attribute_decimal",
+ *     uniqueConstraints={
+ *         @ORM\UniqueConstraint(name="product_attribute",columns={"product_id","product_attribute_id"})
+ *     }
  * )
  * @ORM\HasLifecycleCallbacks
  */
-class AuthorizationToken
+class ProductAttributeDecimal
 {
-    const TOKEN_DURATION = "1 hour";
-
     /**
      * @var string
      * @ORM\Id
@@ -27,23 +28,23 @@ class AuthorizationToken
 
     /**
      * @var string
-     * @ORM\Column(type="guid")
-     * @ORM\GeneratedValue(strategy="UUID")
+     * @ORM\Column(type="decimal")
      */
-    private $code;
+    private $value;
 
     /**
-     * @var DateTime
-     * @ORM\Column(type="datetime")
+     * @var Product
+     * @ORM\ManyToOne(targetEntity="Product",fetch="EXTRA_LAZY")
+     * @ORM\JoinColumn(name="product_id",nullable=false,onDelete="CASCADE")
      */
-    private $expiration;
+    private $product;
 
     /**
-     * @var Account
-     * @ORM\ManyToOne(targetEntity="Account",inversedBy="authorizationToken",fetch="EXTRA_LAZY")
-     * @ORM\JoinColumn(name="account_id",nullable=false,onDelete="CASCADE")
+     * @var ProductAttribute
+     * @ORM\ManyToOne(targetEntity="ProductAttribute",fetch="EXTRA_LAZY")
+     * @ORM\JoinColumn(name="product_attribute_id",nullable=false,onDelete="RESTRICT")
      */
-    private $account;
+    private $productAttribute;
 
     /**
      * @var DateTime
@@ -56,17 +57,6 @@ class AuthorizationToken
      * @ORM\Column(type="datetime",nullable=true)
      */
     protected $updated;
-
-    /**
-     * AuthorizationToken constructor.
-     * @param DateTime $expiration
-     * @param Account $account
-     */
-    public function __construct(DateTime $expiration, Account $account)
-    {
-        $this->expiration = $expiration;
-        $this->account = $account;
-    }
 
     /**
      * Gets triggered only on insert
@@ -97,49 +87,49 @@ class AuthorizationToken
     /**
      * @return string
      */
-    public function getCode(): string
+    public function getValue(): string
     {
-        return $this->code;
+        return $this->value;
     }
 
     /**
-     * @param string $code
+     * @param string $value
      */
-    public function setCode(string $code): void
+    public function setValue(string $value): void
     {
-        $this->code = $code;
+        $this->value = $value;
     }
 
     /**
-     * @return DateTime
+     * @return Product
      */
-    public function getExpiration(): DateTime
+    public function getProduct(): Product
     {
-        return $this->expiration;
+        return $this->product;
     }
 
     /**
-     * @param DateTime $expiration
+     * @param Product $product
      */
-    public function setExpiration(DateTime $expiration): void
+    public function setProduct(Product $product): void
     {
-        $this->expiration = $expiration;
+        $this->product = $product;
     }
 
     /**
-     * @return Account
+     * @return ProductAttribute
      */
-    public function getAccount(): Account
+    public function getProductAttribute(): ProductAttribute
     {
-        return $this->account;
+        return $this->productAttribute;
     }
 
     /**
-     * @param account $account
+     * @param ProductAttribute $productAttribute
      */
-    public function setAccount(Account $account): void
+    public function setProductAttribute(ProductAttribute $productAttribute): void
     {
-        $this->account = $account;
+        $this->productAttribute = $productAttribute;
     }
 
     /**

@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(
  *     name="address",
  *     uniqueConstraints={
- *         @ORM\UniqueConstraint(name="email",columns={"street","streetNumber","city","country"})
+ *         @ORM\UniqueConstraint(name="address",columns={"street","streetNumber","city","country"})
  *     }
  * )
  * @ORM\HasLifecycleCallbacks

@@ -36,6 +36,12 @@ class Category
 
     /**
      * @var Collection
+     * @ORM\OneToMany(targetEntity="CategoryCountryContent",mappedBy="category",fetch="EXTRA_LAZY",cascade={"persist"},orphanRemoval=true)
+     */
+    private $countryContents;
+
+    /**
+     * @var Collection
      * @ORM\OneToMany(targetEntity="CategoryTranslatableContent",mappedBy="category",fetch="EXTRA_LAZY",cascade={"persist"},orphanRemoval=true)
      */
     private $translatableContents;
@@ -64,6 +70,7 @@ class Category
      */
     public function __construct(?Category $parent = null)
     {
+        $this->countryContents = new ArrayCollection();
         $this->productCategoryRelations = new ArrayCollection();
         $this->translatableContents = new ArrayCollection();
 
@@ -119,6 +126,40 @@ class Category
      * @param Language $language
      * @return PersistentCollection
      */
+    public function getCountryContent(Language $language): Collection
+    {
+        return $this->countryContents->matching(Criteria::create()->where(Criteria::expr()->eq("language_id", $language->getId())))[0];
+    }
+
+    /**
+     * @return PersistentCollection
+     */
+    public function getCountryContents(): Collection
+    {
+        return $this->countryContents;
+    }
+
+    /**
+     * @param CategoryCountryContent $countryContent
+     */
+    public function addCountryContent(CategoryCountryContent $countryContent): void
+    {
+        $this->countryContents->add($countryContent);
+    }
+
+    /**
+     * @param CategoryCountryContent $countryContent
+     * @return bool
+     */
+    public function removeCountryContent(CategoryCountryContent $countryContent): bool
+    {
+        return $this->countryContents->removeElement($countryContent);
+    }
+
+    /**
+     * @param Language $language
+     * @return Collection
+     */
     public function getTranslatableContent(Language $language): Collection
     {
         return $this->translatableContents->matching(Criteria::create()->where(Criteria::expr()->eq("language_id", $language->getId())))[0];
@@ -133,7 +174,7 @@ class Category
     }
 
     /**
-     * @param \App\Model\Entity\CategoryTranslatableContent $translatableContent
+     * @param CategoryTranslatableContent $translatableContent
      */
     public function addTranslatableContent(CategoryTranslatableContent $translatableContent): void
     {
@@ -141,7 +182,7 @@ class Category
     }
 
     /**
-     * @param \App\Model\Entity\CategoryTranslatableContent $translatableContent
+     * @param CategoryTranslatableContent $translatableContent
      * @return bool
      */
     public function removeTranslatableContent(CategoryTranslatableContent $translatableContent): bool

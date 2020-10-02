@@ -4,19 +4,23 @@ namespace App\Model\Entity;
 
 use DateTime;
 use DateTimeZone;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 
 /**
- * @ORM\Entity(repositoryClass="App\Model\Repository\ProductAttributeTextRepository")
+ * @ORM\Entity(repositoryClass="App\Model\Repository\CategoryCountryContentRepository")
  * @ORM\Table(
- *     name="product_attribute_text",
+ *     name="category_country_content",
  *     uniqueConstraints={
- *         @ORM\UniqueConstraint(name="product_attribute",columns={"product_id","product_attribute_id"})
+ *         @ORM\UniqueConstraint(name="category_country",columns={"category_id","country_id"})
  *     }
  * )
  * @ORM\HasLifecycleCallbacks
  */
-class ProductAttributeText
+class CategoryCountryContent
 {
     /**
      * @var string
@@ -27,24 +31,23 @@ class ProductAttributeText
     private $id;
 
     /**
-     * @var string
-     * @ORM\Column(type="string",length=255)
+     * @var bool
+     * @ORM\Column(type="boolean")
      */
-    private $value;
+    private $active;
 
     /**
-     * @var Product
-     * @ORM\ManyToOne(targetEntity="Product",fetch="EXTRA_LAZY")
-     * @ORM\JoinColumn(name="product_id",nullable=false,onDelete="CASCADE")
+     * @var Category
+     * @ORM\ManyToOne(targetEntity="Category",inversedBy="translatableContents",fetch="EXTRA_LAZY")
+     * @ORM\JoinColumn(name="category_id",nullable=false,onDelete="CASCADE")
      */
-    private $product;
+    private $category;
 
     /**
-     * @var ProductAttribute
-     * @ORM\ManyToOne(targetEntity="ProductAttribute",fetch="EXTRA_LAZY")
-     * @ORM\JoinColumn(name="product_attribute_id",nullable=false,onDelete="RESTRICT")
+     * @ORM\ManyToOne(targetEntity="Country")
+     * @ORM\JoinColumn(name="country_id",nullable=false)
      */
-    private $productAttribute;
+    private $country;
 
     /**
      * @var DateTime
@@ -85,51 +88,51 @@ class ProductAttributeText
     }
 
     /**
-     * @return string
+     * @return bool
      */
-    public function getValue(): string
+    public function getActive(): bool
     {
-        return $this->value;
+        return $this->active;
     }
 
     /**
-     * @param string $value
+     * @param bool $active
      */
-    public function setValue(string $value): void
+    public function setActive(bool $active): void
     {
-        $this->value = $value;
+        $this->active = $active;
     }
 
     /**
-     * @return Product
+     * @return Category
      */
-    public function getProduct(): Product
+    public function getCategory(): Category
     {
-        return $this->product;
+        return $this->category;
     }
 
     /**
-     * @param Product $product
+     * @param Category $category
      */
-    public function setProduct(Product $product): void
+    public function setCategory(Category $category): void
     {
-        $this->product = $product;
+        $this->category = $category;
     }
 
     /**
-     * @return ProductAttribute
+     * @return mixed
      */
-    public function getProductAttribute(): ProductAttribute
+    public function getCountry()
     {
-        return $this->productAttribute;
+        return $this->country;
     }
 
     /**
-     * @param ProductAttribute $productAttribute
+     * @param mixed $country
      */
-    public function setProductAttribute(ProductAttribute $productAttribute): void
+    public function setCountry($country): void
     {
-        $this->productAttribute = $productAttribute;
+        $this->country = $country;
     }
 
     /**

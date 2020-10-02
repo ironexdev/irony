@@ -6,6 +6,7 @@ use DateTime;
 use DateTimeZone;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
 
@@ -25,6 +26,24 @@ class Product
      * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
+
+    /**
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="ProductCountryContent",mappedBy="product",fetch="EXTRA_LAZY",cascade={"persist"},orphanRemoval=true)
+     */
+    private $countryContents;
+
+    /**
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="ProductTranslatableContent",mappedBy="product",fetch="EXTRA_LAZY",cascade={"persist"},orphanRemoval=true)
+     */
+    private $translatableContents;
+
+    /**
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="ProductAttributeRelation",mappedBy="product",fetch="EXTRA_LAZY",cascade={"persist"},orphanRemoval=true)
+     */
+    private $productAttributeRelations;
 
     /**
      * @var Collection
@@ -49,7 +68,9 @@ class Product
      */
     public function __construct()
     {
+        $this->countryContents = new ArrayCollection();
         $this->productCategoryRelations = new ArrayCollection();
+        $this->translatableContents = new ArrayCollection();
     }
 
     /**
@@ -76,6 +97,115 @@ class Product
     public function getId(): string
     {
         return $this->id;
+    }
+
+    /**
+     * @param Language $language
+     * @return PersistentCollection
+     */
+    public function getCountryContent(Language $language): Collection
+    {
+        return $this->countryContents->matching(Criteria::create()->where(Criteria::expr()->eq("language_id", $language->getId())))[0];
+    }
+
+    /**
+     * @return PersistentCollection
+     */
+    public function getCountryContents(): Collection
+    {
+        return $this->countryContents;
+    }
+
+    /**
+     * @param ProductCountryContent $countryContent
+     */
+    public function addCountryContent(ProductCountryContent $countryContent): void
+    {
+        $this->countryContents->add($countryContent);
+    }
+
+    /**
+     * @param ProductCountryContent $countryContent
+     * @return bool
+     */
+    public function removeCountryContent(ProductCountryContent $countryContent): bool
+    {
+        return $this->countryContents->removeElement($countryContent);
+    }
+
+    /**
+     * @param Language $language
+     * @return Collection
+     */
+    public function getTranslatableContent(Language $language): Collection
+    {
+        return $this->translatableContents->matching(Criteria::create()->where(Criteria::expr()->eq("language_id", $language->getId())))[0];
+    }
+
+    /**
+     * @return PersistentCollection
+     */
+    public function getTranslatableContents(): Collection
+    {
+        return $this->translatableContents;
+    }
+
+    /**
+     * @param ProductTranslatableContent $translatableContent
+     */
+    public function addTranslatableContent(ProductTranslatableContent $translatableContent): void
+    {
+        $this->translatableContents->add($translatableContent);
+    }
+
+    /**
+     * @param ProductTranslatableContent $translatableContent
+     * @return bool
+     */
+    public function removeTranslatableContent(ProductTranslatableContent $translatableContent): bool
+    {
+        return $this->translatableContents->removeElement($translatableContent);
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getProductAttributeRelations(): Collection
+    {
+        return $this->productAttributeRelations;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getAttributes(): Collection
+    {
+        $attributes = new ArrayCollection();
+
+        /** @var ProductAttributeRelation $productAttributeRelation */
+        foreach($this->productAttributeRelations as $productAttributeRelation)
+        {
+            $attributes->add($productAttributeRelation->getProductAttribute());
+        }
+
+        return $attributes;
+    }
+
+    /**
+     * @param ProductAttribute $attribute
+     */
+    public function addAttribute(ProductAttribute $attribute)
+    {
+        $this->productAttributeRelations->add(new ProductAttributeRelation($this, $attribute));
+    }
+
+    /**
+     * @param \App\Model\Entity\ProductAttributeRelation $productAttributeRelation
+     * @return bool
+     */
+    public function removeAttribute(ProductAttributeRelation $productAttributeRelation): bool
+    {
+        return $this->productAttributeRelations->removeElement($productAttributeRelation);
     }
 
     /**

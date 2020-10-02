@@ -7,16 +7,13 @@ use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Model\Repository\ProductAttributeTextRepository")
+ * @ORM\Entity(repositoryClass="App\Model\Repository\ProductAttributeRelationRepository")
  * @ORM\Table(
- *     name="product_attribute_text",
- *     uniqueConstraints={
- *         @ORM\UniqueConstraint(name="product_attribute",columns={"product_id","product_attribute_id"})
- *     }
+ *     name="product_attribute_relation",
  * )
  * @ORM\HasLifecycleCallbacks
  */
-class ProductAttributeText
+class ProductAttributeRelation
 {
     /**
      * @var string
@@ -27,22 +24,16 @@ class ProductAttributeText
     private $id;
 
     /**
-     * @var string
-     * @ORM\Column(type="string",length=255)
-     */
-    private $value;
-
-    /**
      * @var Product
-     * @ORM\ManyToOne(targetEntity="Product",fetch="EXTRA_LAZY")
+     * @ORM\ManyToOne(targetEntity="Product",inversedBy="productAttributeRelations",fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(name="product_id",nullable=false,onDelete="CASCADE")
      */
     private $product;
 
     /**
      * @var ProductAttribute
-     * @ORM\ManyToOne(targetEntity="ProductAttribute",fetch="EXTRA_LAZY")
-     * @ORM\JoinColumn(name="product_attribute_id",nullable=false,onDelete="RESTRICT")
+     * @ORM\ManyToOne(targetEntity="ProductAttribute",inversedBy="productAttributeRelations",fetch="EXTRA_LAZY")
+     * @ORM\JoinColumn(name="product_attribute_id",nullable=false,onDelete="CASCADE")
      */
     private $productAttribute;
 
@@ -57,6 +48,17 @@ class ProductAttributeText
      * @ORM\Column(type="datetime",nullable=true)
      */
     protected $updated;
+
+    /**
+     * ProductAttributeRelation constructor.
+     * @param \App\Model\Entity\Product $product
+     * @param \App\Model\Entity\ProductAttribute $productAttribute
+     */
+    public function __construct(Product $product, ProductAttribute $productAttribute)
+    {
+        $this->setProduct($product);
+        $this->setProductAttribute($productAttribute);
+    }
 
     /**
      * Gets triggered only on insert
@@ -82,22 +84,6 @@ class ProductAttributeText
     public function getId(): string
     {
         return $this->id;
-    }
-
-    /**
-     * @return string
-     */
-    public function getValue(): string
-    {
-        return $this->value;
-    }
-
-    /**
-     * @param string $value
-     */
-    public function setValue(string $value): void
-    {
-        $this->value = $value;
     }
 
     /**
