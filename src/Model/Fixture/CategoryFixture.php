@@ -2,126 +2,97 @@
 
 namespace App\Model\Fixture;
 
+use App\Enum\CountryEnum;
+use App\Enum\LanguageEnum;
 use App\Model\Entity\Category;
+use App\Model\Entity\CategoryCountryContent;
 use App\Model\Entity\CategoryTranslatableContent;
+use App\Model\Entity\Country;
+use App\Model\Entity\Language;
+use App\Model\Repository\CountryRepository;
+use App\Model\Repository\LanguageRepository;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Persistence\ObjectManager;
 
 class CategoryFixture extends AbstractFixture
 {
     /**
+     * @var CountryRepository
+     */
+    private $countryRepository;
+
+    /**
+     * @var LanguageRepository
+     */
+    private $languageRepository;
+
+    /**
+     * CategoryFixture constructor.
+     * @param \App\Model\Repository\CountryRepository $countryRepository
+     * @param \App\Model\Repository\LanguageRepository $languageRepository
+     */
+    public function __construct(CountryRepository $countryRepository, LanguageRepository $languageRepository)
+    {
+        $this->countryRepository = $countryRepository;
+        $this->languageRepository = $languageRepository;
+    }
+
+    /**
      * @param \Doctrine\Persistence\ObjectManager $manager
      */
     public function load(ObjectManager $manager): void
     {
-        $categories = [
-            [
-                "parent" => false,
-                "translations" => [
-                    "cs" => "Počítače",
-                    "en" => "Computers"
-                ]
-            ],
-            [
-                "parent" => true,
-                "translations" => [
-                    "cs" => "Stolní Počítače",
-                    "en" => "Desktop Computers"
-                ]
-            ],
-            [
-                "parent" => true,
-                "translations" => [
-                    "cs" => "Herní Stolní Počítače",
-                    "en" => "Desktop Gaming Computers"
-                ]
-            ],
-            [
-                "parent" => true,
-                "translations" => [
-                    "cs" => "Herní Stolní Počítače s OS",
-                    "en" => "Desktop Gaming Computers with OS"
-                ]
-            ],
-            [
-                "parent" => true,
-                "translations" => [
-                    "cs" => "Herní Stolní Počítače a OS a NBD Podporou",
-                    "en" => "Desktop Gaming Computers with OS and NBD Support"
-                ]
-            ],
-            [
-                "parent" => false,
-                "translations" => [
-                    "cs" => "Mobilní Telefony",
-                    "en" => "Mobile Phones"
-                ]
-            ],
-            [
-                "parent" => true,
-                "translations" => [
-                    "cs" => "Chytré Mobilní Telefony",
-                    "en" => "Smart Mobile Phones"
-                ]
-            ],
-            [
-                "parent" => false,
-                "translations" => [
-                    "cs" => "Monitory",
-                    "en" => "Monitors"
-                ]
-            ],
-            [
-                "parent" => true,
-                "translations" => [
-                    "cs" => "Herní Monitory",
-                    "en" => "Gaming Monitors"
-                ]
-            ],
-            [
-                "parent" => false,
-                "translations" => [
-                    "cs" => "Josticky",
-                    "en" => "Joysticks"
-                ]
-            ]
-        ];
+        /** @var Language $enLanguage */
+        $enLanguage = $this->languageRepository->findOneBy(["iso2" => LanguageEnum::EN]);
+        /** @var Language $csLanguage */
+        $csLanguage = $this->languageRepository->findOneBy(["iso2" => LanguageEnum::CS]);
 
-        $parentCategory = null;
-        foreach($categories as $category => $categoryData)
+        /** @var Country $usCountry */
+        $usCountry = $this->countryRepository->findOneBy(["iso2" => CountryEnum::US]);
+        /** @var Country $czCountry */
+        $czCountry = $this->countryRepository->findOneBy(["iso2" => CountryEnum::CZ]);
+
+        $previousCategory = null;
+
+        for($i = 0; $i < 500; $i++)
         {
-            $parentCategory = $this->createCategory($categoryData["translations"], $parentCategory, $manager);
+            if($i % 25 === 0)
+            {
+                $previousCategory = null;
+            }
+
+            $enTitle = "Title " . " " . $enLanguage->getIso2() . " " . $i;
+            $csTitle = "Title " . " " . $csLanguage->getIso2() . " " . $i;
+
+            $category = new Category($previousCategory);
+
+            $enTranslatableContent = new CategoryTranslatableContent($enTitle, $category, $enLanguage);
+            $csTranslatableContent = new CategoryTranslatableContent($csTitle, $category, $csLanguage);
+
+            $usCountryContent = new CategoryCountryContent(true, $category, $usCountry);
+            $czCountryContent = new CategoryCountryContent(true, $category, $czCountry);
+
+            $category->addTranslatableContent($enTranslatableContent);
+            $category->addTranslatableContent($csTranslatableContent);
+            $category->addCountryContent($usCountryContent);
+            $category->addCountryContent($czCountryContent);
+
+            $previousCategory = $category;
+
+            $manager->persist($category);
         }
 
         $manager->flush();
     }
 
     /**
-     * @param array $translations
-     * @param \App\Model\Entity\Category|null $parentCategory
-     * @param \Doctrine\Persistence\ObjectManager $manager
-     * @return \App\Model\Entity\Category
+     * @return array
      */
-    private function createCategory(array $translations, ?Category $parentCategory, ObjectManager $manager): Category
+    public function getDependencies(): array
     {
-        $category = new Category();
-
-        if($parentCategory)
-        {
-            $category->setParent($parentCategory);
-        }
-
-        $manager->persist($category);
-
-        foreach($translations as $language => $translation)
-        {
-            $categoryContent = new CategoryTranslatableContent();
-            $categoryContent->setTitle($translation);
-            $categoryContent->setLanguage($language);
-            $categoryContent->setCategory($category);
-            $manager->persist($categoryContent);
-        }
-
-        return $category;
+        return [
+            CountryFixture::class,
+            LanguageFixture::class
+        ];
     }
 }

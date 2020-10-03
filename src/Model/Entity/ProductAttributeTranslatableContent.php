@@ -41,14 +41,14 @@ class ProductAttributeTranslatableContent
 
     /**
      * @var Language
-     * @ORM\ManyToOne(targetEntity="Language")
+     * @ORM\ManyToOne(targetEntity="Language",fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(name="language_id",nullable=false)
      */
     private $language;
 
     /**
      * @var ProductAttribute
-     * @ORM\ManyToOne(targetEntity="ProductAttribute",fetch="EXTRA_LAZY",inversedBy="translatableContents")
+     * @ORM\ManyToOne(targetEntity="ProductAttribute",fetch="EXTRA_LAZY",inversedBy="translatable_contents")
      * @ORM\JoinColumn(name="product_attribute_id",nullable=false,onDelete="CASCADE")
      */
     private $productAttribute;

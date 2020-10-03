@@ -38,7 +38,7 @@ class CategoryCountryContent
 
     /**
      * @var Category
-     * @ORM\ManyToOne(targetEntity="Category",inversedBy="translatableContents",fetch="EXTRA_LAZY")
+     * @ORM\ManyToOne(targetEntity="Category",inversedBy="country_contents",fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(name="category_id",nullable=false,onDelete="CASCADE")
      */
     private $category;
@@ -60,6 +60,19 @@ class CategoryCountryContent
      * @ORM\Column(type="datetime",nullable=true)
      */
     protected $updated;
+
+    /**
+     * CategoryCountryContent constructor.
+     * @param bool $active
+     * @param \App\Model\Entity\Category $category
+     * @param \App\Model\Entity\Country $country
+     */
+    public function __construct(bool $active, Category $category, Country $country)
+    {
+        $this->setActive($active);
+        $this->setCategory($category);
+        $this->setCountry($country);
+    }
 
     /**
      * Gets triggered only on insert

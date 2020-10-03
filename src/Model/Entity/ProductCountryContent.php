@@ -46,7 +46,7 @@ class ProductCountryContent
 
     /**
      * @var string
-     * @ORM\Column(type="string",columnDefinition="ENUM('CZK,EUR') NOT NULL")
+     * @ORM\Column(type="string",columnDefinition="ENUM('CZK,'EUR','USD') NOT NULL")
      */
     private $currency;
 
@@ -58,7 +58,7 @@ class ProductCountryContent
 
     /**
      * @var Product
-     * @ORM\ManyToOne(targetEntity="Product",inversedBy="countryContents",fetch="EXTRA_LAZY")
+     * @ORM\ManyToOne(targetEntity="Product",inversedBy="country_contents",fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(name="product_id",nullable=false,onDelete="CASCADE")
      */
     private $product;
@@ -81,6 +81,27 @@ class ProductCountryContent
      * @ORM\Column(type="datetime",nullable=true)
      */
     protected $updated;
+
+    /**
+     * ProductCountryContent constructor.
+     * @param string $price
+     * @param string $tax
+     * @param string $discount
+     * @param string $currency
+     * @param bool $top
+     * @param \App\Model\Entity\Product $product
+     * @param \App\Model\Entity\Country $country
+     */
+    public function __construct(string $price, string $tax, string $discount, string $currency, bool $top, Product $product, Country $country)
+    {
+        $this->setPrice($price);
+        $this->setTax($tax);
+        $this->setDiscount($discount);
+        $this->setCurrency($currency);
+        $this->setTop($top);
+        $this->setProduct($product);
+        $this->setCountry($country);
+    }
 
     /**
      * Gets triggered only on insert

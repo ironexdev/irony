@@ -43,19 +43,19 @@ class Account
 
     /**
      * @var string
-     * @ORM\Column(type="string",length=255)
+     * @ORM\Column(name="first_name",type="string",length=255)
      */
     private $firstName;
 
     /**
      * @var string
-     * @ORM\Column(type="string",length=255)
+     * @ORM\Column(name="last_name",type="string",length=255)
      */
     private $lastName;
 
     /**
      * @var bool
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(name="cookie_consent",type="boolean")
      */
     private $cookieConsent;
 
@@ -88,6 +88,18 @@ class Account
     private $authorizationTokens;
 
     /**
+     * @var Country
+     */
+    private $country;
+
+    /**
+     * @var Language
+     * @ORM\ManyToOne(targetEntity="Language",fetch="EXTRA_LAZY")
+     * @ORM\JoinColumn(name="language_id",nullable=false,onDelete="CASCADE")
+     */
+    private $language;
+
+    /**
      * @var DateTime
      * @ORM\Column(type="datetime")
      */
@@ -107,8 +119,10 @@ class Account
      * @param string $lastName
      * @param bool $cookieConsent
      * @param string $role
+     * @param Country $country
+     * @param Language $language
      */
-    public function __construct(string $email, string $password, string $firstName, string $lastName, bool $cookieConsent = true, string $role = AccountRoleEnum::MEMBER)
+    public function __construct(string $email, string $password, string $firstName, string $lastName, bool $cookieConsent = true, string $role = AccountRoleEnum::MEMBER, Country $country, Language $language)
     {
         $this->addresses = new ArrayCollection();
 
@@ -119,6 +133,8 @@ class Account
         $this->setPassword($password);
         $this->setCookieConsent($cookieConsent);
         $this->setRole($role);
+        $this->setCountry($country);
+        $this->setLanguage($language);
     }
 
     /**
@@ -269,22 +285,6 @@ class Account
     }
 
     /**
-     * @return DateTime
-     */
-    public function getCreated(): DateTime
-    {
-        return $this->created;
-    }
-
-    /**
-     * @return DateTime|null
-     */
-    public function getUpdated(): ?DateTime
-    {
-        return $this->updated;
-    }
-
-    /**
      * @return Collection
      */
     public function getAuthenticationTokens(): Collection
@@ -314,5 +314,53 @@ class Account
     public function removeAuthorizationTokens(): void
     {
         $this->authorizationTokens->clear();
+    }
+
+    /**
+     * @return Country
+     */
+    public function getCountry(): Country
+    {
+        return $this->country;
+    }
+
+    /**
+     * @param Country $country
+     */
+    public function setCountry(Country $country): void
+    {
+        $this->country = $country;
+    }
+
+    /**
+     * @return Language
+     */
+    public function getLanguage(): Language
+    {
+        return $this->language;
+    }
+
+    /**
+     * @param Language $language
+     */
+    public function setLanguage(Language $language): void
+    {
+        $this->language = $language;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getCreated(): DateTime
+    {
+        return $this->created;
+    }
+
+    /**
+     * @return DateTime|null
+     */
+    public function getUpdated(): ?DateTime
+    {
+        return $this->updated;
     }
 }

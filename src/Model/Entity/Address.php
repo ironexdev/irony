@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(
  *     name="address",
  *     uniqueConstraints={
- *         @ORM\UniqueConstraint(name="address",columns={"street","streetNumber","city","country"})
+ *         @ORM\UniqueConstraint(name="address",columns={"street","street_number","city","country"})
  *     }
  * )
  * @ORM\HasLifecycleCallbacks
@@ -34,7 +34,7 @@ class Address
 
     /**
      * @var string
-     * @ORM\Column(type="string",length=255)
+     * @ORM\Column(name="street_number",type="string",length=255)
      */
     private $streetNumber;
 
@@ -46,7 +46,7 @@ class Address
 
     /**
      * @var string
-     * @ORM\Column(type="string",length=255)
+     * @ORM\Column(name="zip_code",type="string",length=255)
      */
     private $zipCode;
 

@@ -4,7 +4,10 @@ namespace App\Model\Entity;
 
 use DateTime;
 use DateTimeZone;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 
 /**
  * @ORM\Entity(repositoryClass="App\Model\Repository\ProductAttributeTextRepository")
@@ -33,6 +36,12 @@ class ProductAttributeText
     private $value;
 
     /**
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="ProductAttributeTextTranslatableContent",mappedBy="product_attribute_text",fetch="EXTRA_LAZY",cascade={"persist"},orphanRemoval=true)
+     */
+    private $translatableContents;
+
+    /**
      * @var Product
      * @ORM\ManyToOne(targetEntity="Product",fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(name="product_id",nullable=false,onDelete="CASCADE")
@@ -57,6 +66,14 @@ class ProductAttributeText
      * @ORM\Column(type="datetime",nullable=true)
      */
     protected $updated;
+
+    /**
+     * ProductAttributeText constructor.
+     */
+    public function __construct()
+    {
+        $this->translatableContents = new ArrayCollection();
+    }
 
     /**
      * Gets triggered only on insert
@@ -98,6 +115,40 @@ class ProductAttributeText
     public function setValue(string $value): void
     {
         $this->value = $value;
+    }
+
+    /**
+     * @param Language $language
+     * @return Collection
+     */
+    public function getTranslatableContent(Language $language): Collection
+    {
+        return $this->translatableContents->matching(Criteria::create()->where(Criteria::expr()->eq("language_id", $language->getId())))[0];
+    }
+
+    /**
+     * @return PersistentCollection
+     */
+    public function getTranslatableContents(): Collection
+    {
+        return $this->translatableContents;
+    }
+
+    /**
+     * @param ProductAttributeTextTranslatableContent $translatableContent
+     */
+    public function addTranslatableContent(ProductAttributeTextTranslatableContent $translatableContent): void
+    {
+        $this->translatableContents->add($translatableContent);
+    }
+
+    /**
+     * @param ProductAttributeTextTranslatableContent $translatableContent
+     * @return bool
+     */
+    public function removeTranslatableContent(ProductAttributeTextTranslatableContent $translatableContent): bool
+    {
+        return $this->translatableContents->removeElement($translatableContent);
     }
 
     /**

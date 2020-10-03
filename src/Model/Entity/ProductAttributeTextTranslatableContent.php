@@ -7,17 +7,16 @@ use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Model\Repository\CategoryTranslatableContentRepository")
+ * @ORM\Entity(repositoryClass="App\Model\Repository\ProductAttributeTextTranslatableContentRepository")
  * @ORM\Table(
- *     name="category_translatable_content",
+ *     name="product_attribute_text_translatable_content",
  *     uniqueConstraints={
- *         @ORM\UniqueConstraint(name="title_language",columns={"title","language_id"}),
- *         @ORM\UniqueConstraint(name="category_language",columns={"category_id","language_id"})
+ *         @ORM\UniqueConstraint(name="product_attribute_text_language",columns={"product_attribute_text_id","language_id"})
  *     }
  * )
  * @ORM\HasLifecycleCallbacks
  */
-class CategoryTranslatableContent
+class ProductAttributeTextTranslatableContent
 {
     /**
      * @var string
@@ -31,7 +30,14 @@ class CategoryTranslatableContent
      * @var string
      * @ORM\Column(type="string",length=255)
      */
-    private $title;
+    private $value;
+
+    /**
+     * @var ProductAttributeText
+     * @ORM\ManyToOne(targetEntity="ProductAttributeText",fetch="EXTRA_LAZY",inversedBy="translatable_contents")
+     * @ORM\JoinColumn(name="product_attribute_text_id",nullable=false,onDelete="CASCADE")
+     */
+    private $productAttributeText;
 
     /**
      * @var Language
@@ -39,13 +45,6 @@ class CategoryTranslatableContent
      * @ORM\JoinColumn(name="language_id",nullable=false)
      */
     private $language;
-
-    /**
-     * @var Category
-     * @ORM\ManyToOne(targetEntity="Category",inversedBy="translatable_contents",fetch="EXTRA_LAZY")
-     * @ORM\JoinColumn(name="category_id",nullable=false,onDelete="CASCADE")
-     */
-    private $category;
 
     /**
      * @var DateTime
@@ -58,19 +57,6 @@ class CategoryTranslatableContent
      * @ORM\Column(type="datetime",nullable=true)
      */
     protected $updated;
-
-    /**
-     * CategoryTranslatableContent constructor.
-     * @param string $title
-     * @param \App\Model\Entity\Category $category
-     * @param \App\Model\Entity\Language $language
-     */
-    public function __construct(string $title, Category $category, Language $language)
-    {
-        $this->setTitle($title);
-        $this->setCategory($category);
-        $this->setLanguage($language);
-    }
 
     /**
      * Gets triggered only on insert
@@ -101,17 +87,33 @@ class CategoryTranslatableContent
     /**
      * @return string
      */
-    public function getTitle(): string
+    public function getValue(): string
     {
-        return $this->title;
+        return $this->value;
     }
 
     /**
-     * @param string $title
+     * @param string $value
      */
-    public function setTitle(string $title): void
+    public function setValue(string $value): void
     {
-        $this->title = $title;
+        $this->value = $value;
+    }
+
+    /**
+     * @return ProductAttributeText
+     */
+    public function getProductAttributeText(): ProductAttributeText
+    {
+        return $this->productAttributeText;
+    }
+
+    /**
+     * @param ProductAttributeText $productAttributeText
+     */
+    public function setProductAttributeText(ProductAttributeText $productAttributeText): void
+    {
+        $this->productAttributeText = $productAttributeText;
     }
 
     /**
@@ -128,22 +130,6 @@ class CategoryTranslatableContent
     public function setLanguage(Language $language): void
     {
         $this->language = $language;
-    }
-
-    /**
-     * @return Category
-     */
-    public function getCategory(): Category
-    {
-        return $this->category;
-    }
-
-    /**
-     * @param Category $category
-     */
-    public function setCategory(Category $category): void
-    {
-        $this->category = $category;
     }
 
     /**

@@ -68,6 +68,7 @@ class Product
      */
     public function __construct()
     {
+        $this->productAttributeRelations = new ArrayCollection();
         $this->countryContents = new ArrayCollection();
         $this->productCategoryRelations = new ArrayCollection();
         $this->translatableContents = new ArrayCollection();

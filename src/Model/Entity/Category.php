@@ -68,7 +68,7 @@ class Category
      * Category constructor.
      * @param \App\Model\Entity\Category|null $parent
      */
-    public function __construct(?Category $parent = null)
+    public function __construct(Category $parent = null)
     {
         $this->countryContents = new ArrayCollection();
         $this->productCategoryRelations = new ArrayCollection();

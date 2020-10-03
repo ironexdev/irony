@@ -48,13 +48,13 @@ class ProductTranslatableContent
     /**
      * @var Language
      * @ORM\ManyToOne(targetEntity="Language",fetch="EXTRA_LAZY")
-     * @ORM\JoinColumn(name="language_id",nullable=false,onDelete="CASCADE")
+     * @ORM\JoinColumn(name="language_id",nullable=false)
      */
     private $language;
 
     /**
      * @var Product
-     * @ORM\ManyToOne(targetEntity="Product",inversedBy="translatableContents",fetch="EXTRA_LAZY")
+     * @ORM\ManyToOne(targetEntity="Product",inversedBy="translatable_contents",fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(name="product_id",nullable=false,onDelete="CASCADE")
      */
     private $product;
@@ -70,6 +70,23 @@ class ProductTranslatableContent
      * @ORM\Column(type="datetime",nullable=true)
      */
     protected $updated;
+
+    /**
+     * ProductTranslatableContent constructor.
+     * @param string $title
+     * @param string $summary
+     * @param string $description
+     * @param \App\Model\Entity\Product $product
+     * @param \App\Model\Entity\Language $language
+     */
+    public function __construct(string $title, string $summary, string $description, Product $product, Language $language)
+    {
+        $this->setTitle($title);
+        $this->setSummary($summary);
+        $this->setDescription($description);
+        $this->setProduct($product);
+        $this->setLanguage($language);
+    }
 
     /**
      * Gets triggered only on insert
