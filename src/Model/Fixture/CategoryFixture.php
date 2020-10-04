@@ -4,11 +4,11 @@ namespace App\Model\Fixture;
 
 use App\Enum\CountryEnum;
 use App\Enum\LanguageEnum;
-use App\Model\Entity\Category;
 use App\Model\Entity\CategoryCountryContent;
 use App\Model\Entity\CategoryTranslatableContent;
 use App\Model\Entity\Country;
 use App\Model\Entity\Language;
+use App\Model\Repository\CategoryRepository;
 use App\Model\Repository\CountryRepository;
 use App\Model\Repository\LanguageRepository;
 use Doctrine\Common\DataFixtures\AbstractFixture;
@@ -16,6 +16,11 @@ use Doctrine\Persistence\ObjectManager;
 
 class CategoryFixture extends AbstractFixture
 {
+    /**
+     * @var CategoryRepository
+     */
+    private $categoryRepository;
+
     /**
      * @var CountryRepository
      */
@@ -28,17 +33,20 @@ class CategoryFixture extends AbstractFixture
 
     /**
      * CategoryFixture constructor.
+     * @param \App\Model\Repository\CategoryRepository $categoryRepository
      * @param \App\Model\Repository\CountryRepository $countryRepository
      * @param \App\Model\Repository\LanguageRepository $languageRepository
      */
-    public function __construct(CountryRepository $countryRepository, LanguageRepository $languageRepository)
+    public function __construct(CategoryRepository $categoryRepository, CountryRepository $countryRepository, LanguageRepository $languageRepository)
     {
+        $this->categoryRepository = $categoryRepository;
         $this->countryRepository = $countryRepository;
         $this->languageRepository = $languageRepository;
     }
 
     /**
      * @param \Doctrine\Persistence\ObjectManager $manager
+     * @throws \Doctrine\ORM\ORMException
      */
     public function load(ObjectManager $manager): void
     {
@@ -64,7 +72,7 @@ class CategoryFixture extends AbstractFixture
             $enTitle = "Title " . " " . $enLanguage->getIso2() . " " . $i;
             $csTitle = "Title " . " " . $csLanguage->getIso2() . " " . $i;
 
-            $category = new Category($previousCategory);
+            $category = $this->categoryRepository->create($previousCategory);
 
             $enTranslatableContent = new CategoryTranslatableContent($enTitle, $category, $enLanguage);
             $csTranslatableContent = new CategoryTranslatableContent($csTitle, $category, $csLanguage);

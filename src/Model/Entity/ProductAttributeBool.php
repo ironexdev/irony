@@ -59,6 +59,19 @@ class ProductAttributeBool
     protected $updated;
 
     /**
+     * ProductAttributeInt constructor.
+     * @param bool $value
+     * @param \App\Model\Entity\Product $product
+     * @param \App\Model\Entity\ProductAttribute $productAttribute
+     */
+    public function __construct(bool $value, Product $product, ProductAttribute $productAttribute)
+    {
+        $this->setValue($value);
+        $this->setProduct($product);
+        $this->setProductAttribute($productAttribute);
+    }
+
+    /**
      * Gets triggered only on insert
      * @ORM\PrePersist
      */

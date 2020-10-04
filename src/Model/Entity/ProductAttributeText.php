@@ -30,12 +30,6 @@ class ProductAttributeText
     private $id;
 
     /**
-     * @var string
-     * @ORM\Column(type="string",length=255)
-     */
-    private $value;
-
-    /**
      * @var Collection
      * @ORM\OneToMany(targetEntity="ProductAttributeTextTranslatableContent",mappedBy="product_attribute_text",fetch="EXTRA_LAZY",cascade={"persist"},orphanRemoval=true)
      */
@@ -68,11 +62,16 @@ class ProductAttributeText
     protected $updated;
 
     /**
-     * ProductAttributeText constructor.
+     * ProductAttributeInt constructor.
+     * @param \App\Model\Entity\Product $product
+     * @param \App\Model\Entity\ProductAttribute $productAttribute
      */
-    public function __construct()
+    public function __construct(Product $product, ProductAttribute $productAttribute)
     {
         $this->translatableContents = new ArrayCollection();
+
+        $this->setProduct($product);
+        $this->setProductAttribute($productAttribute);
     }
 
     /**
@@ -99,22 +98,6 @@ class ProductAttributeText
     public function getId(): string
     {
         return $this->id;
-    }
-
-    /**
-     * @return string
-     */
-    public function getValue(): string
-    {
-        return $this->value;
-    }
-
-    /**
-     * @param string $value
-     */
-    public function setValue(string $value): void
-    {
-        $this->value = $value;
     }
 
     /**

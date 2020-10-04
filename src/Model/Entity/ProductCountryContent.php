@@ -54,6 +54,12 @@ class ProductCountryContent
      * @var bool
      * @ORM\Column(type="boolean")
      */
+    private $active;
+
+    /**
+     * @var bool
+     * @ORM\Column(type="boolean")
+     */
     private $top;
 
     /**
@@ -88,16 +94,18 @@ class ProductCountryContent
      * @param string $tax
      * @param string $discount
      * @param string $currency
+     * @param bool $active
      * @param bool $top
      * @param \App\Model\Entity\Product $product
      * @param \App\Model\Entity\Country $country
      */
-    public function __construct(string $price, string $tax, string $discount, string $currency, bool $top, Product $product, Country $country)
+    public function __construct(string $price, string $tax, string $discount, string $currency, bool $active, bool $top, Product $product, Country $country)
     {
         $this->setPrice($price);
         $this->setTax($tax);
         $this->setDiscount($discount);
         $this->setCurrency($currency);
+        $this->setActive($active);
         $this->setTop($top);
         $this->setProduct($product);
         $this->setCountry($country);
@@ -196,7 +204,23 @@ class ProductCountryContent
     /**
      * @return bool
      */
-    public function isTop(): bool
+    public function getActive(): bool
+    {
+        return $this->active;
+    }
+
+    /**
+     * @param bool $active
+     */
+    public function setActive(bool $active): void
+    {
+        $this->active = $active;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getTop(): bool
     {
         return $this->top;
     }

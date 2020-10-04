@@ -59,6 +59,19 @@ class ProductAttributeDecimal
     protected $updated;
 
     /**
+     * ProductAttributeInt constructor.
+     * @param string $value
+     * @param \App\Model\Entity\Product $product
+     * @param \App\Model\Entity\ProductAttribute $productAttribute
+     */
+    public function __construct(string $value, Product $product, ProductAttribute $productAttribute)
+    {
+        $this->setValue($value);
+        $this->setProduct($product);
+        $this->setProductAttribute($productAttribute);
+    }
+
+    /**
      * Gets triggered only on insert
      * @ORM\PrePersist
      */

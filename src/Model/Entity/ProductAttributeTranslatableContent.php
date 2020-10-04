@@ -40,18 +40,18 @@ class ProductAttributeTranslatableContent
     private $units;
 
     /**
-     * @var Language
-     * @ORM\ManyToOne(targetEntity="Language",fetch="EXTRA_LAZY")
-     * @ORM\JoinColumn(name="language_id",nullable=false)
-     */
-    private $language;
-
-    /**
      * @var ProductAttribute
      * @ORM\ManyToOne(targetEntity="ProductAttribute",fetch="EXTRA_LAZY",inversedBy="translatable_contents")
      * @ORM\JoinColumn(name="product_attribute_id",nullable=false,onDelete="CASCADE")
      */
     private $productAttribute;
+
+    /**
+     * @var Language
+     * @ORM\ManyToOne(targetEntity="Language",fetch="EXTRA_LAZY")
+     * @ORM\JoinColumn(name="language_id",nullable=false)
+     */
+    private $language;
 
     /**
      * @var DateTime
@@ -64,6 +64,21 @@ class ProductAttributeTranslatableContent
      * @ORM\Column(type="datetime",nullable=true)
      */
     protected $updated;
+
+    /**
+     * ProductAttributeTranslatableContent constructor.
+     * @param string $title
+     * @param string $units
+     * @param \App\Model\Entity\ProductAttribute $productAttribute
+     * @param \App\Model\Entity\Language $language
+     */
+    public function __construct(string $title, string $units, ProductAttribute $productAttribute, Language $language)
+    {
+        $this->setTitle($title);
+        $this->setUnits($units);
+        $this->setProductAttribute($productAttribute);
+        $this->setLanguage($language);
+    }
 
     /**
      * Gets triggered only on insert
@@ -124,22 +139,6 @@ class ProductAttributeTranslatableContent
     }
 
     /**
-     * @return Language
-     */
-    public function getLanguage(): Language
-    {
-        return $this->language;
-    }
-
-    /**
-     * @param Language $language
-     */
-    public function setLanguage(Language $language): void
-    {
-        $this->language = $language;
-    }
-
-    /**
      * @return ProductAttribute
      */
     public function getProductAttribute(): ProductAttribute
@@ -153,6 +152,22 @@ class ProductAttributeTranslatableContent
     public function setProductAttribute(ProductAttribute $productAttribute): void
     {
         $this->productAttribute = $productAttribute;
+    }
+
+    /**
+     * @return Language
+     */
+    public function getLanguage(): Language
+    {
+        return $this->language;
+    }
+
+    /**
+     * @param Language $language
+     */
+    public function setLanguage(Language $language): void
+    {
+        $this->language = $language;
     }
 
     /**

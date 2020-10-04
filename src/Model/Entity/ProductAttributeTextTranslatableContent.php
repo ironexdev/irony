@@ -59,6 +59,19 @@ class ProductAttributeTextTranslatableContent
     protected $updated;
 
     /**
+     * ProductAttributeInt constructor.
+     * @param string $value
+     * @param \App\Model\Entity\ProductAttributeText $productAttributeText
+     * @param \App\Model\Entity\Language $language
+     */
+    public function __construct(string $value, ProductAttributeText $productAttributeText, Language $language)
+    {
+        $this->setValue($value);
+        $this->setProductAttributeText($productAttributeText);
+        $this->setLanguage($language);
+    }
+
+    /**
      * Gets triggered only on insert
      * @ORM\PrePersist
      */
