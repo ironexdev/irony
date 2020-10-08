@@ -22,5 +22,7 @@ class LanguageFixture extends AbstractFixture
         $manager->persist($csLanguage);
 
         $manager->flush();
+
+        echo static::class . " done.\n";
     }
 }

@@ -60,6 +60,8 @@ class ProductAttributeFixture extends AbstractFixture implements DependentFixtur
         }
 
         $manager->flush();
+
+        echo static::class . " done.\n";
     }
 
     /**

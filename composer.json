@@ -17,8 +17,11 @@
     "doctrine/data-fixtures": "^1.4"
   },
   "scripts": {
+    "echo": "php echo 1",
     "api-test": "php bin/api-test.php",
+    "doctrine-fixtures": "php bin/doctrine_fixtures.php",
     "doctrine-schema-create": "php vendor/doctrine/orm/bin/doctrine.php orm:schema-tool:create",
+    "doctrine-schema-drop": "php vendor/doctrine/orm/bin/doctrine.php orm:schema-tool:drop --force",
     "doctrine-schema-update": "php vendor/doctrine/orm/bin/doctrine.php orm:schema-tool:update --force",
     "update-translations": "php bin/update-translations.php --search-directory %cd%\\src --translation-directory %cd%\\translation --remove-unused true"
   },

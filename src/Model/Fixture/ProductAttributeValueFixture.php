@@ -5,6 +5,7 @@ namespace App\Model\Fixture;
 use App\Enum\LanguageEnum;
 use App\Model\Entity\Language;
 use App\Model\Entity\Product;
+use App\Model\Entity\ProductAttribute;
 use App\Model\Entity\ProductAttributeTextTranslatableContent;
 use App\Model\Repository\LanguageRepository;
 use App\Model\Repository\ProductAttributeBoolRepository;
@@ -86,14 +87,14 @@ class ProductAttributeValueFixture extends AbstractFixture implements DependentF
         $csLanguage = $this->languageRepository->findOneBy(["iso2" => LanguageEnum::CS]);
         /** @var Product[] $products */
         $products = $this->productRepository->findAll();
+        /** @var ProductAttribute[] $productAttributes */
+        $productAttributes = $this->productAttributeRepository->findAll();
 
         $i = 0;
         foreach ($products as $product)
         {
-            $productAttributes = $product->getAttributes();
-
             $pointer = $i % 2;
-            $productAttributeCount = count($productAttributes);
+            $productAttributeCount = 50;
             $max = $productAttributeCount / (($pointer) + 1);
             $min = $pointer ? 0 : $max / 2;
             for($ii = $min; $ii < $max; $ii++)
@@ -111,28 +112,31 @@ class ProductAttributeValueFixture extends AbstractFixture implements DependentF
                     $productAttributeValue = $this->productAttributeTextRepository->create($enValue, $product, $productAttribute, $enLanguage);
                     $productAttributeValue->addTranslatableContent(new ProductAttributeTextTranslatableContent($csValue, $productAttributeValue, $csLanguage));
                 }
-                else if($type === "bool")
+                else if($type === "boolean")
                 {
-                    $productAttributeValue = $this->productAttributeBoolRepository->create((bool) $pointer, $product, $productAttribute);
+                    $this->productAttributeBoolRepository->create((bool) $pointer, $product, $productAttribute);
                 }
                 else if($type === "decimal")
                 {
-                    $productAttributeValue = $this->productAttributeDecimalRepository->create((float) $i, $product, $productAttribute);
+                    $this->productAttributeDecimalRepository->create((float) $i, $product, $productAttribute);
                 }
                 else if($type === "int")
                 {
-                    $productAttributeValue = $this->productAttributeIntRepository->create($i, $product, $productAttribute);
+                    $this->productAttributeIntRepository->create($i, $product, $productAttribute);
                 }
-
-                $manager->persist($productAttributeValue);
-
-                $ii++;
             }
 
             $i++;
+
+            if($i % 100 === 0)
+            {
+                echo "Values for " . $i . " product/s created.\n";
+            }
         }
 
         $manager->flush();
+
+        echo static::class . " done.";
     }
 
     /**

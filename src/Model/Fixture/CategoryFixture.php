@@ -92,6 +92,8 @@ class CategoryFixture extends AbstractFixture implements DependentFixtureInterfa
         }
 
         $manager->flush();
+
+        echo static::class . " done.\n";
     }
 
     /**

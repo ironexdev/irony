@@ -63,7 +63,7 @@ class AccountFixture extends AbstractFixture implements DependentFixtureInterfac
         for ($i = 0; $i < 10000; $i++)
         {
             $email = "address" . $i . "@domain.com";
-            $password = $this->cryptService->hash("test1234");
+            $password = "$2y$10$4KCRQ3WSTsUFDfNzugEnEu0v7Gz/e7EBaCrj.he7d0/G6B3QNWLbu"; //test1234
             $role = AccountRoleEnum::MEMBER;
             $firstName = "FirstName" . $i;
             $lastName = "LastName" . $i;
@@ -75,6 +75,8 @@ class AccountFixture extends AbstractFixture implements DependentFixtureInterfac
         }
 
         $manager->flush();
+
+        echo static::class . " done.\n";
     }
 
     /**

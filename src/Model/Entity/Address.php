@@ -89,6 +89,7 @@ class Address
         $this->setStreetNumber($streetNumber);
         $this->setCity($city);
         $this->setZipCode($zipCode);
+        $this->setCountry($country);
         $this->setNote($note);
     }
 
