@@ -46,7 +46,7 @@ class ProductCountryContent
 
     /**
      * @var string
-     * @ORM\Column(type="string",columnDefinition="ENUM('CZK,'EUR','USD') NOT NULL")
+     * @ORM\Column(type="string",columnDefinition="ENUM('CZK','EUR','USD') NOT NULL")
      */
     private $currency;
 

@@ -14,9 +14,10 @@ use App\Model\Repository\ProductAttributeRepository;
 use App\Model\Repository\ProductAttributeTextRepository;
 use App\Model\Repository\ProductRepository;
 use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class ProductAttributeValueFixture extends AbstractFixture
+class ProductAttributeValueFixture extends AbstractFixture implements DependentFixtureInterface
 {
     /**
      * @var LanguageRepository
@@ -122,6 +123,8 @@ class ProductAttributeValueFixture extends AbstractFixture
                 {
                     $productAttributeValue = $this->productAttributeIntRepository->create($i, $product, $productAttribute);
                 }
+
+                $manager->persist($productAttributeValue);
 
                 $ii++;
             }

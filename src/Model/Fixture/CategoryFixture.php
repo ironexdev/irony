@@ -12,9 +12,10 @@ use App\Model\Repository\CategoryRepository;
 use App\Model\Repository\CountryRepository;
 use App\Model\Repository\LanguageRepository;
 use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class CategoryFixture extends AbstractFixture
+class CategoryFixture extends AbstractFixture implements DependentFixtureInterface
 {
     /**
      * @var CategoryRepository

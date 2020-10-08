@@ -4,14 +4,14 @@ namespace App\Model\Fixture;
 
 use App\Enum\LanguageEnum;
 use App\Model\Entity\Language;
-use App\Model\Entity\ProductAttribute;
 use App\Model\Entity\ProductAttributeTranslatableContent;
 use App\Model\Repository\LanguageRepository;
 use App\Model\Repository\ProductAttributeRepository;
 use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class ProductAttributeFixture extends AbstractFixture
+class ProductAttributeFixture extends AbstractFixture implements DependentFixtureInterface
 {
     /**
      * @var LanguageRepository
@@ -52,7 +52,7 @@ class ProductAttributeFixture extends AbstractFixture
             $enUnits = "x" . $i . "-" . $enLanguage->getIso2();
             $csUnits = "x" . $i . "-" . $csLanguage->getIso2();
 
-            $types = ["text", "int", "bool", "decimal"];
+            $types = ["text", "int", "boolean", "decimal"];
             $type = $types[$i % 4];
 
             $productAttribute = $this->productAttributeRepository->create($type, $enTitle, $enUnits, $enLanguage);

@@ -47,7 +47,7 @@ class Language
      */
     public function onPrePersist(): void
     {
-        $this->created = new DateTime(new DateTimeZone("UTC"), "now");
+        $this->created = new DateTime("now", new DateTimeZone("UTC"));
     }
 
     /**

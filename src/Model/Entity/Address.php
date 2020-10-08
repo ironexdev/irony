@@ -75,6 +75,24 @@ class Address
     protected $updated;
 
     /**
+     * Address constructor.
+     * @param string $street
+     * @param string $streetNumber
+     * @param string $city
+     * @param string $zipCode
+     * @param string $country
+     * @param string|null $note
+     */
+    public function __construct(string $street, string $streetNumber, string $city, string $zipCode, string $country, string $note = null)
+    {
+        $this->setStreet($street);
+        $this->setStreetNumber($streetNumber);
+        $this->setCity($city);
+        $this->setZipCode($zipCode);
+        $this->setNote($note);
+    }
+
+    /**
      * Gets triggered only on insert
      * @ORM\PrePersist
      */
@@ -189,9 +207,9 @@ class Address
     }
 
     /**
-     * @param string $note
+     * @param null|string $note
      */
-    public function setNote(string $note): void
+    public function setNote(?string $note): void
     {
         $this->note = $note;
     }

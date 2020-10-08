@@ -12,9 +12,10 @@ use App\Model\Repository\CountryRepository;
 use App\Model\Repository\LanguageRepository;
 use App\Security\Service\CryptService;
 use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class AccountFixture extends AbstractFixture
+class AccountFixture extends AbstractFixture implements DependentFixtureInterface
 {
     /**
      * @var CountryRepository
