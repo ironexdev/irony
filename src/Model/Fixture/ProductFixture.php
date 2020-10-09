@@ -8,11 +8,13 @@ use App\Enum\LanguageEnum;
 use App\Model\Entity\Category;
 use App\Model\Entity\Country;
 use App\Model\Entity\Language;
+use App\Model\Entity\ProductAttribute;
 use App\Model\Entity\ProductCountryContent;
 use App\Model\Entity\ProductTranslatableContent;
 use App\Model\Repository\CategoryRepository;
 use App\Model\Repository\CountryRepository;
 use App\Model\Repository\LanguageRepository;
+use App\Model\Repository\ProductAttributeRepository;
 use App\Model\Repository\ProductRepository;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -41,18 +43,25 @@ class ProductFixture extends AbstractFixture implements DependentFixtureInterfac
     private $productRepository;
 
     /**
+     * @var ProductAttributeRepository
+     */
+    private $productAttributeRepository;
+
+    /**
      * ProductFixture constructor.
      * @param \App\Model\Repository\CategoryRepository $categoryRepository
      * @param \App\Model\Repository\CountryRepository $countryRepository
      * @param \App\Model\Repository\LanguageRepository $languageRepository
      * @param \App\Model\Repository\ProductRepository $productRepository
+     * @param \App\Model\Repository\ProductAttributeRepository $productAttributeRepository
      */
-    public function __construct(CategoryRepository $categoryRepository, CountryRepository $countryRepository, LanguageRepository $languageRepository, ProductRepository $productRepository)
+    public function __construct(CategoryRepository $categoryRepository, CountryRepository $countryRepository, LanguageRepository $languageRepository, ProductRepository $productRepository, ProductAttributeRepository $productAttributeRepository)
     {
         $this->categoryRepository = $categoryRepository;
         $this->countryRepository = $countryRepository;
         $this->languageRepository = $languageRepository;
         $this->productRepository = $productRepository;
+        $this->productAttributeRepository = $productAttributeRepository;
     }
 
     /**
@@ -74,6 +83,9 @@ class ProductFixture extends AbstractFixture implements DependentFixtureInterfac
         /** @var Category[] $categories */
         $categories = $this->categoryRepository->findAll();
 
+        /** @var ProductAttribute[] $productAttributes */
+        $productAttributes = $this->productAttributeRepository->findAll();
+
         for ($i = 0; $i < 12500; $i++)
         {
             $category = $categories[(int) floor($i / 25)];
@@ -91,10 +103,12 @@ class ProductFixture extends AbstractFixture implements DependentFixtureInterfac
             $czDiscount = 0;
             $usCurrency = CurrencyEnum::USD;
             $czCurrency = CurrencyEnum::CZK;
+            $productAttributesIndex = ceil($i / 50) + 50;
 
             $product = $this->productRepository->create($enTitle, $enSummary, $enDescription, $usPrice, $usTax, $usDiscount, $usCurrency, true, false, $category, $usCountry, $enLanguage);
             $product->addCountryContent(new ProductCountryContent($czPrice, $czTax, $czDiscount, $czCurrency, true, false, $product, $czCountry));
             $product->addTranslatableContent(new ProductTranslatableContent($csTitle, $csSummary, $csDescription, $product, $csLanguage));
+            $product->addAttributes(array_slice($productAttributes, $productAttributesIndex, $productAttributesIndex+50));
         }
 
         $manager->flush();
@@ -110,7 +124,8 @@ class ProductFixture extends AbstractFixture implements DependentFixtureInterfac
         return [
             CategoryFixture::class,
             CountryFixture::class,
-            LanguageFixture::class
+            LanguageFixture::class,
+            ProductAttributeFixture::class,
         ];
     }
 }

@@ -6,8 +6,10 @@ use App\Enum\AccountRoleEnum;
 use App\Enum\CountryEnum;
 use App\Enum\LanguageEnum;
 use App\Model\Entity\Account;
+use App\Model\Entity\Address;
 use App\Model\Entity\Country;
 use App\Model\Entity\Language;
+use App\Model\Repository\AddressRepository;
 use App\Model\Repository\CountryRepository;
 use App\Model\Repository\LanguageRepository;
 use App\Security\Service\CryptService;
@@ -17,6 +19,11 @@ use Doctrine\Persistence\ObjectManager;
 
 class AccountFixture extends AbstractFixture implements DependentFixtureInterface
 {
+    /**
+     * @var AddressRepository
+     */
+    private $addressRepository;
+
     /**
      * @var CountryRepository
      */
@@ -34,12 +41,14 @@ class AccountFixture extends AbstractFixture implements DependentFixtureInterfac
 
     /**
      * AccountFixtures constructor.
+     * @param \App\Model\Repository\AddressRepository $addressRepository
      * @param \App\Security\Service\CryptService $cryptService
      * @param \App\Model\Repository\CountryRepository $countryRepository
      * @param \App\Model\Repository\LanguageRepository $languageRepository
      */
-    public function __construct(CryptService $cryptService, CountryRepository $countryRepository, LanguageRepository $languageRepository)
+    public function __construct(AddressRepository $addressRepository, CryptService $cryptService, CountryRepository $countryRepository, LanguageRepository $languageRepository)
     {
+        $this->addressRepository = $addressRepository;
         $this->cryptService = $cryptService;
         $this->countryRepository = $countryRepository;
         $this->languageRepository = $languageRepository;
@@ -60,6 +69,9 @@ class AccountFixture extends AbstractFixture implements DependentFixtureInterfac
         /** @var Country $czCountry */
         $czCountry = $this->countryRepository->findOneBy(["iso2" => CountryEnum::CZ]);
 
+        /** @var Address[] $addresses */
+        $addresses = $this->addressRepository->findAll();
+
         for ($i = 0; $i < 10000; $i++)
         {
             $email = "address" . $i . "@domain.com";
@@ -70,6 +82,8 @@ class AccountFixture extends AbstractFixture implements DependentFixtureInterfac
             $country = $i % 2 ? $usCountry : $czCountry;
             $language = $i % 2 ? $enLanguage : $csLanguage;
             $account = new Account($email, $password, $firstName, $lastName, (bool) $i % 2, $role, $country, $language);
+            $account->addAddress($addresses[$i]);
+            $account->addAddress($addresses[$i+1] ?? $addresses[0]);
 
             $manager->persist($account);
         }
@@ -85,6 +99,7 @@ class AccountFixture extends AbstractFixture implements DependentFixtureInterfac
     public function getDependencies(): array
     {
         return [
+            AddressFixture::class,
             CountryFixture::class,
             LanguageFixture::class
         ];

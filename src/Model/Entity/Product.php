@@ -195,9 +195,20 @@ class Product
     /**
      * @param ProductAttribute $attribute
      */
-    public function addAttribute(ProductAttribute $attribute)
+    public function addAttribute(ProductAttribute $attribute): void
     {
         $this->productAttributeRelations->add(new ProductAttributeRelation($this, $attribute));
+    }
+
+    /**
+     * @param array $attributes
+     */
+    public function addAttributes(array $attributes): void
+    {
+        foreach($attributes as $attribute)
+        {
+            $this->productAttributeRelations->add(new ProductAttributeRelation($this, $attribute));
+        }
     }
 
     /**
