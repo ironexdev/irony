@@ -199,6 +199,11 @@ class Address
         $this->country = $country;
     }
 
+    public function __toString(): string
+    {
+        return $this->street;
+    }
+
     /**
      * @return string|null
      */

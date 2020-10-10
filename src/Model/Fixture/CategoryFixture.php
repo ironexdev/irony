@@ -87,8 +87,6 @@ class CategoryFixture extends AbstractFixture implements DependentFixtureInterfa
             $category->addCountryContent($czCountryContent);
 
             $previousCategory = $category;
-
-            $manager->persist($category);
         }
 
         $manager->flush();

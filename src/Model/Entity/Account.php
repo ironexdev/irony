@@ -70,7 +70,7 @@ class Account
      * @ORM\ManyToMany(targetEntity="Address",fetch="EXTRA_LAZY")
      * @ORM\JoinTable(name="account_address_relation",
      *      joinColumns={@ORM\JoinColumn(name="account_id",referencedColumnName="id",onDelete="cascade")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="addresses_id",referencedColumnName="id",onDelete="cascade")}
+     *      inverseJoinColumns={@ORM\JoinColumn(name="address_id",referencedColumnName="id",onDelete="cascade")}
      * )
      */
     private $addresses;

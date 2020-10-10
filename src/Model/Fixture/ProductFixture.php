@@ -8,7 +8,9 @@ use App\Enum\LanguageEnum;
 use App\Model\Entity\Category;
 use App\Model\Entity\Country;
 use App\Model\Entity\Language;
+use App\Model\Entity\Product;
 use App\Model\Entity\ProductAttribute;
+use App\Model\Entity\ProductAttributeRelation;
 use App\Model\Entity\ProductCountryContent;
 use App\Model\Entity\ProductTranslatableContent;
 use App\Model\Repository\CategoryRepository;
@@ -70,6 +72,37 @@ class ProductFixture extends AbstractFixture implements DependentFixtureInterfac
      */
     public function load(ObjectManager $manager): void
     {
+        $this->insert(0, 5);
+        $manager->flush();
+        $manager->clear();
+
+        $this->insert(5, 10);
+        $manager->flush();
+        $manager->clear();
+
+        echo static::class . " done.\n";
+    }
+
+    /**
+     * @return array
+     */
+    public function getDependencies(): array
+    {
+        return [
+            CategoryFixture::class,
+            CountryFixture::class,
+            LanguageFixture::class,
+            ProductAttributeFixture::class,
+        ];
+    }
+
+    /**
+     * @param int $min
+     * @param int $max
+     * @throws \Doctrine\ORM\ORMException
+     */
+    private function insert(int $min, int $max): void
+    {
         /** @var Language $enLanguage */
         $enLanguage = $this->languageRepository->findOneBy(["iso2" => LanguageEnum::EN]);
         /** @var Language $csLanguage */
@@ -86,7 +119,7 @@ class ProductFixture extends AbstractFixture implements DependentFixtureInterfac
         /** @var ProductAttribute[] $productAttributes */
         $productAttributes = $this->productAttributeRepository->findAll();
 
-        for ($i = 0; $i < 12500; $i++)
+        for ($i = $min; $i < $max; $i++)
         {
             $category = $categories[(int) floor($i / 25)];
             $enTitle = "Title " . " " . $enLanguage->getIso2() . " " . $i;
@@ -103,29 +136,11 @@ class ProductFixture extends AbstractFixture implements DependentFixtureInterfac
             $czDiscount = 0;
             $usCurrency = CurrencyEnum::USD;
             $czCurrency = CurrencyEnum::CZK;
-            $productAttributesIndex = ceil($i / 50) + 50;
 
             $product = $this->productRepository->create($enTitle, $enSummary, $enDescription, $usPrice, $usTax, $usDiscount, $usCurrency, true, false, $category, $usCountry, $enLanguage);
             $product->addCountryContent(new ProductCountryContent($czPrice, $czTax, $czDiscount, $czCurrency, true, false, $product, $czCountry));
             $product->addTranslatableContent(new ProductTranslatableContent($csTitle, $csSummary, $csDescription, $product, $csLanguage));
-            $product->addAttributes(array_slice($productAttributes, $productAttributesIndex, $productAttributesIndex+50));
+            $product->addAttributes(array_slice($productAttributes, ceil($i / 50) + 50, 50));
         }
-
-        $manager->flush();
-
-        echo static::class . " done.\n";
-    }
-
-    /**
-     * @return array
-     */
-    public function getDependencies(): array
-    {
-        return [
-            CategoryFixture::class,
-            CountryFixture::class,
-            LanguageFixture::class,
-            ProductAttributeFixture::class,
-        ];
     }
 }

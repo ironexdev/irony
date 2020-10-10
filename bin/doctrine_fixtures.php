@@ -27,6 +27,7 @@ $loader->addFixture($container->get(ProductAttributeValueFixture::class));
 
 $purger = $container->get(ORMPurger::class);
 $entityManagerService = $container->get(EntityManagerService::class);
+$entityManagerService->getConnection()->getConfiguration()->setSQLLogger(null);
 $executor = $container->make(ORMExecutor::class, ["em" => $entityManagerService, "purger" => $purger]);
 $executor->execute($loader->getFixtures());
 

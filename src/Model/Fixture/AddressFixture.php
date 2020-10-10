@@ -4,7 +4,6 @@ namespace App\Model\Fixture;
 
 use App\Model\Entity\Address;
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
 class AddressFixture extends AbstractFixture
@@ -22,6 +21,7 @@ class AddressFixture extends AbstractFixture
         }
 
         $manager->flush();
+        $manager->clear();
 
         echo static::class . " done.\n";
     }
