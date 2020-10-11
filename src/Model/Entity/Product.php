@@ -52,14 +52,41 @@ class Product
     private $productCategoryRelations;
 
     /**
-     * @ManyToMany(targetEntity="Product")
-     * @JoinTable(name="product_alternative_relation",
-     *     joinColumns={@JoinColumn(name="product_id", referencedColumnName="id")},
-     *     inverseJoinColumns={@JoinColumn(name="product_alternative_id", referencedColumnName="id")}
+     * @ORM\ManyToMany(targetEntity="Product")
+     * @ORM\JoinTable(name="product_alternative_relation",
+     *     joinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="product_alternative_id", referencedColumnName="id")}
      * )
      * @var Collection
      */
     private $alternatives;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Product")
+     * @ORM\JoinTable(name="product_accessory_relation",
+     *     joinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="product_accessory_id", referencedColumnName="id")}
+     * )
+     * @var Collection
+     */
+    private $accessories;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Product")
+     * @ORM\JoinTable(name="product_variant_relation",
+     *     joinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="product_variant_id", referencedColumnName="id")}
+     * )
+     * @var Collection
+     */
+    private $variants;
+
+    /**
+     * @var Warranty
+     * @ORM\OneToOne(targetEntity="Warranty",inversedBy="cart")
+     * @ORM\JoinColumn(name="warranty_id",nullable=true,referencedColumnName="id")
+     */
+    private $warranty;
 
     /**
      * @var DateTime
@@ -302,6 +329,72 @@ class Product
             $this->alternatives->removeElement($alternative);
             $alternative->removeAlternative($this);
         }
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getAccessories(): Collection
+    {
+        return $this->accessories;
+    }
+
+    public function addAccessory(Product $accessory)
+    {
+        $this->accessories->add($accessory);
+    }
+
+    public function removeAccessory(Product $accessory)
+    {
+        $this->accessories->removeElement($accessory);
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getVariants(): Collection
+    {
+        return $this->variants;
+    }
+
+    /**
+     * @param \App\Model\Entity\Product $variant
+     * @return void
+     */
+    public function addVariant(Product $variant)
+    {
+        if (!$this->variants->contains($variant)) {
+            $this->variants->add($variant);
+            $variant->addVariant($this);
+        }
+    }
+
+    /**
+     * @param \App\Model\Entity\Product $variant
+     * @return void
+     */
+    public function removeVariant(Product $variant)
+    {
+        if ($this->variants->contains($variant)) {
+            $this->variants->removeElement($variant);
+            $variant->removeVariant($this);
+        }
+    }
+
+    /**
+     * @return Warranty|null
+     */
+    public function getWarranty(): ?Warranty
+    {
+        return $this->warranty;
+    }
+
+    /**
+     * @param Warranty $warranty
+     */
+    public function setWarranty(Warranty $warranty): void
+    {
+        $this->warranty = $warranty;
     }
 
     /**
