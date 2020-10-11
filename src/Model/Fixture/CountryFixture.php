@@ -22,6 +22,7 @@ class CountryFixture extends AbstractFixture
         $manager->persist($czCountry);
 
         $manager->flush();
+        $manager->clear();
 
         echo static::class . " done.\n";
     }

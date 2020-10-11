@@ -72,11 +72,11 @@ class ProductFixture extends AbstractFixture implements DependentFixtureInterfac
      */
     public function load(ObjectManager $manager): void
     {
-        $this->insert(0, 5);
+        $this->insert(0, 5000);
         $manager->flush();
         $manager->clear();
 
-        $this->insert(5, 10);
+        $this->insert(5000, 10000);
         $manager->flush();
         $manager->clear();
 

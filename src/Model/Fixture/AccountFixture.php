@@ -89,6 +89,7 @@ class AccountFixture extends AbstractFixture implements DependentFixtureInterfac
         }
 
         $manager->flush();
+        $manager->clear();
 
         echo static::class . " done.\n";
     }
