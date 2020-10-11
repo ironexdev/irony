@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Model\Repository\ProductAttributeRelationRepository")
  * @ORM\Table(
- *     name="product_attribute_relation",
+ *     name="product_attribute_relation"
  * )
  * @ORM\HasLifecycleCallbacks
  */

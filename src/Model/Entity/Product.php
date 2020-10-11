@@ -52,6 +52,16 @@ class Product
     private $productCategoryRelations;
 
     /**
+     * @ManyToMany(targetEntity="Product")
+     * @JoinTable(name="product_alternative_relation",
+     *     joinColumns={@JoinColumn(name="product_id", referencedColumnName="id")},
+     *     inverseJoinColumns={@JoinColumn(name="product_alternative_id", referencedColumnName="id")}
+     * )
+     * @var Collection
+     */
+    private $alternatives;
+
+    /**
      * @var DateTime
      * @ORM\Column(type="datetime")
      */
@@ -68,6 +78,7 @@ class Product
      */
     public function __construct()
     {
+        $this->alternatives = new ArrayCollection();
         $this->productAttributeRelations = new ArrayCollection();
         $this->countryContents = new ArrayCollection();
         $this->productCategoryRelations = new ArrayCollection();
@@ -212,7 +223,7 @@ class Product
     }
 
     /**
-     * @param \App\Model\Entity\ProductAttributeRelation $productAttributeRelation
+     * @param ProductAttributeRelation $productAttributeRelation
      * @return bool
      */
     public function removeAttribute(ProductAttributeRelation $productAttributeRelation): bool
@@ -259,6 +270,38 @@ class Product
     public function removeCategory(ProductCategoryRelation $productCategoryRelation): bool
     {
         return $this->productCategoryRelations->removeElement($productCategoryRelation);
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getAlternatives(): Collection
+    {
+        return $this->alternatives;
+    }
+
+    /**
+     * @param \App\Model\Entity\Product $alternative
+     * @return void
+     */
+    public function addAlternative(Product $alternative)
+    {
+        if (!$this->alternatives->contains($alternative)) {
+            $this->alternatives->add($alternative);
+            $alternative->addAlternative($this);
+        }
+    }
+
+    /**
+     * @param \App\Model\Entity\Product $alternative
+     * @return void
+     */
+    public function removeAlternative(Product $alternative)
+    {
+        if ($this->alternatives->contains($alternative)) {
+            $this->alternatives->removeElement($alternative);
+            $alternative->removeAlternative($this);
+        }
     }
 
     /**
