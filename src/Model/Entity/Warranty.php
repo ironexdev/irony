@@ -61,7 +61,7 @@ class Warranty
 
     /**
      * @var Collection
-     * @ORM\OneToMany(targetEntity="Feature", mappedBy="product")
+     * @ORM\OneToMany(targetEntity="Product", mappedBy="warranty")
      */
     private $products;
 
