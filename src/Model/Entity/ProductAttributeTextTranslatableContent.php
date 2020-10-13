@@ -34,7 +34,7 @@ class ProductAttributeTextTranslatableContent
 
     /**
      * @var ProductAttributeText
-     * @ORM\ManyToOne(targetEntity="ProductAttributeText",fetch="EXTRA_LAZY",inversedBy="translatable_contents")
+     * @ORM\ManyToOne(targetEntity="ProductAttributeText",fetch="EXTRA_LAZY",inversedBy="translatableContents")
      * @ORM\JoinColumn(name="product_attribute_text_id",nullable=false,onDelete="CASCADE")
      */
     private $productAttributeText;

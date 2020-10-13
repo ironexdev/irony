@@ -7,17 +7,13 @@ use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="ProductTranslatableContentRepository")
+ * @ORM\Entity(repositoryClass="ProductOrderRepository")
  * @ORM\Table(
- *     name="product_translatable_content",
- *     uniqueConstraints={
- *         @ORM\UniqueConstraint(name="title_language",columns={"title","language_id"}),
- *         @ORM\UniqueConstraint(name="product_language",columns={"product_id","language_id"})
- *     }
+ *     name="product_order_relation",
  * )
  * @ORM\HasLifecycleCallbacks
  */
-class ProductTranslatableContent
+class ProductOrderRelation
 {
     /**
      * @var string
@@ -28,33 +24,39 @@ class ProductTranslatableContent
     private $id;
 
     /**
-     * @var string
-     * @ORM\Column(type="string",length=255)
+     * @var int
+     * @ORM\Column(type="integer")
      */
-    private $title;
+    private $count;
 
     /**
      * @var string
-     * @ORM\Column(type="string",length=255)
+     * @ORM\Column(type="string",columnDefinition="ENUM('CZK,EUR') NOT NULL")
      */
-    private $summary;
+    private $currency;
 
     /**
      * @var string
-     * @ORM\Column(type="string",length=10000)
+     * @ORM\Column(type="decimal")
      */
-    private $description;
+    private $price;
 
     /**
-     * @var Language
-     * @ORM\ManyToOne(targetEntity="Language",fetch="EXTRA_LAZY")
-     * @ORM\JoinColumn(name="language_id",nullable=false)
+     * @var string
+     * @ORM\Column(type="decimal")
      */
-    private $language;
+    private $tax;
+
+    /**
+     * @var Order
+     * @ORM\ManyToOne(targetEntity="Order",inversedBy="productOrderRelation",fetch="EXTRA_LAZY")
+     * @ORM\JoinColumn(name="order_id",nullable=false,onDelete="CASCADE")
+     */
+    private $order;
 
     /**
      * @var Product
-     * @ORM\ManyToOne(targetEntity="Product",inversedBy="translatableContents",fetch="EXTRA_LAZY")
+     * @ORM\ManyToOne(targetEntity="Product",inversedBy="productOrderRelation",fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(name="product_id",nullable=false,onDelete="CASCADE")
      */
     private $product;
@@ -72,20 +74,14 @@ class ProductTranslatableContent
     protected $updated;
 
     /**
-     * ProductTranslatableContent constructor.
-     * @param string $title
-     * @param string $summary
-     * @param string $description
+     * ProductCategoryRelation constructor.
      * @param \App\Model\Entity\Product $product
-     * @param \App\Model\Entity\Language $language
+     * @param \App\Model\Entity\Order $order
      */
-    public function __construct(string $title, string $summary, string $description, Product $product, Language $language)
+    public function __construct(Product $product, Order $order)
     {
-        $this->setTitle($title);
-        $this->setSummary($summary);
-        $this->setDescription($description);
         $this->setProduct($product);
-        $this->setLanguage($language);
+        $this->setOrder($order);
     }
 
     /**
@@ -115,67 +111,83 @@ class ProductTranslatableContent
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getTitle(): string
+    public function getCount(): int
     {
-        return $this->title;
+        return $this->count;
     }
 
     /**
-     * @param string $title
+     * @param int $count
      */
-    public function setTitle(string $title): void
+    public function setCount(int $count): void
     {
-        $this->title = $title;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSummary(): string
-    {
-        return $this->summary;
-    }
-
-    /**
-     * @param string $summary
-     */
-    public function setSummary(string $summary): void
-    {
-        $this->summary = $summary;
+        $this->count = $count;
     }
 
     /**
      * @return string
      */
-    public function getDescription(): string
+    public function getCurrency(): string
     {
-        return $this->description;
+        return $this->currency;
     }
 
     /**
-     * @param string $description
+     * @param string $currency
      */
-    public function setDescription(string $description): void
+    public function setCurrency(string $currency): void
     {
-        $this->description = $description;
+        $this->currency = $currency;
     }
 
     /**
-     * @return Language
+     * @return string
      */
-    public function getLanguage(): Language
+    public function getPrice(): string
     {
-        return $this->language;
+        return $this->price;
     }
 
     /**
-     * @param Language $language
+     * @param string $price
      */
-    public function setLanguage(Language $language): void
+    public function setPrice(string $price): void
     {
-        $this->language = $language;
+        $this->price = $price;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTax(): string
+    {
+        return $this->tax;
+    }
+
+    /**
+     * @param string $tax
+     */
+    public function setTax(string $tax): void
+    {
+        $this->tax = $tax;
+    }
+
+    /**
+     * @return Order
+     */
+    public function getOrder(): Order
+    {
+        return $this->order;
+    }
+
+    /**
+     * @param Order $order
+     */
+    public function setOrder(Order $order): void
+    {
+        $this->order = $order;
     }
 
     /**

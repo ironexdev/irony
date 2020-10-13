@@ -7,13 +7,13 @@ use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="DeliveryRepository")
+ * @ORM\Entity(repositoryClass="PaymentRepository")
  * @ORM\Table(
- *     name="delivery_country_content",
+ *     name="payment_country_content",
  * )
  * @ORM\HasLifecycleCallbacks
  */
-class DeliveryCountryContent
+class PaymentCountryContent
 {
     /**
      * @var string
@@ -36,11 +36,11 @@ class DeliveryCountryContent
     private $tax;
 
     /**
-     * @var Delivery
-     * @ORM\ManyToOne(targetEntity="Delivery",inversedBy="countryContents",fetch="LAZY")
-     * @ORM\JoinColumn(name=delivery_id,nullable="false",onDelete="CASCADE")
+     * @var Payment
+     * @ORM\ManyToOne(targetEntity="Payment",inversedBy="countryContents",fetch="LAZY")
+     * @ORM\JoinColumn(name=payment_id,nullable="false",onDelete="CASCADE")
      */
-    private $delivery;
+    private $payment;
 
     /**
      * @var Country
@@ -120,19 +120,19 @@ class DeliveryCountryContent
     }
 
     /**
-     * @return Delivery
+     * @return Payment
      */
-    public function getDelivery(): Delivery
+    public function getPayment(): Payment
     {
-        return $this->delivery;
+        return $this->payment;
     }
 
     /**
-     * @param Delivery $delivery
+     * @param Payment $payment
      */
-    public function setDelivery(Delivery $delivery): void
+    public function setPayment(Payment $payment): void
     {
-        $this->delivery = $delivery;
+        $this->payment = $payment;
     }
 
     /**

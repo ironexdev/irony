@@ -31,7 +31,7 @@ class ProductAttributeText
 
     /**
      * @var Collection
-     * @ORM\OneToMany(targetEntity="ProductAttributeTextTranslatableContent",mappedBy="product_attribute_text",fetch="EXTRA_LAZY",cascade={"persist"},orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="ProductAttributeTextTranslatableContent",mappedBy="productAttributeText",fetch="EXTRA_LAZY",cascade={"persist"},orphanRemoval=true)
      */
     private $translatableContents;
 

@@ -38,7 +38,7 @@ class CategoryCountryContent
 
     /**
      * @var Category
-     * @ORM\ManyToOne(targetEntity="Category",inversedBy="country_contents",fetch="EXTRA_LAZY")
+     * @ORM\ManyToOne(targetEntity="Category",inversedBy="countryContents",fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(name="category_id",nullable=false,onDelete="CASCADE")
      */
     private $category;

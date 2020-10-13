@@ -40,7 +40,7 @@ class AuthorizationToken
 
     /**
      * @var Account
-     * @ORM\ManyToOne(targetEntity="Account",inversedBy="authorization_token",fetch="EXTRA_LAZY")
+     * @ORM\ManyToOne(targetEntity="Account",inversedBy="authorizationToken",fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(name="account_id",nullable=false,onDelete="CASCADE")
      */
     private $account;

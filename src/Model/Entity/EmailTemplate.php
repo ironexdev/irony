@@ -7,13 +7,13 @@ use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="DeliveryTranslatableContentRepository")
+ * @ORM\Entity(repositoryClass="EmailTemplateRepository")
  * @ORM\Table(
- *     name="delivery_translatable_content"
+ *     name="email_template",
  * )
  * @ORM\HasLifecycleCallbacks
  */
-class DeliveryTranslatableContent
+class EmailTemplate
 {
     /**
      * @var string
@@ -27,33 +27,32 @@ class DeliveryTranslatableContent
      * @var string
      * @ORM\Column(type="string",length=255)
      */
-    private $title;
+    private $code;
 
     /**
      * @var string
      * @ORM\Column(type="string",length=255)
      */
-    private $summary;
+    private $title;
 
     /**
      * @var string
      * @ORM\Column(type="string",length=10000)
      */
-    private $description;
+    private $content;
 
     /**
-     * @var Delivery
-     * @ORM\ManyToOne(targetEntity="Delivery",inversedBy="translatableContents"fetch="LAZY")
-     * @ORM\JoinColumn(name=delivery_id,nullable="false",onDelete="CASCADE")
+     * @var string
+     * @ORM\Column(type="string",length=1000)
      */
-    private $delivery;
+    private $variables;
 
     /**
      * @var Language
      * @ORM\ManyToOne(targetEntity="Language",fetch="LAZY")
-     * @ORM\JoinColumn(name=language_id,nullable="false",onDelete="CASCADE")
+     * @ORM\JoinColumn(name="language_id")
      */
-    private $language;
+     private $language;
 
     /**
      * @var DateTime
@@ -73,7 +72,7 @@ class DeliveryTranslatableContent
      */
     public function onPrePersist(): void
     {
-        $this->created = new DateTime("now", new DateTimeZone("UTC"));
+        $this->created = new DateTime(new DateTimeZone("UTC"), "now");
     }
 
     /**
@@ -96,6 +95,22 @@ class DeliveryTranslatableContent
     /**
      * @return string
      */
+    public function getCode(): string
+    {
+        return $this->code;
+    }
+
+    /**
+     * @param string $code
+     */
+    public function setCode(string $code): void
+    {
+        $this->code = $code;
+    }
+
+    /**
+     * @return string
+     */
     public function getTitle(): string
     {
         return $this->title;
@@ -112,49 +127,33 @@ class DeliveryTranslatableContent
     /**
      * @return string
      */
-    public function getSummary(): string
+    public function getContent(): string
     {
-        return $this->summary;
+        return $this->content;
     }
 
     /**
-     * @param string $summary
+     * @param string $content
      */
-    public function setSummary(string $summary): void
+    public function setContent(string $content): void
     {
-        $this->summary = $summary;
+        $this->content = $content;
     }
 
     /**
      * @return string
      */
-    public function getDescription(): string
+    public function getVariables(): string
     {
-        return $this->description;
+        return $this->variables;
     }
 
     /**
-     * @param string $description
+     * @param string $variables
      */
-    public function setDescription(string $description): void
+    public function setVariables(string $variables): void
     {
-        $this->description = $description;
-    }
-
-    /**
-     * @return Delivery
-     */
-    public function getDelivery(): Delivery
-    {
-        return $this->delivery;
-    }
-
-    /**
-     * @param Delivery $delivery
-     */
-    public function setDelivery(Delivery $delivery): void
-    {
-        $this->delivery = $delivery;
+        $this->variables = $variables;
     }
 
     /**
@@ -182,26 +181,10 @@ class DeliveryTranslatableContent
     }
 
     /**
-     * @param DateTime $created
-     */
-    public function setCreated(DateTime $created): void
-    {
-        $this->created = $created;
-    }
-
-    /**
      * @return DateTime
      */
     public function getUpdated(): DateTime
     {
         return $this->updated;
-    }
-
-    /**
-     * @param DateTime $updated
-     */
-    public function setUpdated(DateTime $updated): void
-    {
-        $this->updated = $updated;
     }
 }

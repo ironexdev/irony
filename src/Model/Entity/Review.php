@@ -1,10 +1,7 @@
 <?php
 
-namespace Backup\App\Model\EntityBackup;
+namespace App\Model\Entity;
 
-use App\Model\Entity\Account;
-use App\Model\Entity\Language;
-use App\Model\Entity\Product;
 use DateTime;
 use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;

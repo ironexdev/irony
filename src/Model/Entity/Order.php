@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Model\EntityBackup;
+namespace App\Model\Entity;
 
-use App\Model\Entity\Account;
-use App\Model\Entity\Address;
-use App\Model\Entity\Country;
-use App\Model\Entity\Language;
-use Backup\App\Model\Entity\Delivery;
 use DateTime;
 use DateTimeZone;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 
 /**
  * @ORM\Entity(repositoryClass="OrderRepository")
@@ -107,6 +106,12 @@ class Order
     private $status;
 
     /**
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="Returnx",mappedBy="order",fetch="EXTRA_LAZY",cascade={"persist"},orphanRemoval=true)
+     */
+    private $returnxs;
+
+    /**
      * @var Account
      * @ORM\ManyToOne(targetEntity="Account",fetch="LAZY")
      * @ORM\JoinColumn(name="account_id",nullable=true,onDelete="RESTRICT")
@@ -142,6 +147,12 @@ class Order
     private $country;
 
     /**
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="ProductOrderRelation",mappedBy="order",fetch="EXTRA_LAZY",cascade={"persist"},orphanRemoval=true)
+     */
+    private $productOrderRelations;
+
+    /**
      * @var DateTime
      * @ORM\Column(type="datetime")
      */
@@ -152,6 +163,15 @@ class Order
      * @ORM\Column(type="datetime",nullable=true)
      */
     protected $updated;
+
+    /**
+     * Order constructor.
+     */
+    public function __construct()
+    {
+        $this->productOrderRelations = new ArrayCollection();
+        $this->returnxs = new ArrayCollection();
+    }
 
     /**
      * Gets triggered only on insert
@@ -388,6 +408,40 @@ class Order
     }
 
     /**
+     * @param Language $language
+     * @return Collection
+     */
+    public function getReturnx(Language $language): Collection
+    {
+        return $this->returnxs->matching(Criteria::create()->where(Criteria::expr()->eq("language_id", $language->getId())))[0];
+    }
+
+    /**
+     * @return PersistentCollection
+     */
+    public function getReturnxs(): Collection
+    {
+        return $this->returnxs;
+    }
+
+    /**
+     * @param Returnx $returnx
+     */
+    public function addReturnx(Returnx $returnx): void
+    {
+        $this->returnxs->add($returnx);
+    }
+
+    /**
+     * @param Returnx $returnx
+     * @return bool
+     */
+    public function removeReturnx(Returnx $returnx): bool
+    {
+        return $this->returnxs->removeElement($returnx);
+    }
+
+    /**
      * @return Account|null
      */
     public function getAccount(): ?Account
@@ -465,6 +519,47 @@ class Order
     public function setCountry(Country $country): void
     {
         $this->country = $country;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getProductOrderRelations(): Collection
+    {
+        return $this->productOrderRelations;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getProducts(): Collection
+    {
+        $products = new ArrayCollection();
+
+        /** @var ProductOrderRelation $productOrderRelation */
+        foreach($this->productOrderRelations as $productOrderRelation)
+        {
+            $products->add($productOrderRelation->getProduct());
+        }
+
+        return $products;
+    }
+
+    /**
+     * @param Product $product
+     */
+    public function addProduct(Product $product)
+    {
+        $this->productOrderRelations->add(new ProductOrderRelation($product, $this));
+    }
+
+    /**
+     * @param ProductOrderRelation $productOrderRelation
+     * @return bool
+     */
+    public function removeProduct(ProductOrderRelation $productOrderRelation): bool
+    {
+        return $this->productOrderRelations->removeElement($productOrderRelation);
     }
 
     /**

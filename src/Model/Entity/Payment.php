@@ -11,13 +11,13 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
 
 /**
- * @ORM\Entity(repositoryClass="DeliveryRepository")
+ * @ORM\Entity(repositoryClass="PaymentRepository")
  * @ORM\Table(
- *     name="delivery",
+ *     name="payment",
  * )
  * @ORM\HasLifecycleCallbacks
  */
-class Delivery
+class Payment
 {
     /**
      * @var string
@@ -35,13 +35,13 @@ class Delivery
 
     /**
      * @var Collection
-     * @ORM\OneToMany(targetEntity="DeliveryCountryContent",mappedBy="delivery",fetch="EXTRA_LAZY",cascade={"persist"},orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="PaymentCountryContent",mappedBy="payment",fetch="EXTRA_LAZY",cascade={"persist"},orphanRemoval=true)
      */
     private $countryContents;
 
     /**
      * @var Collection
-     * @ORM\OneToMany(targetEntity="DeliveryTranslatableContent",mappedBy="delivery",fetch="EXTRA_LAZY",cascade={"persist"},orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="PaymentTranslatableContent",mappedBy="payment",fetch="EXTRA_LAZY",cascade={"persist"},orphanRemoval=true)
      */
     private $translatableContents;
 
@@ -129,18 +129,18 @@ class Delivery
     }
 
     /**
-     * @param DeliveryCountryContent $countryContent
+     * @param PaymentCountryContent $countryContent
      */
-    public function addCountryContent(DeliveryCountryContent $countryContent): void
+    public function addCountryContent(PaymentCountryContent $countryContent): void
     {
         $this->countryContents->add($countryContent);
     }
 
     /**
-     * @param DeliveryCountryContent $countryContent
+     * @param PaymentCountryContent $countryContent
      * @return bool
      */
-    public function removeCountryContent(DeliveryCountryContent $countryContent): bool
+    public function removeCountryContent(PaymentCountryContent $countryContent): bool
     {
         return $this->countryContents->removeElement($countryContent);
     }
@@ -163,18 +163,18 @@ class Delivery
     }
 
     /**
-     * @param DeliveryTranslatableContent $translatableContent
+     * @param PaymentTranslatableContent $translatableContent
      */
-    public function addTranslatableContent(DeliveryTranslatableContent $translatableContent): void
+    public function addTranslatableContent(PaymentTranslatableContent $translatableContent): void
     {
         $this->translatableContents->add($translatableContent);
     }
 
     /**
-     * @param DeliveryTranslatableContent $translatableContent
+     * @param PaymentTranslatableContent $translatableContent
      * @return bool
      */
-    public function removeTranslatableContent(DeliveryTranslatableContent $translatableContent): bool
+    public function removeTranslatableContent(PaymentTranslatableContent $translatableContent): bool
     {
         return $this->translatableContents->removeElement($translatableContent);
     }

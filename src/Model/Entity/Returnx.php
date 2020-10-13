@@ -102,6 +102,13 @@ class Returnx
     private $status;
 
     /**
+     * @var Order
+     * @ORM\ManyToOne(targetEntity="Order",inversedBy="returnxs",fetch="EXTRA_LAZY")
+     * @ORM\JoinColumn(name="order_id",nullable=false,onDelete="CASCADE")
+     */
+    private $order;
+
+    /**
      * @var Account
      * @ORM\ManyToOne(targetEntity="Account",fetch="LAZY")
      * @ORM\JoinColumn(name="account_id",nullable=true,onDelete="RESTRICT")
@@ -364,6 +371,22 @@ class Returnx
     public function setPaymentTax(string $paymentTax): void
     {
         $this->paymentTax = $paymentTax;
+    }
+
+    /**
+     * @return Order
+     */
+    public function getOrder(): Order
+    {
+        return $this->order;
+    }
+
+    /**
+     * @param Order $order
+     */
+    public function setOrder(Order $order): void
+    {
+        $this->order = $order;
     }
 
     /**

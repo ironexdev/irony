@@ -52,38 +52,44 @@ class Product
     private $productCategoryRelations;
 
     /**
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="ProductOrderRelation",mappedBy="product",fetch="EXTRA_LAZY",cascade={"persist"},orphanRemoval=true)
+     */
+    private $productOrderRelations;
+
+    /**
+     * @var Collection
      * @ORM\ManyToMany(targetEntity="Product")
      * @ORM\JoinTable(name="product_alternative_relation",
      *     joinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id")},
      *     inverseJoinColumns={@ORM\JoinColumn(name="product_alternative_id", referencedColumnName="id")}
      * )
-     * @var Collection
      */
     private $alternatives;
 
     /**
+     * @var Collection
      * @ORM\ManyToMany(targetEntity="Product")
      * @ORM\JoinTable(name="product_accessory_relation",
      *     joinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id")},
      *     inverseJoinColumns={@ORM\JoinColumn(name="product_accessory_id", referencedColumnName="id")}
      * )
-     * @var Collection
      */
     private $accessories;
 
     /**
+     * @var Collection
      * @ORM\ManyToMany(targetEntity="Product")
      * @ORM\JoinTable(name="product_variant_relation",
      *     joinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id")},
      *     inverseJoinColumns={@ORM\JoinColumn(name="product_variant_id", referencedColumnName="id")}
      * )
-     * @var Collection
      */
     private $variants;
 
     /**
      * @var Warranty
-     * @ORM\OneToOne(targetEntity="Warranty",inversedBy="cart")
+     * @ORM\ManyToOne(targetEntity="Warranty",inversedBy="product")
      * @ORM\JoinColumn(name="warranty_id",nullable=true,referencedColumnName="id")
      */
     private $warranty;
@@ -109,6 +115,7 @@ class Product
         $this->productAttributeRelations = new ArrayCollection();
         $this->countryContents = new ArrayCollection();
         $this->productCategoryRelations = new ArrayCollection();
+        $this->productOrderRelations = new ArrayCollection();
         $this->translatableContents = new ArrayCollection();
     }
 
@@ -297,6 +304,47 @@ class Product
     public function removeCategory(ProductCategoryRelation $productCategoryRelation): bool
     {
         return $this->productCategoryRelations->removeElement($productCategoryRelation);
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getProductOrderRelations(): Collection
+    {
+        return $this->productOrderRelations;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getOrders(): Collection
+    {
+        $orders = new ArrayCollection();
+
+        /** @var ProductOrderRelation $productOrderRelation */
+        foreach($this->productOrderRelations as $productOrderRelation)
+        {
+            $orders->add($productOrderRelation->getOrder());
+        }
+
+        return $orders;
+    }
+
+    /**
+     * @param Order $order
+     */
+    public function addOrder(Order $order)
+    {
+        $this->productOrderRelations->add(new ProductOrderRelation($this, $order));
+    }
+
+    /**
+     * @param ProductOrderRelation $productOrderRelation
+     * @return bool
+     */
+    public function removeOrder(ProductOrderRelation $productOrderRelation): bool
+    {
+        return $this->productOrderRelations->removeElement($productOrderRelation);
     }
 
     /**

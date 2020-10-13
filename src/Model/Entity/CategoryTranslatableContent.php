@@ -42,7 +42,7 @@ class CategoryTranslatableContent
 
     /**
      * @var Category
-     * @ORM\ManyToOne(targetEntity="Category",inversedBy="translatable_contents",fetch="EXTRA_LAZY")
+     * @ORM\ManyToOne(targetEntity="Category",inversedBy="translatableContents",fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(name="category_id",nullable=false,onDelete="CASCADE")
      */
     private $category;

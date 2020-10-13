@@ -64,7 +64,7 @@ class ProductCountryContent
 
     /**
      * @var Product
-     * @ORM\ManyToOne(targetEntity="Product",inversedBy="country_contents",fetch="EXTRA_LAZY")
+     * @ORM\ManyToOne(targetEntity="Product",inversedBy="countryContents",fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(name="product_id",nullable=false,onDelete="CASCADE")
      */
     private $product;

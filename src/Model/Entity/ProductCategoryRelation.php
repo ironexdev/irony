@@ -25,14 +25,14 @@ class ProductCategoryRelation
 
     /**
      * @var Product
-     * @ORM\ManyToOne(targetEntity="Product",inversedBy="product_category_relation",fetch="EXTRA_LAZY")
+     * @ORM\ManyToOne(targetEntity="Product",inversedBy="productCategoryRelation",fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(name="product_id",nullable=false,onDelete="CASCADE")
      */
     private $product;
 
     /**
      * @var Category
-     * @ORM\ManyToOne(targetEntity="Category",inversedBy="product_category_relation",fetch="EXTRA_LAZY")
+     * @ORM\ManyToOne(targetEntity="Category",inversedBy="productCategoryRelation",fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(name="category_id",nullable=false,onDelete="CASCADE")
      */
     private $category;

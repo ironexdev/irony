@@ -17,7 +17,7 @@ use Doctrine\ORM\PersistentCollection;
  * )
  * @ORM\HasLifecycleCallbacks
  */
-class ProductAttribute
+class   ProductAttribute
 {
     /**
      * @var string
@@ -35,13 +35,13 @@ class ProductAttribute
 
     /**
      * @var Collection
-     * @ORM\OneToMany(targetEntity="ProductAttributeTranslatableContent",mappedBy="product_attribute",fetch="EXTRA_LAZY",cascade={"persist"},orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="ProductAttributeTranslatableContent",mappedBy="productAttribute",fetch="EXTRA_LAZY",cascade={"persist"},orphanRemoval=true)
      */
     private $translatableContents;
 
     /**
      * @var Collection
-     * @ORM\OneToMany(targetEntity="ProductAttributeRelation",mappedBy="product_attribute",fetch="EXTRA_LAZY",cascade={"persist"},orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="ProductAttributeRelation",mappedBy="productAttribute",fetch="EXTRA_LAZY",cascade={"persist"},orphanRemoval=true)
      */
     private $productAttributeRelations;
 
