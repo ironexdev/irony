@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
 
 /**
- * @ORM\Entity(repositoryClass="OrderRepository")
+ * @ORM\Entity(repositoryClass="App\Model\Repository\OrderRepository")
  * @ORM\Table(
  *     name="order",
  * )
@@ -41,19 +41,19 @@ class Order
 
     /**
      * @var string
-     * @ORM\Column(type="string",length=255)
+     * @ORM\Column(name="first_name",type="string",length=255)
      */
     private $firstName;
 
     /**
      * @var string
-     * @ORM\Column(type="string",length=255)
+     * @ORM\Column(name="last_name",type="string",length=255)
      */
     private $lastName;
 
     /**
      * @var string
-     * @ORM\Column(type="string",length=10000)
+     * @ORM\Column(type="text",length=10000)
      */
     private $note;
 
@@ -77,25 +77,25 @@ class Order
 
     /**
      * @var string
-     * @ORM\Column(type="decimal")
+     * @ORM\Column(name="delivery_price",type="decimal")
      */
     private $deliveryPrice;
 
     /**
      * @var string
-     * @ORM\Column(type="decimal")
+     * @ORM\Column(name="delivery_tax",type="decimal")
      */
     private $deliveryTax;
 
     /**
      * @var string
-     * @ORM\Column(type="decimal")
+     * @ORM\Column(name="payment_price",type="decimal")
      */
     private $paymentPrice;
 
     /**
      * @var string
-     * @ORM\Column(type="decimal")
+     * @ORM\Column(name="payment_tax",type="decimal")
      */
     private $paymentTax;
 

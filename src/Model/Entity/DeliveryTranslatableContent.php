@@ -7,7 +7,7 @@ use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="DeliveryTranslatableContentRepository")
+ * @ORM\Entity(repositoryClass="App\Model\Repository\DeliveryTranslatableContentRepository")
  * @ORM\Table(
  *     name="delivery_translatable_content"
  * )
@@ -37,21 +37,21 @@ class DeliveryTranslatableContent
 
     /**
      * @var string
-     * @ORM\Column(type="string",length=10000)
+     * @ORM\Column(type="text",length=10000)
      */
     private $description;
 
     /**
      * @var Delivery
-     * @ORM\ManyToOne(targetEntity="Delivery",inversedBy="translatableContents"fetch="LAZY")
-     * @ORM\JoinColumn(name=delivery_id,nullable="false",onDelete="CASCADE")
+     * @ORM\ManyToOne(targetEntity="Delivery",inversedBy="translatableContents",fetch="LAZY")
+     * @ORM\JoinColumn(name="delivery_id",nullable=false,onDelete="CASCADE")
      */
     private $delivery;
 
     /**
      * @var Language
      * @ORM\ManyToOne(targetEntity="Language",fetch="LAZY")
-     * @ORM\JoinColumn(name=language_id,nullable="false",onDelete="CASCADE")
+     * @ORM\JoinColumn(name="language_id",nullable=false,onDelete="CASCADE")
      */
     private $language;
 

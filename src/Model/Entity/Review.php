@@ -7,7 +7,7 @@ use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="ReviewRepository")
+ * @ORM\Entity(repositoryClass="App\Model\Repository\ReviewRepository")
  * @ORM\Table(
  *     name="review"
  * )
@@ -31,13 +31,13 @@ class Review
 
     /**
      * @var string
-     * @ORM\Column(type="string",length=255)
+     * @ORM\Column(name="first_name",type="string",length=255)
      */
     private $firstName;
 
     /**
      * @var string
-     * @ORM\Column(type="string",length=255)
+     * @ORM\Column(name="last_name",type="string",length=255)
      */
     private $lastName;
 
@@ -67,19 +67,19 @@ class Review
 
     /**
      * @var string
-     * @ORM\Column(type="string",length=10000)
+     * @ORM\Column(type="text",length=10000)
      */
     private $content;
 
     /**
      * @var string
-     * @ORM\Column(type="string",length=10000)
+     * @ORM\Column(type="text",length=10000)
      */
     private $pros;
 
     /**
      * @var string
-     * @ORM\Column(type="string",length=10000)
+     * @ORM\Column(type="text",length=10000)
      */
     private $cons;
 

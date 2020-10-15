@@ -7,7 +7,7 @@ use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="PropertyRepository")
+ * @ORM\Entity(repositoryClass="App\Model\Repository\PropertyRepository")
  * @ORM\Table(
  *     name="property",
  * )
@@ -31,31 +31,31 @@ class Property
 
     /**
      * @var string
-     * @ORM\Column(type="string",length=255)
+     * @ORM\Column(name="address_street",type="string",length=255)
      */
     private $addressStreet;
 
     /**
      * @var string
-     * @ORM\Column(type="string",length=255)
+     * @ORM\Column(name="address_street_number",type="string",length=255)
      */
     private $addressStreetNumber;
 
     /**
      * @var string
-     * @ORM\Column(type="string",length=255)
+     * @ORM\Column(name="address_city",type="string",length=255)
      */
     private $addressCity;
 
     /**
      * @var string
-     * @ORM\Column(type="string",length=255)
+     * @ORM\Column(name="address_zip_code",type="string",length=255)
      */
     private $addressZipCode;
 
     /**
      * @var string
-     * @ORM\Column(type="string",length=255)
+     * @ORM\Column(name="address_country",type="string",length=255)
      */
     private $addressCountry;
 

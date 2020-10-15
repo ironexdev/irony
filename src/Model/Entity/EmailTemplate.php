@@ -7,7 +7,7 @@ use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="EmailTemplateRepository")
+ * @ORM\Entity(repositoryClass="App\Model\Repository\EmailTemplateRepository")
  * @ORM\Table(
  *     name="email_template",
  * )
@@ -37,7 +37,7 @@ class EmailTemplate
 
     /**
      * @var string
-     * @ORM\Column(type="string",length=10000)
+     * @ORM\Column(type="text",length=10000)
      */
     private $content;
 

@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="WarrantyRepository")
+ * @ORM\Entity(repositoryClass="App\Model\Repository\WarrantyRepository")
  * @ORM\Table(
  *     name="warranty",
  * )
@@ -55,7 +55,7 @@ class Warranty
 
     /**
      * @var string
-     * @ORM\Column(type="string",length=10000)
+     * @ORM\Column(type="text",length=10000)
      */
     private $description;
 

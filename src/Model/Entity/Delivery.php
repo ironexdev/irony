@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
 
 /**
- * @ORM\Entity(repositoryClass="DeliveryRepository")
+ * @ORM\Entity(repositoryClass="App\Model\Repository\DeliveryRepository")
  * @ORM\Table(
  *     name="delivery",
  * )
