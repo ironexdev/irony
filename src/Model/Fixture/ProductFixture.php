@@ -119,6 +119,8 @@ class ProductFixture extends AbstractFixture implements DependentFixtureInterfac
         /** @var ProductAttribute[] $productAttributes */
         $productAttributes = $this->productAttributeRepository->findAll();
 
+        $relatedProducts = [];
+
         for ($i = $min; $i < $max; $i++)
         {
             $category = $categories[(int) floor($i / 25)];
@@ -141,6 +143,20 @@ class ProductFixture extends AbstractFixture implements DependentFixtureInterfac
             $product->addCountryContent(new ProductCountryContent($czPrice, $czTax, $czDiscount, $czCurrency, true, false, $product, $czCountry));
             $product->addTranslatableContent(new ProductTranslatableContent($csTitle, $csSummary, $csDescription, $product, $csLanguage));
             $product->addAttributes(array_slice($productAttributes, ceil($i / 50) + 50, 50));
+
+            if(count($relatedProducts) <= 100)
+            {
+                $relatedProducts[] = $product;
+            }
+            else
+            {
+                foreach($relatedProducts as $relatedProduct)
+                {
+                    $product->addAccessory($relatedProduct);
+                    $product->addAlternative($relatedProduct);
+                    $product->addVariant($relatedProduct);
+                }
+            }
         }
     }
 }
