@@ -166,11 +166,57 @@ class Order
 
     /**
      * Order constructor.
+     * @param string $email
+     * @param string $phone
+     * @param string $firstName
+     * @param string $lastName
+     * @param string $note
+     * @param string $currency
+     * @param string $price
+     * @param string $tax
+     * @param string $deliveryPrice
+     * @param string $deliveryTax
+     * @param string $paymentPrice
+     * @param string $paymentTax
+     * @param string $status
+     * @param array $products
+     * @param array $returns
      */
-    public function __construct()
+    public function __construct(string $email, string $phone, string $firstName, string $lastName, string $note, string $currency, string $price, string $tax, string $deliveryPrice, string $deliveryTax, string $paymentPrice, string $paymentTax, string $status, array $products = [], array $returns = [])
     {
+        $this->email = $email;
+        $this->phone = $phone;
+        $this->firstName = $firstName;
+        $this->lastName = $lastName;
+        $this->note = $note;
+        $this->currency = $currency;
+        $this->price = $price;
+        $this->tax = $tax;
+        $this->deliveryPrice = $deliveryPrice;
+        $this->deliveryTax = $deliveryTax;
+        $this->paymentPrice = $paymentPrice;
+        $this->paymentTax = $paymentTax;
+        $this->status = $status;
+
         $this->productOrderRelations = new ArrayCollection();
+
+        if($products)
+        {
+            foreach($products as $product)
+            {
+                $this->productOrderRelations->add($product);
+            }
+        }
+
         $this->returnxs = new ArrayCollection();
+
+        if($returns)
+        {
+            foreach($returns as $return)
+            {
+                $this->returnxs->add($return);
+            }
+        }
     }
 
     /**

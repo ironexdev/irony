@@ -9,6 +9,7 @@ use App\Model\Entity\Language;
 use App\Model\Entity\Product;
 use App\Model\Repository\CountryRepository;
 use App\Model\Repository\LanguageRepository;
+use App\Model\Repository\OrderRepository;
 use App\Model\Repository\ProductRepository;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -27,6 +28,11 @@ class OrderFixture extends AbstractFixture implements DependentFixtureInterface
     private $languageRepository;
 
     /**
+     * @var OrderRepository
+     */
+    private $orderRepository;
+
+    /**
      * @var ProductRepository
      */
     private $productRepository;
@@ -35,12 +41,14 @@ class OrderFixture extends AbstractFixture implements DependentFixtureInterface
      * ProductAttributeTextFixture constructor.
      * @param \App\Model\Repository\CountryRepository $countryRepository
      * @param \App\Model\Repository\LanguageRepository $languageRepository
+     * @param \App\Model\Repository\OrderRepository $orderRepository
      * @param \App\Model\Repository\ProductRepository $productRepository
      */
-    public function __construct(CountryRepository $countryRepository, LanguageRepository $languageRepository, ProductRepository $productRepository)
+    public function __construct(CountryRepository $countryRepository, LanguageRepository $languageRepository, OrderRepository $orderRepository, ProductRepository $productRepository)
     {
         $this->countryRepository = $countryRepository;
         $this->languageRepository = $languageRepository;
+        $this->orderRepository = $orderRepository;
         $this->productRepository = $productRepository;
     }
 
@@ -59,6 +67,8 @@ class OrderFixture extends AbstractFixture implements DependentFixtureInterface
         $czCountry = $this->countryRepository->findOneBy(["iso2" => CountryEnum::CZ]);
         /** @var Product[] $products */
         $products = $this->productRepository->findAll();
+
+
 
         $manager->flush();
         $manager->clear();
