@@ -8,23 +8,23 @@ use App\Model\Entity\CategoryTranslatableContent;
 use App\Model\Entity\Language;
 use App\Model\Entity\Product;
 use App\Model\Entity\ProductCategoryRelation;
-use App\Model\Repository\CategoryRepository;
+use App\Model\Repository\CategoryFactory;
 use App\Model\Repository\CategoryTranslatableContentRepository;
 use App\Model\Repository\LanguageRepository;
 use App\Model\Repository\ProductCategoryRelationRepository;
-use App\Model\Repository\ProductRepository;
+use App\Model\Repository\ProductFactory;
 
 class IndexController extends AbstractController
 {
     /**
-     * @param \App\Model\Repository\CategoryRepository $categoryRepository
+     * @param \App\Model\Repository\CategoryFactory $categoryRepository
      * @param \App\Model\Repository\CategoryTranslatableContentRepository $categoryTranslatableContentRepository
      * @param \App\Model\Repository\LanguageRepository $languageRepository
-     * @param \App\Model\Repository\ProductRepository $productRepository
+     * @param \App\Model\Repository\ProductFactory $productRepository
      * @param \App\Model\Repository\ProductCategoryRelationRepository $productCategoryRelationRepository
      * @return \App\Api\Response\Response
      */
-    public function read(CategoryRepository $categoryRepository, CategoryTranslatableContentRepository $categoryTranslatableContentRepository, LanguageRepository $languageRepository, ProductRepository $productRepository, ProductCategoryRelationRepository $productCategoryRelationRepository): Response
+    public function read(CategoryFactory $categoryRepository, CategoryTranslatableContentRepository $categoryTranslatableContentRepository, LanguageRepository $languageRepository, ProductFactory $productRepository, ProductCategoryRelationRepository $productCategoryRelationRepository): Response
     {
         $authenticated = $this->user->isLoggedIn();
         $userData = [

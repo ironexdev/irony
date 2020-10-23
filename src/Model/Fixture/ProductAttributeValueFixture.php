@@ -8,12 +8,12 @@ use App\Model\Entity\Product;
 use App\Model\Entity\ProductAttribute;
 use App\Model\Entity\ProductAttributeTextTranslatableContent;
 use App\Model\Repository\LanguageRepository;
-use App\Model\Repository\ProductAttributeBoolRepository;
-use App\Model\Repository\ProductAttributeDecimalRepository;
-use App\Model\Repository\ProductAttributeIntRepository;
-use App\Model\Repository\ProductAttributeRepository;
-use App\Model\Repository\ProductAttributeTextRepository;
-use App\Model\Repository\ProductRepository;
+use App\Model\Repository\ProductAttributeBoolFactory;
+use App\Model\Repository\ProductAttributeDecimalFactory;
+use App\Model\Repository\ProductAttributeIntFactory;
+use App\Model\Repository\ProductAttributeFactory;
+use App\Model\Repository\ProductAttributeTextFactory;
+use App\Model\Repository\ProductFactory;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -26,45 +26,45 @@ class ProductAttributeValueFixture extends AbstractFixture implements DependentF
     private $languageRepository;
 
     /**
-     * @var ProductRepository
+     * @var ProductFactory
      */
     private $productRepository;
 
     /**
-     * @var ProductAttributeRepository
+     * @var ProductAttributeFactory
      */
     private $productAttributeRepository;
     /**
-     * @var ProductAttributeBoolRepository
+     * @var ProductAttributeBoolFactory
      */
     private $productAttributeBoolRepository;
 
     /**
-     * @var ProductAttributeDecimalRepository
+     * @var ProductAttributeDecimalFactory
      */
     private $productAttributeDecimalRepository;
 
     /**
-     * @var ProductAttributeIntRepository
+     * @var ProductAttributeIntFactory
      */
     private $productAttributeIntRepository;
 
     /**
-     * @var ProductAttributeTextRepository
+     * @var ProductAttributeTextFactory
      */
     private $productAttributeTextRepository;
 
     /**
      * ProductAttributeTextFixture constructor.
      * @param \App\Model\Repository\LanguageRepository $languageRepository
-     * @param \App\Model\Repository\ProductRepository $productRepository
-     * @param \App\Model\Repository\ProductAttributeRepository $productAttributeRepository
-     * @param \App\Model\Repository\ProductAttributeBoolRepository $productAttributeBoolRepository
-     * @param \App\Model\Repository\ProductAttributeDecimalRepository $productAttributeDecimalRepository
-     * @param \App\Model\Repository\ProductAttributeIntRepository $productAttributeIntRepository
-     * @param \App\Model\Repository\ProductAttributeTextRepository $productAttributeTextRepository
+     * @param \App\Model\Repository\ProductFactory $productRepository
+     * @param \App\Model\Repository\ProductAttributeFactory $productAttributeRepository
+     * @param \App\Model\Repository\ProductAttributeBoolFactory $productAttributeBoolRepository
+     * @param \App\Model\Repository\ProductAttributeDecimalFactory $productAttributeDecimalRepository
+     * @param \App\Model\Repository\ProductAttributeIntFactory $productAttributeIntRepository
+     * @param \App\Model\Repository\ProductAttributeTextFactory $productAttributeTextRepository
      */
-    public function __construct(LanguageRepository $languageRepository, ProductRepository $productRepository, ProductAttributeRepository $productAttributeRepository, ProductAttributeBoolRepository $productAttributeBoolRepository, ProductAttributeDecimalRepository $productAttributeDecimalRepository, ProductAttributeIntRepository $productAttributeIntRepository, ProductAttributeTextRepository $productAttributeTextRepository)
+    public function __construct(LanguageRepository $languageRepository, ProductFactory $productRepository, ProductAttributeFactory $productAttributeRepository, ProductAttributeBoolFactory $productAttributeBoolRepository, ProductAttributeDecimalFactory $productAttributeDecimalRepository, ProductAttributeIntFactory $productAttributeIntRepository, ProductAttributeTextFactory $productAttributeTextRepository)
     {
         $this->languageRepository = $languageRepository;
         $this->productRepository = $productRepository;

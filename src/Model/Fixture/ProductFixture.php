@@ -13,11 +13,11 @@ use App\Model\Entity\ProductAttribute;
 use App\Model\Entity\ProductAttributeRelation;
 use App\Model\Entity\ProductCountryContent;
 use App\Model\Entity\ProductTranslatableContent;
-use App\Model\Repository\CategoryRepository;
+use App\Model\Repository\CategoryFactory;
 use App\Model\Repository\CountryRepository;
 use App\Model\Repository\LanguageRepository;
-use App\Model\Repository\ProductAttributeRepository;
-use App\Model\Repository\ProductRepository;
+use App\Model\Repository\ProductAttributeFactory;
+use App\Model\Repository\ProductFactory;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -25,7 +25,7 @@ use Doctrine\Persistence\ObjectManager;
 class ProductFixture extends AbstractFixture implements DependentFixtureInterface
 {
     /**
-     * @var CategoryRepository
+     * @var CategoryFactory
      */
     private $categoryRepository;
 
@@ -40,24 +40,24 @@ class ProductFixture extends AbstractFixture implements DependentFixtureInterfac
     private $languageRepository;
 
     /**
-     * @var ProductRepository
+     * @var ProductFactory
      */
     private $productRepository;
 
     /**
-     * @var ProductAttributeRepository
+     * @var ProductAttributeFactory
      */
     private $productAttributeRepository;
 
     /**
      * ProductFixture constructor.
-     * @param \App\Model\Repository\CategoryRepository $categoryRepository
+     * @param \App\Model\Repository\CategoryFactory $categoryRepository
      * @param \App\Model\Repository\CountryRepository $countryRepository
      * @param \App\Model\Repository\LanguageRepository $languageRepository
-     * @param \App\Model\Repository\ProductRepository $productRepository
-     * @param \App\Model\Repository\ProductAttributeRepository $productAttributeRepository
+     * @param \App\Model\Repository\ProductFactory $productRepository
+     * @param \App\Model\Repository\ProductAttributeFactory $productAttributeRepository
      */
-    public function __construct(CategoryRepository $categoryRepository, CountryRepository $countryRepository, LanguageRepository $languageRepository, ProductRepository $productRepository, ProductAttributeRepository $productAttributeRepository)
+    public function __construct(CategoryFactory $categoryRepository, CountryRepository $countryRepository, LanguageRepository $languageRepository, ProductFactory $productRepository, ProductAttributeFactory $productAttributeRepository)
     {
         $this->categoryRepository = $categoryRepository;
         $this->countryRepository = $countryRepository;

@@ -8,7 +8,7 @@ use App\Model\Entity\CategoryCountryContent;
 use App\Model\Entity\CategoryTranslatableContent;
 use App\Model\Entity\Country;
 use App\Model\Entity\Language;
-use App\Model\Repository\CategoryRepository;
+use App\Model\Repository\CategoryFactory;
 use App\Model\Repository\CountryRepository;
 use App\Model\Repository\LanguageRepository;
 use Doctrine\Common\DataFixtures\AbstractFixture;
@@ -18,7 +18,7 @@ use Doctrine\Persistence\ObjectManager;
 class CategoryFixture extends AbstractFixture implements DependentFixtureInterface
 {
     /**
-     * @var CategoryRepository
+     * @var CategoryFactory
      */
     private $categoryRepository;
 
@@ -34,11 +34,11 @@ class CategoryFixture extends AbstractFixture implements DependentFixtureInterfa
 
     /**
      * CategoryFixture constructor.
-     * @param \App\Model\Repository\CategoryRepository $categoryRepository
+     * @param \App\Model\Repository\CategoryFactory $categoryRepository
      * @param \App\Model\Repository\CountryRepository $countryRepository
      * @param \App\Model\Repository\LanguageRepository $languageRepository
      */
-    public function __construct(CategoryRepository $categoryRepository, CountryRepository $countryRepository, LanguageRepository $languageRepository)
+    public function __construct(CategoryFactory $categoryRepository, CountryRepository $countryRepository, LanguageRepository $languageRepository)
     {
         $this->categoryRepository = $categoryRepository;
         $this->countryRepository = $countryRepository;

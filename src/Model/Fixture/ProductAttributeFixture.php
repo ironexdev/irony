@@ -6,7 +6,7 @@ use App\Enum\LanguageEnum;
 use App\Model\Entity\Language;
 use App\Model\Entity\ProductAttributeTranslatableContent;
 use App\Model\Repository\LanguageRepository;
-use App\Model\Repository\ProductAttributeRepository;
+use App\Model\Repository\ProductAttributeFactory;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -19,16 +19,16 @@ class ProductAttributeFixture extends AbstractFixture implements DependentFixtur
     private $languageRepository;
 
     /**
-     * @var ProductAttributeRepository
+     * @var ProductAttributeFactory
      */
     private $productAttributeRepository;
 
     /**
      * ProductAttributeFixture constructor.
      * @param \App\Model\Repository\LanguageRepository $languageRepository
-     * @param \App\Model\Repository\ProductAttributeRepository $productAttributeRepository
+     * @param \App\Model\Repository\ProductAttributeFactory $productAttributeRepository
      */
-    public function __construct(LanguageRepository $languageRepository, ProductAttributeRepository $productAttributeRepository)
+    public function __construct(LanguageRepository $languageRepository, ProductAttributeFactory $productAttributeRepository)
     {
         $this->languageRepository = $languageRepository;
         $this->productAttributeRepository = $productAttributeRepository;
