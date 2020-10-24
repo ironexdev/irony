@@ -42,6 +42,15 @@ class Country
     protected $updated;
 
     /**
+     * Country constructor.
+     * @param string $iso2
+     */
+    public function __construct(string $iso2)
+    {
+        $this->iso2 = $iso2;
+    }
+
+    /**
      * Gets triggered only on insert
      * @ORM\PrePersist
      */

@@ -1,24 +1,38 @@
 <?php
 
 namespace App\Model\Fixture;
+
 use App\Enum\LanguageEnum;
 use App\Model\Entity\Language;
+use App\Model\Repository\LanguageFactory;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Persistence\ObjectManager;
 
 class LanguageFixture extends AbstractFixture
 {
     /**
+     * @var LanguageFactory
+     */
+    private $languageFactory;
+
+    /**
+     * LanguageFixture constructor.
+     * @param \App\Model\Repository\LanguageFactory $languageFactory
+     */
+    public function __construct(LanguageFactory $languageFactory)
+    {
+        $this->languageFactory = $languageFactory;
+    }
+
+    /**
      * @param \Doctrine\Persistence\ObjectManager $manager
      */
     public function load(ObjectManager $manager): void
     {
-        $enLanguage = new Language();
-        $enLanguage->setIso2(LanguageEnum::EN);
+        $enLanguage = $this->languageFactory->create(LanguageEnum::EN);
         $manager->persist($enLanguage);
 
-        $csLanguage = new Language();
-        $csLanguage->setIso2(LanguageEnum::CS);
+        $csLanguage = $this->languageFactory->create(LanguageEnum::CS);
         $manager->persist($csLanguage);
 
         $manager->flush();

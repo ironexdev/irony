@@ -8,16 +8,16 @@ use App\Enum\LanguageEnum;
 use App\Model\Entity\Category;
 use App\Model\Entity\Country;
 use App\Model\Entity\Language;
-use App\Model\Entity\Product;
 use App\Model\Entity\ProductAttribute;
-use App\Model\Entity\ProductAttributeRelation;
 use App\Model\Entity\ProductCountryContent;
 use App\Model\Entity\ProductTranslatableContent;
 use App\Model\Repository\CategoryFactory;
 use App\Model\Repository\CountryRepository;
 use App\Model\Repository\LanguageRepository;
-use App\Model\Repository\ProductAttributeFactory;
+use App\Model\Repository\ProductAttributeRepository;
+use App\Model\Repository\ProductCountryContentFactory;
 use App\Model\Repository\ProductFactory;
+use App\Model\Repository\ProductTranslatableContentFactory;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -40,12 +40,22 @@ class ProductFixture extends AbstractFixture implements DependentFixtureInterfac
     private $languageRepository;
 
     /**
-     * @var ProductFactory
+     * @var ProductCountryContentFactory
      */
-    private $productRepository;
+    private $productCountryContentFactory;
 
     /**
-     * @var ProductAttributeFactory
+     * @var ProductFactory
+     */
+    private $productFactory;
+
+    /**
+     * @var ProductTranslatableContentFactory
+     */
+    private $productTranslatableContentFactory;
+
+    /**
+     * @var ProductAttributeRepository
      */
     private $productAttributeRepository;
 
@@ -54,21 +64,24 @@ class ProductFixture extends AbstractFixture implements DependentFixtureInterfac
      * @param \App\Model\Repository\CategoryFactory $categoryRepository
      * @param \App\Model\Repository\CountryRepository $countryRepository
      * @param \App\Model\Repository\LanguageRepository $languageRepository
-     * @param \App\Model\Repository\ProductFactory $productRepository
-     * @param \App\Model\Repository\ProductAttributeFactory $productAttributeRepository
+     * @param \App\Model\Repository\ProductCountryContentFactory $productCountryContentFactory
+     * @param \App\Model\Repository\ProductFactory $productFactory
+     * @param \App\Model\Repository\ProductTranslatableContentFactory $productTranslatableContentFactory
+     * @param \App\Model\Repository\ProductAttributeRepository $productAttributeRepository
      */
-    public function __construct(CategoryFactory $categoryRepository, CountryRepository $countryRepository, LanguageRepository $languageRepository, ProductFactory $productRepository, ProductAttributeFactory $productAttributeRepository)
+    public function __construct(CategoryFactory $categoryRepository, CountryRepository $countryRepository, LanguageRepository $languageRepository, ProductCountryContentFactory $productCountryContentFactory, ProductFactory $productFactory, ProductTranslatableContentFactory $productTranslatableContentFactory, ProductAttributeRepository $productAttributeRepository)
     {
         $this->categoryRepository = $categoryRepository;
         $this->countryRepository = $countryRepository;
         $this->languageRepository = $languageRepository;
-        $this->productRepository = $productRepository;
+        $this->productCountryContentFactory = $productCountryContentFactory;
+        $this->productFactory = $productFactory;
+        $this->productTranslatableContentFactory = $productTranslatableContentFactory;
         $this->productAttributeRepository = $productAttributeRepository;
     }
 
     /**
      * @param \Doctrine\Persistence\ObjectManager $manager
-     * @throws \Doctrine\ORM\ORMException
      */
     public function load(ObjectManager $manager): void
     {
@@ -99,7 +112,6 @@ class ProductFixture extends AbstractFixture implements DependentFixtureInterfac
     /**
      * @param int $min
      * @param int $max
-     * @throws \Doctrine\ORM\ORMException
      */
     private function insert(int $min, int $max): void
     {
@@ -139,9 +151,9 @@ class ProductFixture extends AbstractFixture implements DependentFixtureInterfac
             $usCurrency = CurrencyEnum::USD;
             $czCurrency = CurrencyEnum::CZK;
 
-            $product = $this->productRepository->create($enTitle, $enSummary, $enDescription, $usPrice, $usTax, $usDiscount, $usCurrency, true, false, $category, $usCountry, $enLanguage);
-            $product->addCountryContent(new ProductCountryContent($czPrice, $czTax, $czDiscount, $czCurrency, true, false, $product, $czCountry));
-            $product->addTranslatableContent(new ProductTranslatableContent($csTitle, $csSummary, $csDescription, $product, $csLanguage));
+            $product = $this->productFactory->create($enTitle, $enSummary, $enDescription, $usPrice, $usTax, $usDiscount, $usCurrency, true, false, $category, $usCountry, $enLanguage);
+            $product->addCountryContent($this->productCountryContentFactory->create($czPrice, $czTax, $czDiscount, $czCurrency, true, false, $product, $czCountry));
+            $product->addTranslatableContent($this->productTranslatableContentFactory->create($csTitle, $csSummary, $csDescription, $product, $csLanguage));
             $product->addAttributes(array_slice($productAttributes, ceil($i / 50) + 50, 50));
 
             if(count($relatedProducts) <= 100)

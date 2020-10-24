@@ -8,7 +8,10 @@ use App\Model\Entity\CategoryCountryContent;
 use App\Model\Entity\CategoryTranslatableContent;
 use App\Model\Entity\Country;
 use App\Model\Entity\Language;
+use App\Model\Repository\CategoryCountryContentFactory;
 use App\Model\Repository\CategoryFactory;
+use App\Model\Repository\CategoryRepository;
+use App\Model\Repository\CategoryTranslatableContentFactory;
 use App\Model\Repository\CountryRepository;
 use App\Model\Repository\LanguageRepository;
 use Doctrine\Common\DataFixtures\AbstractFixture;
@@ -17,6 +20,21 @@ use Doctrine\Persistence\ObjectManager;
 
 class CategoryFixture extends AbstractFixture implements DependentFixtureInterface
 {
+    /**
+     * @var CategoryCountryContentFactory
+     */
+    private $categoryCountryContentFactory;
+
+    /**
+     * @var CategoryFactory
+     */
+    private $categoryFactory;
+
+    /**
+     * @var CategoryTranslatableContentFactory
+     */
+    private $categoryTranslatableContentFactory;
+
     /**
      * @var CategoryFactory
      */
@@ -34,12 +52,18 @@ class CategoryFixture extends AbstractFixture implements DependentFixtureInterfa
 
     /**
      * CategoryFixture constructor.
-     * @param \App\Model\Repository\CategoryFactory $categoryRepository
+     * @param \App\Model\Repository\CategoryCountryContentFactory $categoryCountryContentFactory
+     * @param \App\Model\Repository\CategoryFactory $categoryFactory
+     * @param \App\Model\Repository\CategoryTranslatableContentFactory $categoryTranslatableContentFactory
+     * @param \App\Model\Repository\CategoryRepository $categoryRepository
      * @param \App\Model\Repository\CountryRepository $countryRepository
      * @param \App\Model\Repository\LanguageRepository $languageRepository
      */
-    public function __construct(CategoryFactory $categoryRepository, CountryRepository $countryRepository, LanguageRepository $languageRepository)
+    public function __construct(CategoryCountryContentFactory $categoryCountryContentFactory, CategoryFactory $categoryFactory, CategoryTranslatableContentFactory $categoryTranslatableContentFactory, CategoryRepository $categoryRepository, CountryRepository $countryRepository, LanguageRepository $languageRepository)
     {
+        $this->categoryCountryContentFactory = $categoryCountryContentFactory;
+        $this->categoryFactory = $categoryFactory;
+        $this->categoryTranslatableContentFactory = $categoryTranslatableContentFactory;
         $this->categoryRepository = $categoryRepository;
         $this->countryRepository = $countryRepository;
         $this->languageRepository = $languageRepository;
@@ -47,7 +71,6 @@ class CategoryFixture extends AbstractFixture implements DependentFixtureInterfa
 
     /**
      * @param \Doctrine\Persistence\ObjectManager $manager
-     * @throws \Doctrine\ORM\ORMException
      */
     public function load(ObjectManager $manager): void
     {
@@ -73,20 +96,17 @@ class CategoryFixture extends AbstractFixture implements DependentFixtureInterfa
             $enTitle = "Title " . " " . $enLanguage->getIso2() . " " . $i;
             $csTitle = "Title " . " " . $csLanguage->getIso2() . " " . $i;
 
-            $category = $this->categoryRepository->create($previousCategory);
+            $category = $this->categoryFactory->create($enTitle, true, $previousCategory, $usCountry, $enLanguage);
 
-            $enTranslatableContent = new CategoryTranslatableContent($enTitle, $category, $enLanguage);
-            $csTranslatableContent = new CategoryTranslatableContent($csTitle, $category, $csLanguage);
+            $csTranslatableContent = $this->categoryTranslatableContentFactory->create($csTitle, $category, $csLanguage);
+            $czCountryContent = $this->categoryCountryContentFactory->create(true, $category, $czCountry);
 
-            $usCountryContent = new CategoryCountryContent(true, $category, $usCountry);
-            $czCountryContent = new CategoryCountryContent(true, $category, $czCountry);
-
-            $category->addTranslatableContent($enTranslatableContent);
             $category->addTranslatableContent($csTranslatableContent);
-            $category->addCountryContent($usCountryContent);
             $category->addCountryContent($czCountryContent);
 
             $previousCategory = $category;
+
+            $manager->persist($category);
         }
 
         $manager->flush();

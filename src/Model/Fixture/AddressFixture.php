@@ -2,12 +2,26 @@
 
 namespace App\Model\Fixture;
 
-use App\Model\Entity\Address;
+use App\Model\Repository\AddressFactory;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Persistence\ObjectManager;
 
 class AddressFixture extends AbstractFixture
 {
+    /**
+     * @var \App\Model\Repository\AddressFactory
+     */
+    private $addressFactory;
+
+    /**
+     * AddressFixture constructor.
+     * @param \App\Model\Repository\AddressFactory $addressFactory
+     */
+    public function __construct(AddressFactory $addressFactory)
+    {
+        $this->addressFactory = $addressFactory;
+    }
+
     /**
      * @param \Doctrine\Persistence\ObjectManager $manager
      */
@@ -15,7 +29,7 @@ class AddressFixture extends AbstractFixture
     {
         for($i = 0; $i < 10000; $i++)
         {
-            $address = new Address("Street " . $i, "Street Number " . $i, "City " . $i, "Zip Code " . $i, "Country " . $i, "Note " . $i);
+            $address = $this->addressFactory->create("Street " . $i, "Street Number " . $i, "City " . $i, "Zip Code " . $i, "Country " . $i, "Note " . $i);
 
             $manager->persist($address);
         }

@@ -11,7 +11,7 @@ use App\Model\Service\EntityManagerService;
 class ProductFactory extends AbstractRepository
 {
     /**
-     * @var ProductTranslatableContentFactory
+     * @var ProductCountryContentFactory
      */
     private $productCountryContentFactory;
 

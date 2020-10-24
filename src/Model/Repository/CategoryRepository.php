@@ -11,20 +11,6 @@ class CategoryRepository extends AbstractRepository
     const ENTITY = Category::class;
 
     /**
-     * @param \App\Model\Entity\Category|null $parent
-     * @return \App\Model\Entity\Category
-     * @throws \Doctrine\ORM\ORMException
-     */
-    public function create(Category $parent = null): Category
-    {
-        $category = new Category($parent);
-
-        $this->entityManagerService->persist($category);
-
-        return $category;
-    }
-
-    /**
      * @param string $title
      * @return Category|null
      */

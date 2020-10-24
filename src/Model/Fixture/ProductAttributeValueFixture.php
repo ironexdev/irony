@@ -10,10 +10,13 @@ use App\Model\Entity\ProductAttributeTextTranslatableContent;
 use App\Model\Repository\LanguageRepository;
 use App\Model\Repository\ProductAttributeBoolFactory;
 use App\Model\Repository\ProductAttributeDecimalFactory;
-use App\Model\Repository\ProductAttributeIntFactory;
 use App\Model\Repository\ProductAttributeFactory;
+use App\Model\Repository\ProductAttributeIntFactory;
+use App\Model\Repository\ProductAttributeRepository;
 use App\Model\Repository\ProductAttributeTextFactory;
+use App\Model\Repository\ProductAttributeTextTranslatableContentFactory;
 use App\Model\Repository\ProductFactory;
+use App\Model\Repository\ProductRepository;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -28,56 +31,77 @@ class ProductAttributeValueFixture extends AbstractFixture implements DependentF
     /**
      * @var ProductFactory
      */
+    private $productFactory;
+
+    /**
+     * @var ProductRepository
+     */
     private $productRepository;
 
     /**
      * @var ProductAttributeFactory
      */
+    private $productAttributeFactory;
+
+    /**
+     * @var ProductAttributeRepository
+     */
     private $productAttributeRepository;
+    
     /**
      * @var ProductAttributeBoolFactory
      */
-    private $productAttributeBoolRepository;
+    private $productAttributeBoolFactory;
 
     /**
      * @var ProductAttributeDecimalFactory
      */
-    private $productAttributeDecimalRepository;
+    private $productAttributeDecimalFactory;
 
     /**
      * @var ProductAttributeIntFactory
      */
-    private $productAttributeIntRepository;
+    private $productAttributeIntFactory;
 
     /**
      * @var ProductAttributeTextFactory
      */
-    private $productAttributeTextRepository;
+    private $productAttributeTextFactory;
+
+    /**
+     * @var ProductAttributeTextTranslatableContentFactory
+     */
+    private $productAttributeTextTranslatableContentFactory;
 
     /**
      * ProductAttributeTextFixture constructor.
      * @param \App\Model\Repository\LanguageRepository $languageRepository
-     * @param \App\Model\Repository\ProductFactory $productRepository
-     * @param \App\Model\Repository\ProductAttributeFactory $productAttributeRepository
-     * @param \App\Model\Repository\ProductAttributeBoolFactory $productAttributeBoolRepository
-     * @param \App\Model\Repository\ProductAttributeDecimalFactory $productAttributeDecimalRepository
-     * @param \App\Model\Repository\ProductAttributeIntFactory $productAttributeIntRepository
-     * @param \App\Model\Repository\ProductAttributeTextFactory $productAttributeTextRepository
+     * @param \App\Model\Repository\ProductRepository $productRepository
+     * @param \App\Model\Repository\ProductFactory $productFactory
+     * @param \App\Model\Repository\ProductAttributeRepository $productAttributeRepository
+     * @param \App\Model\Repository\ProductAttributeFactory $productAttributeFactory
+     * @param \App\Model\Repository\ProductAttributeBoolFactory $productAttributeBoolFactory
+     * @param \App\Model\Repository\ProductAttributeDecimalFactory $productAttributeDecimalFactory
+     * @param \App\Model\Repository\ProductAttributeIntFactory $productAttributeIntFactory
+     * @param \App\Model\Repository\ProductAttributeTextFactory $productAttributeTextFactory
+     * @param \App\Model\Repository\ProductAttributeTextTranslatableContentFactory $productAttributeTextTranslatableContentFactory
      */
-    public function __construct(LanguageRepository $languageRepository, ProductFactory $productRepository, ProductAttributeFactory $productAttributeRepository, ProductAttributeBoolFactory $productAttributeBoolRepository, ProductAttributeDecimalFactory $productAttributeDecimalRepository, ProductAttributeIntFactory $productAttributeIntRepository, ProductAttributeTextFactory $productAttributeTextRepository)
+    public function __construct(LanguageRepository $languageRepository, ProductRepository $productRepository, ProductFactory $productFactory, ProductAttributeRepository $productAttributeRepository, ProductAttributeFactory $productAttributeFactory, ProductAttributeBoolFactory $productAttributeBoolFactory, ProductAttributeDecimalFactory $productAttributeDecimalFactory, ProductAttributeIntFactory $productAttributeIntFactory, ProductAttributeTextFactory $productAttributeTextFactory, ProductAttributeTextTranslatableContentFactory $productAttributeTextTranslatableContentFactory)
     {
         $this->languageRepository = $languageRepository;
+        $this->productFactory = $productFactory;
         $this->productRepository = $productRepository;
+        $this->productAttributeFactory = $productAttributeFactory;
         $this->productAttributeRepository = $productAttributeRepository;
-        $this->productAttributeBoolRepository = $productAttributeBoolRepository;
-        $this->productAttributeDecimalRepository = $productAttributeDecimalRepository;
-        $this->productAttributeIntRepository = $productAttributeIntRepository;
-        $this->productAttributeTextRepository = $productAttributeTextRepository;
+        $this->productAttributeBoolFactory = $productAttributeBoolFactory;
+        $this->productAttributeDecimalFactory = $productAttributeDecimalFactory;
+        $this->productAttributeIntFactory = $productAttributeIntFactory;
+        $this->productAttributeTextFactory = $productAttributeTextFactory;
+        $this->productAttributeTextTranslatableContentFactory = $productAttributeTextTranslatableContentFactory;
     }
 
     /**
      * @param \Doctrine\Persistence\ObjectManager $manager
-     * @throws \Doctrine\ORM\ORMException
      */
     public function load(ObjectManager $manager): void
     {
@@ -109,21 +133,23 @@ class ProductAttributeValueFixture extends AbstractFixture implements DependentF
                     $enValue = "Value " . $enLanguage->getIso2() . " - " . $i . " - " . $ii;
                     $csValue = "Value " . $csLanguage->getIso2() . " - " . $i . " - " . $ii;
 
-                    $productAttributeValue = $this->productAttributeTextRepository->create($enValue, $product, $productAttribute, $enLanguage);
-                    $productAttributeValue->addTranslatableContent(new ProductAttributeTextTranslatableContent($csValue, $productAttributeValue, $csLanguage));
+                    $productAttributeValue = $this->productAttributeTextFactory->create($enValue, $product, $productAttribute, $enLanguage);
+                    $productAttributeValue->addTranslatableContent($this->productAttributeTextTranslatableContentFactory->create($csValue, $productAttributeValue, $csLanguage));
                 }
                 else if($type === "boolean")
                 {
-                    $this->productAttributeBoolRepository->create((bool) $pointer, $product, $productAttribute);
+                    $productAttributeValue = $this->productAttributeBoolFactory->create((bool) $pointer, $product, $productAttribute);
                 }
                 else if($type === "decimal")
                 {
-                    $this->productAttributeDecimalRepository->create((float) $i, $product, $productAttribute);
+                    $productAttributeValue = $this->productAttributeDecimalFactory->create((float) $i, $product, $productAttribute);
                 }
-                else if($type === "int")
+                else // int
                 {
-                    $this->productAttributeIntRepository->create($i, $product, $productAttribute);
+                    $productAttributeValue = $this->productAttributeIntFactory->create($i, $product, $productAttribute);
                 }
+
+                $manager->persist($productAttributeValue);
             }
 
             $i++;
